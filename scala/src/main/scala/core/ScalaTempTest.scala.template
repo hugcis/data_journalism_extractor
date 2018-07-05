@@ -5,6 +5,9 @@ import org.apache.flink.api.scala._
 import org.apache.flink.core.fs.FileSystem
 import org.apache.flink.util.Collector
 import org.apache.flink.api.common.functions.FlatMapFunction
+import org.apache.flink.api.common.typeinfo.TypeInformation
+import org.apache.flink.api.java.io.jdbc.JDBCInputFormat
+import org.apache.flink.api.java.typeutils.RowTypeInfo
 
 object ScalaTempTest {
 

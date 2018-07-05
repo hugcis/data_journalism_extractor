@@ -3,14 +3,22 @@
         {
             "name": "extractor1",
             "type": "csvImporter",
-            "path": "/Users/hugo/Work/limsi-inria/tests/test/deputes.csv",
+            "path": "/Users/hugo/Work/limsi-inria/tests/data_journalism_extractor/deputes.csv",
             "dataType": ["String", "String"],
             "fieldDelimiter": ";"
         },
         {
+            "name": "extractordb",
+            "type": "dbImporter",
+            "dbUrl": "jdbc:postgresql://localhost/twitter",
+            "fieldNames": ["rid", "uid"],
+            "dataType": ["Long", "Long"],
+            "query": "select rid, uid from retweetedstatuses"
+        },
+        {
             "name": "extractor4",
             "type": "csvImporter",
-            "path": "/Users/hugo/Work/limsi-inria/tests/test/wiki.csv",
+            "path": "/Users/hugo/Work/limsi-inria/tests/data_journalism_extractor/wiki.csv",
             "dataType": ["String", "String"],
             "quoteCharacter": "$",
             "fieldDelimiter": "|"
@@ -18,7 +26,7 @@
         {
             "name": "extractor2",
             "type": "jsonImporter",
-            "path": "/Users/hugo/Work/limsi-inria/tests/test/hatvp.json",
+            "path": "/Users/hugo/Work/limsi-inria/tests/data_journalism_extractor/hatvp.json",
             "mainField": "publications",
             "requiredFields": ["denomination", "identifiantNational"]
         },
@@ -39,7 +47,7 @@
             "name": "output1",
             "type": "csvOutput",
             "source": "projection1",
-            "path": "/Users/hugo/Work/limsi-inria/tests/test/output.csv"
+            "path": "/Users/hugo/Work/limsi-inria/tests/data_journalism_extractor/output.csv"
         }
     ]
 }

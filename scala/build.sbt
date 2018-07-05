@@ -31,7 +31,9 @@ libraryDependencies ++= Seq(
   "com.chuusai" %% "shapeless" % "2.3.3",
   "org.apache.flink" %% "flink-table" % flinkVersion,
   "com.nrinaudo" %% "kantan.xpath" % "0.4.0",
-  "io.argonaut" %% "argonaut" % "6.2"
+  "io.argonaut" %% "argonaut" % "6.2",
+  "org.apache.flink" % "flink-jdbc" % flinkVersion,
+  "org.postgresql" % "postgresql" % "42.2.2"
 )
 
 

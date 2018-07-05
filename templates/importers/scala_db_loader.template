@@ -1,0 +1,15 @@
+{%- from 'utils.template' import quote -%}
+// ===== DB Importer module {{name}} =====
+
+val fieldTypes_{{name}}: Array[TypeInformation[_]] = Array({{','.join(field_types)}})
+val fieldNames_{{name}} = Array({{','.join(field_names)}})
+
+val rowTypeInfo_{{name}} = new RowTypeInfo(fieldTypes_{{name}}, fieldNames_{{name}})
+val inputFormat_{{name}} = JDBCInputFormat.buildJDBCInputFormat()
+  .setDrivername({{quote(driver)}})
+  .setDBUrl({{quote(db_url)}})
+  .setQuery({{quote(query)}})
+  .setRowTypeInfo(rowTypeInfo_{{name}})
+  .finish()
+
+val {{name}} = env.createInput(inputFormat_{{name}})
