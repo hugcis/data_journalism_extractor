@@ -1,0 +1,28 @@
+package core
+
+import core.reader.JsonReader
+import org.apache.flink.api.scala._
+import org.apache.flink.core.fs.FileSystem
+import org.apache.flink.util.Collector
+import org.apache.flink.api.common.functions.FlatMapFunction
+
+object ScalaTempTest {
+
+  def main(args: Array[String]) {
+
+    // set up the execution environment
+    val env = ExecutionEnvironment.getExecutionEnvironment
+    
+    {% for module in modules %}
+    {% for line in module.split('\n')%}
+    {{line}}{% endfor %}{% endfor %}
+
+    // ===== Execution =====
+
+    env.execute()
+  }
+
+  {% for ext_module in ext_modules %}
+  {% for line in ext_module.split('\n')%}
+  {{line}}{% endfor %}{% endfor %}
+}

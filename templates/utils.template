@@ -1,0 +1,7 @@
+{% macro quote(word) -%}
+{{'\"'+word+'\"'}}
+{%- endmacro %}
+
+{% macro quote_simple(word) -%}
+{{'\''+word+'\''}}
+{%- endmacro %}

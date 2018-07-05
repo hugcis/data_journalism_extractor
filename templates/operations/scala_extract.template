@@ -1,0 +1,3 @@
+// ===== Entity extractor {{name}} =====
+
+val {{name}} = {{source1}}.cross({{source2}}).flatMap(new extract_{{source1}}_{{source2}})

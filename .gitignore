@@ -1,0 +1,13 @@
+__pycache__/
+.pylintrc
+.vscode/
+.DS_Store
+bin/
+.project
+scala/.idea
+scala/mainRunner
+scala/target
+scala/project/project
+scala/project/target
+*.gv
+*.gv.pdf

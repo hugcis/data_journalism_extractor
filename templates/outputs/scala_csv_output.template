@@ -1,0 +1,5 @@
+{%- from 'utils.template' import quote -%}
+// ===== CSV Output File {{name}} =====
+
+val filePath_{{name}} = {{quote(file_path)}}
+{{source}}.writeAsCsv(filePath_{{name}}, writeMode=FileSystem.WriteMode.OVERWRITE)

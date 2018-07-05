@@ -1,0 +1,45 @@
+{
+    "modules": [
+        {
+            "name": "extractor1",
+            "type": "csvImporter",
+            "path": "/Users/hugo/Work/limsi-inria/tests/test/deputes.csv",
+            "dataType": ["String", "String"],
+            "fieldDelimiter": ";"
+        },
+        {
+            "name": "extractor4",
+            "type": "csvImporter",
+            "path": "/Users/hugo/Work/limsi-inria/tests/test/wiki.csv",
+            "dataType": ["String", "String"],
+            "quoteCharacter": "$",
+            "fieldDelimiter": "|"
+        },
+        {
+            "name": "extractor2",
+            "type": "jsonImporter",
+            "path": "/Users/hugo/Work/limsi-inria/tests/test/hatvp.json",
+            "mainField": "publications",
+            "requiredFields": ["denomination", "identifiantNational"]
+        },
+        {
+            "name": "linking1",
+            "type": "extractorLink",
+            "source1": "extractor4",
+            "source2": "extractor2",
+            "rightFields": [1]
+        },
+        {
+            "name": "projection1",
+            "type": "projection",
+            "source": "linking1",
+            "fields": [1, 3]
+        },
+        {
+            "name": "output1",
+            "type": "csvOutput",
+            "source": "projection1",
+            "path": "/Users/hugo/Work/limsi-inria/tests/test/output.csv"
+        }
+    ]
+}

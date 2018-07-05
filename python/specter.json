@@ -1,0 +1,47 @@
+{
+    "modules": [
+        {
+            "name": "Importation Députés",
+            "type": "csvImporter",
+            "path": "/Users/hugo/Work/limsi-inria/tests/test/deputes.csv",
+            "dataType": ["String", "String"],
+            "fieldDelimiter": ";"
+        },
+        {
+            "name": "Importation Wiki",
+            "type": "csvImporter",
+            "path": "/Users/hugo/Work/limsi-inria/tests/test/wiki.csv",
+            "dataType": ["String", "String"],
+            "quoteCharacter": "$",
+            "fieldDelimiter": "|"
+        },
+        {
+            "name": "Importation HATVP",
+            "type": "jsonImporter",
+            "path": "/Users/hugo/Work/limsi-inria/tests/test/hatvp.json",
+            "mainField": "publications",
+            "requiredFields": ["denomination", "identifiantNational"]
+        },
+        {
+            "name": "Extracteur HATVP Wiki",
+            "type": "extracteur",
+            "source1": "Importation Wiki",
+            "source2": "Importation HATVP",
+            "field1": 0,
+            "field2": 0
+        },
+        {
+            "name": "Join Députés Mentions",
+            "type": "join",
+            "source1": "Extracteur HATVP Wiki",
+            "source2": "Importation Députés",
+            "field1": 0,
+            "field2": 0
+        },
+        {
+            "name": "File output Mentions",
+            "type": "fileOutput",
+            "source1": "Join Députés Mentions"
+        }
+    ]
+}
