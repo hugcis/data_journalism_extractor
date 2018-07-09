@@ -1,7 +1,7 @@
 import os
 from jinja2 import Environment
-from .file_importer import FileImporter
 from python_modules.utils import format_types, quote
+from .file_importer import FileImporter
 
 
 class JsonImporter(FileImporter):
