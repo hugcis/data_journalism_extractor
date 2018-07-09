@@ -8,7 +8,7 @@ import argparse
 from jinja2 import Environment, FileSystemLoader
 from renderer import Renderer
 
-BASE_DIR = '../scala/src/main/scala/core/'
+BASE_DIR = 'scala/src/main/scala/core/'
 
 
 def run(spec, template_dir, output_path):
@@ -43,7 +43,7 @@ if __name__ == "__main__":
                         metavar='dirname',
                         type=str,
                         help='template directory',
-                        default='../templates')
+                        default='templates')
     parser.add_argument('-o', '--output',
                         metavar='output',
                         type=str,

@@ -3,7 +3,7 @@
         {
             "name": "extractor1",
             "type": "csvImporter",
-            "path": "/Users/hugo/Work/limsi-inria/tests/data_journalism_extractor/deputes.csv",
+            "path": "/Users/hugo/Work/limsi-inria/tests/data_journalism_extractor/example/data/deputes.csv",
             "dataType": ["String", "String"],
             "fieldDelimiter": ";"
         },
@@ -18,7 +18,7 @@
         {
             "name": "extractor4",
             "type": "csvImporter",
-            "path": "/Users/hugo/Work/limsi-inria/tests/data_journalism_extractor/wiki.csv",
+            "path": "/Users/hugo/Work/limsi-inria/tests/data_journalism_extractor/example/data/wiki.csv",
             "dataType": ["String", "String"],
             "quoteCharacter": "$",
             "fieldDelimiter": "|"
@@ -26,7 +26,7 @@
         {
             "name": "extractor2",
             "type": "jsonImporter",
-            "path": "/Users/hugo/Work/limsi-inria/tests/data_journalism_extractor/hatvp.json",
+            "path": "/Users/hugo/Work/limsi-inria/tests/data_journalism_extractor/example/data/hatvp.json",
             "mainField": "publications",
             "requiredFields": ["denomination", "identifiantNational"]
         },
@@ -49,7 +49,7 @@
             "name": "output1",
             "type": "csvOutput",
             "source": "projection1",
-            "path": "/Users/hugo/Work/limsi-inria/tests/data_journalism_extractor/output.csv"
+            "path": "/Users/hugo/Work/limsi-inria/tests/data_journalism_extractor/example/output/output.csv"
         }
     ]
 }

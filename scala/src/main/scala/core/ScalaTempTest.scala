@@ -20,7 +20,7 @@ object ScalaTempTest {
     
     // ===== CSV Importer module extractor1 =====
     
-    val filePath_extractor1 = "/Users/hugo/Work/limsi-inria/tests/data_journalism_extractor/deputes.csv"
+    val filePath_extractor1 = "/Users/hugo/Work/limsi-inria/tests/data_journalism_extractor/example/data/deputes.csv"
     val lineDelimiter_extractor1 = "\n"
     val fieldDelimiter_extractor1 = ";"
     
@@ -28,7 +28,7 @@ object ScalaTempTest {
     
     // ===== DB Importer module extractordb =====
     
-    val fieldTypes_extractordb: Array[TypeInformation[_]] = Array(createTypeInformation[Long],createTypeInformation[Long])
+    val fieldTypes_extractordb: Array[TypeInformation[_]] = Array(createTypeInformation[Int],createTypeInformation[Long])
     val fieldNames_extractordb = Array("rid","uid")
     
     val rowTypeInfo_extractordb = new RowTypeInfo(fieldTypes_extractordb, fieldNames_extractordb)
@@ -40,10 +40,10 @@ object ScalaTempTest {
       .finish()
     
     val extractordb = env.createInput(inputFormat_extractordb)
-    extractordb.print()
+    
     // ===== CSV Importer module extractor4 =====
     
-    val filePath_extractor4 = "/Users/hugo/Work/limsi-inria/tests/data_journalism_extractor/wiki.csv"
+    val filePath_extractor4 = "/Users/hugo/Work/limsi-inria/tests/data_journalism_extractor/example/data/wiki.csv"
     val lineDelimiter_extractor4 = "\n"
     val fieldDelimiter_extractor4 = "|"
     val quoteCharacter_extractor4 = '$'
@@ -51,7 +51,7 @@ object ScalaTempTest {
     
     // ===== JSON Importer module extractor2 =====
     
-    val filePath_extractor2 = "/Users/hugo/Work/limsi-inria/tests/data_journalism_extractor/hatvp.json"
+    val filePath_extractor2 = "/Users/hugo/Work/limsi-inria/tests/data_journalism_extractor/example/data/hatvp.json"
     val mainField_extractor2 = "publications"
     val requiredFields_extractor2 = Array("denomination","identifiantNational")
     val extractor2 = JsonReader[(String,String)](env, filePath_extractor2, mainField_extractor2, requiredFields_extractor2).getInput
@@ -66,7 +66,7 @@ object ScalaTempTest {
     
     // ===== CSV Output File output1 =====
     
-    val filePath_output1 = "/Users/hugo/Work/limsi-inria/tests/data_journalism_extractor/output.csv"
+    val filePath_output1 = "/Users/hugo/Work/limsi-inria/tests/data_journalism_extractor/example/output/output.csv"
     projection1.writeAsCsv(filePath_output1, writeMode=FileSystem.WriteMode.OVERWRITE)
 
     // ===== Execution =====
@@ -81,7 +81,7 @@ object ScalaTempTest {
   private class extract_extractor4_extractor2 extends FlatMapFunction[((String,String), (String,String)), (String,String,String)] {
       override def flatMap(value: ((String,String), (String,String)), out: Collector[(String,String,String)]): Unit = {
         val d = (raw"\b(" + value._2._1.toLowerCase + raw")\b").r
-        if (d.findFirstIn(value._1._2.toLowerCase).nonEmpty) out.collect((value._1._1, value._1._2, value._2._1))
+        if (d.findFirstIn(value._1._2.toLowerCase).nonEmpty) out.collect((value._1._1,value._1._2,value._2._1))
       }
   }
 }
