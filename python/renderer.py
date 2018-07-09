@@ -1,6 +1,6 @@
 from jinja2 import Environment, FileSystemLoader
 from python_modules.extractors import CsvImporter, JsonImporter, DbImporter
-from python_modules.operations import Join, ExtractorLink, Projection
+from python_modules.operations import Join, ExtractorLink, Projection, Union
 from python_modules.outputs import CsvOutput
 from python_modules.exceptions import UnknownModuleError
 from python_modules.base_module import BaseModule
@@ -8,12 +8,17 @@ from python_modules.base_module import BaseModule
 
 class ModuleMap:
     module_map = {
+        # Importers
         'csvImporter': CsvImporter,
         'jsonImporter': JsonImporter,
         'dbImporter': DbImporter,
+        # Binary ops
         'join': Join,
         'extractorLink': ExtractorLink,
+        # Unary ops
         'projection': Projection,
+        'union': Union,
+        # Outputs
         'csvOutput': CsvOutput,
     }
 

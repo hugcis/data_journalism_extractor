@@ -1,7 +1,7 @@
 import os
 from jinja2 import Environment
-from .binary_operation import BinaryOperation
 from python_modules.utils import format_types
+from .binary_operation import BinaryOperation
 
 
 class ExtractorLink(BinaryOperation):

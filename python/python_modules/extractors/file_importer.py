@@ -1,7 +1,7 @@
 import os
 from abc import ABC, abstractmethod
-from . import BaseModule
 from python_modules.exceptions import IntegrityError
+from . import BaseModule
 
 
 class FileImporter(BaseModule, ABC):

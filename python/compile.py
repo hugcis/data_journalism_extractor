@@ -31,7 +31,8 @@ def run(spec, template_dir, output_path):
     with open(output_path, 'w') as outfile:
         outfile.write(final.render(modules=modules, ext_modules=ext_modules))
 
-if __name__ == "__main__":
+
+def main():
     parser = argparse.ArgumentParser(description="""Command line interface for
         compiling JSON spec file in Scala code.""")
     parser.add_argument('-s', '--spec',
@@ -52,3 +53,6 @@ if __name__ == "__main__":
 
     args = parser.parse_args()
     run(args.spec, args.template_dir, args.output)
+
+if __name__ == "__main__":
+    main()
