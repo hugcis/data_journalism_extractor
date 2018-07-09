@@ -3,16 +3,26 @@ from python_modules.extractors import CsvImporter, JsonImporter, DbImporter
 from python_modules.operations import Join, ExtractorLink, Projection
 from python_modules.outputs import CsvOutput
 from python_modules.exceptions import UnknownModuleError
+from python_modules.base_module import BaseModule
 
-MODULES = {
-    'csvImporter': CsvImporter,
-    'jsonImporter': JsonImporter,
-    'dbImporter': DbImporter,
-    'join': Join,
-    'extractorLink': ExtractorLink,
-    'projection': Projection,
-    'csvOutput': CsvOutput,
-}
+
+class ModuleMap:
+    module_map = {
+        'csvImporter': CsvImporter,
+        'jsonImporter': JsonImporter,
+        'dbImporter': DbImporter,
+        'join': Join,
+        'extractorLink': ExtractorLink,
+        'projection': Projection,
+        'csvOutput': CsvOutput,
+    }
+
+    @classmethod
+    def get(cls, name: str) -> BaseModule:
+        """ Returns the module corresponding to the name
+        passed in argument.
+        """
+        return cls.module_map.get(name)
 
 
 class Renderer:
@@ -24,7 +34,7 @@ class Renderer:
             name = module.get('name')
             self.name_list.append(name)
 
-            base_module = MODULES.get(
+            base_module = ModuleMap.get(
                 module.get('type'))
 
             if base_module is None:
@@ -41,6 +51,8 @@ class Renderer:
             self.named_modules[module].check_integrity()
 
     def get_rendered(self):
+        """ Get the rendered code from the module list
+        """
         rendered = []
         rendered_ext = []
 

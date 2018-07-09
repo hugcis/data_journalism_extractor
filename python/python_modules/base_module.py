@@ -4,6 +4,8 @@ from graphviz import Digraph
 
 
 class BaseModule(ABC):
+    """ The abstract base class for operation modules
+    """
     def __init__(self, module, env: Environment, named_modules):
         self.env = env
         self.type = module.get('type')
@@ -21,12 +23,23 @@ class BaseModule(ABC):
 
     @abstractmethod
     def rendered_result(self) -> (str, str):
+        """ Returns a pair of strings containing the
+        rendered lines of codes and external classes or objects
+        definitions.
+        """
         pass
 
     @abstractmethod
     def get_out_type(self):
+        """ Returns the output type of the module
+        as a list of strings.
+        """
         pass
 
     @abstractmethod
     def check_integrity(self):
+        """ Performs some check on the upstream
+        modules and types when necessary to ensure the
+        integrity of the DAG.
+        """
         pass
