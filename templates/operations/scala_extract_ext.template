@@ -1,8 +1,8 @@
 // ===== Entity extractor FlatMapFunction {{name}}=====
 
-private class extract_extractor4_extractor2 extends FlatMapFunction[({{typeLeft}}, {{typeRight}}), {{typeOut}}] {
-    override def flatMap(value: ({{typeLeft}}, {{typeRight}}), out: Collector[{{typeOut}}]): Unit = {
-      val d = (raw"\b(" + value._2._1.toLowerCase + raw")\b").r
-      if (d.findFirstIn(value._1._2.toLowerCase).nonEmpty) out.collect((value._1._1, value._1._2, value._2._1))
+private class extract_extractor4_extractor2 extends FlatMapFunction[({{type_left}}, {{type_right}}), {{type_out}}] {
+    override def flatMap(value: ({{type_left}}, {{type_right}}), out: Collector[{{type_out}}]): Unit = {
+      val d = (raw"\b(" + value._2._{{source_extract}}.toLowerCase + raw")\b").r
+      if (d.findFirstIn(value._1._{{target_extract}}.toLowerCase).nonEmpty) out.collect(({{collect_tuple}}))
     }
 }

@@ -12,7 +12,7 @@
             "type": "dbImporter",
             "dbUrl": "jdbc:postgresql://localhost/twitter",
             "fieldNames": ["rid", "uid"],
-            "dataType": ["Long", "Long"],
+            "dataType": ["Int", "Long"],
             "query": "select rid, uid from retweetedstatuses"
         },
         {
@@ -35,7 +35,9 @@
             "type": "extractorLink",
             "source1": "extractor4",
             "source2": "extractor2",
-            "rightFields": [1]
+            "rightFields": [1],
+            "sourceExtract": 1,
+            "targetExtract": 2
         },
         {
             "name": "projection1",
