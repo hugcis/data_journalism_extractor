@@ -1,0 +1,3 @@
+// ===== Union module {{name}} =====
+
+val {{name}} = {{source1}}.union({{source2}})

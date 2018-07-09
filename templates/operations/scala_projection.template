@@ -1,3 +1,3 @@
 // ===== Projection {{name}} =====
 
-val {{name}} = {{source}}.map { set => (set._1, set._3)}.distinct()
+val {{name}} = {{source}}.map { set => ({{projection_tuple}})}.distinct()

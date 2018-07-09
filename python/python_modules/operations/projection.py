@@ -20,7 +20,9 @@ class Projection(UnaryOperation):
     def rendered_result(self) -> (str, str):
         return self.template.render(
             name=self.name,
-            source=self.source
+            source=self.source,
+            projection_tuple=','.join(['set._{}'.format(i)
+                                       for i in self.fields])
         ), ''
 
     def get_out_type(self):
