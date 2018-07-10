@@ -4,3 +4,4 @@ from .join import Join
 from .extractor_link import ExtractorLink
 from .projection import Projection
 from .union import Union
+from .split import Split

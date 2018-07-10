@@ -26,6 +26,19 @@ object ScalaTempTest {
     
     val extractor1 = env.readCsvFile[(String,String)](filePath_extractor1, lineDelimiter_extractor1, fieldDelimiter_extractor1)
     
+    // ===== CSV Importer module extractor_lex =====
+    
+    val filePath_extractor_lex = "/Users/hugo/Work/limsi-inria/tests/data_journalism_extractor/example/data/lex.csv"
+    val lineDelimiter_extractor_lex = "\n"
+    val fieldDelimiter_extractor_lex = ","
+    
+    val extractor_lex = env.readCsvFile[(String,String)](filePath_extractor_lex, lineDelimiter_extractor_lex, fieldDelimiter_extractor_lex)
+    
+    // ===== Split split_lex =====
+    
+    val split_lex = extractor_lex.map { set => (set._1,set._2.split(" "))}
+    split_lex.print()
+    
     // ===== DB Importer module extractordb =====
     
     val fieldTypes_extractordb: Array[TypeInformation[_]] = Array(createTypeInformation[Int],createTypeInformation[Long])
@@ -62,7 +75,7 @@ object ScalaTempTest {
     
     // ===== Projection projection1 =====
     
-    val projection1 = linking1.map { set => (set._1, set._3)}.distinct()
+    val projection1 = linking1.map { set => (set._1,set._3)}.distinct()
     
     // ===== CSV Output File output1 =====
     

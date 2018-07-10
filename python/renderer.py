@@ -1,6 +1,7 @@
 from jinja2 import Environment, FileSystemLoader
 from python_modules.extractors import CsvImporter, JsonImporter, DbImporter
-from python_modules.operations import Join, ExtractorLink, Projection, Union
+from python_modules.operations import (Join, ExtractorLink,
+                                       Projection, Union, Split)
 from python_modules.outputs import CsvOutput
 from python_modules.exceptions import UnknownModuleError
 from python_modules.base_module import BaseModule
@@ -18,6 +19,7 @@ class ModuleMap:
         # Unary ops
         'projection': Projection,
         'union': Union,
+        'split': Split,
         # Outputs
         'csvOutput': CsvOutput,
     }
@@ -43,7 +45,8 @@ class Renderer:
                 module.get('type'))
 
             if base_module is None:
-                raise UnknownModuleError("Module is {}".format(base_module))
+                raise UnknownModuleError(
+                    "Module is {}".format(module.get('type')))
 
             self.named_modules[name] = base_module(module,
                                                    self.env,

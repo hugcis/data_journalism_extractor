@@ -1,0 +1,3 @@
+// ===== Split {{name}} =====
+
+val {{name}} = {{source}}.map { set => ({{projection_tuple}})}

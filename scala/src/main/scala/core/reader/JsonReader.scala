@@ -27,9 +27,9 @@ class JsonReader[T:ClassTag:TypeInformation](env: ExecutionEnvironment,
       case 4 => (elem.field(requiredFields(0)).get.string.get,
                  elem.field(requiredFields(1)).get.string.get,
                  elem.field(requiredFields(2)).get.string.get,
-                 elem.field(requiredFields(3)).get.string.get,)
+                 elem.field(requiredFields(3)).get.string.get)
     }
-    elem.field(requiredFields(0)).get.array.get.map(s => s.string.get)
+
     d.asInstanceOf[T]
   }
 
