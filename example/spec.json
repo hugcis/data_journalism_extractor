@@ -18,6 +18,7 @@
             "name": "split_lex",
             "type": "split",
             "source": "extractor_lex",
+            "delimiter": "|",
             "field": 2
         },
         {
