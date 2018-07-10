@@ -20,13 +20,15 @@ class Split(UnaryOperation):
     def rendered_result(self) -> (str, str):
         source_length = len(
             self.named_modules.get(self.source).get_out_type())
+        projection_tuple = ','.join(
+            ['set._{}'.format(i + 1) if i != self.field - 1 else
+             'set._{}.toLowerCase.split(" ")'.format(i + 1) for i
+             in range(source_length)]
+        )
         return self.template.render(
             name=self.name,
             source=self.source,
-            projection_tuple=','.join(['set._{}'.format(i + 1)
-                                       if i != self.field - 1
-                                       else 'set._{}.split(" ")'.format(i + 1)
-                                       for i in range(source_length)])
+            projection_tuple=projection_tuple
         ), ''
 
     def get_out_type(self):

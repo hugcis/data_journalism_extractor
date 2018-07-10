@@ -36,8 +36,7 @@ object ScalaTempTest {
     
     // ===== Split split_lex =====
     
-    val split_lex = extractor_lex.map { set => (set._1,set._2.split(" "))}
-    split_lex.print()
+    val split_lex = extractor_lex.map { set => (set._1,set._2.toLowerCase.split(" "))}
     
     // ===== DB Importer module extractordb =====
     
