@@ -1,0 +1,9 @@
+// ===== Word similarity extractor {{name}} =====
+
+val {{name}} = {{source1}}.cross({{source2}}) {
+    (c1, c2) => 
+        val set1 = c1._{{field1}}.toSet
+        val set2 = c2._{{field2}}.toSet
+        val dist = set1.intersect(set2).size / set1.union(set2).size
+    (c1, c2, dist)
+}

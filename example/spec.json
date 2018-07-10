@@ -8,6 +8,20 @@
             "fieldDelimiter": ";"
         },
         {
+            "name": "extractor_lex",
+            "type": "csvImporter",
+            "path": "/Users/hugo/Work/limsi-inria/tests/data_journalism_extractor/example/data/lex.csv",
+            "dataType": ["String", "String"],
+            "fieldDelimiter": ","
+        },
+        {
+            "name": "split_lex",
+            "type": "split",
+            "source": "extractor_lex",
+            "delimiter": "|",
+            "field": 2
+        },
+        {
             "name": "extractordb",
             "type": "dbImporter",
             "dbUrl": "jdbc:postgresql://localhost/twitter",
