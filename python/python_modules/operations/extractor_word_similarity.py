@@ -44,34 +44,34 @@ class ExtractorWordSimilarity(BinaryOperation):
             type_out=format_types(self.get_out_type()),
             source_extract=self.source_extract,
             target_extract=self.target_extract,
-            collect_tuple=self.get_collection_tuple()
+            collect_tuple=self._get_collection_tuple()
         )
 
     def get_out_type(self):
-        type_left = self.get_type(self.source1, self.left_fields)
-        type_right = self.get_type(self.source2, self.right_fields)
+        type_left = self._get_type(self.source1, self.left_fields)
+        type_right = self._get_type(self.source2, self.right_fields)
 
         return type_left + type_right
 
-    def get_type(self, source, fields):
+    def _get_type(self, source, fields):
         source_type = self.named_modules.get(source).get_out_type()
         if fields == 'all':
             return source_type
 
         return [source_type[i-1] for i in fields]
 
-    def indices(self, source, fields):
+    def _indices(self, source, fields):
         if fields == 'all':
             source_type = self.named_modules.get(source).get_out_type()
             return range(1, len(source_type) + 1)
         return fields
 
-    def get_collection_tuple(self):
+    def _get_collection_tuple(self):
         return ','.join(
             [','.join(['value._1._{}'.format(i) for i in
-                       self.indices(self.source1, self.left_fields)]),
+                       self._indices(self.source1, self.left_fields)]),
              ','.join(['value._2._{}'.format(i) for i in
-                       self.indices(self.source2, self.right_fields)])])
+                       self._indices(self.source2, self.right_fields)])])
 
     def check_integrity(self):
         pass
