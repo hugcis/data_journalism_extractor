@@ -11,3 +11,4 @@ scala/project/project
 scala/project/target
 *.gv
 *.gv.pdf
+.cache/

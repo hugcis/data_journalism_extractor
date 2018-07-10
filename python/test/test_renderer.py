@@ -4,7 +4,7 @@ import os
 from renderer import Renderer
 from python_modules.exceptions import UnknownModuleError
 
-TEMPLATE_DIR = '../templates'
+TEMPLATE_DIR = 'templates'
 
 
 class TestRenderer(unittest.TestCase):
