@@ -33,7 +33,10 @@ libraryDependencies ++= Seq(
   "com.nrinaudo" %% "kantan.xpath" % "0.4.0",
   "io.argonaut" %% "argonaut" % "6.2",
   "org.apache.flink" % "flink-jdbc" % flinkVersion,
-  "org.postgresql" % "postgresql" % "42.2.2"
+  "org.postgresql" % "postgresql" % "42.2.2",
+  "edu.stanford.nlp" % "stanford-corenlp" % "3.9.1",
+  "edu.stanford.nlp" % "stanford-corenlp" % "3.9.1" classifier "models",
+  "edu.stanford.nlp" % "stanford-corenlp" % "3.9.1" classifier "models-french"
 )
 
 
