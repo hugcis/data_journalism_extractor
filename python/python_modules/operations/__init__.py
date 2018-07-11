@@ -1,3 +1,6 @@
+""" Package grouping all operation modules that perform operations
+on dataflows.
+"""
 from ..base_module import BaseModule
 
 from .join import Join

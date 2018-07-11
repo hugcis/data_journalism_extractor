@@ -1,3 +1,6 @@
+""" The module containing the base class for all operation modules
+used throughout the rest of the code.
+"""
 from abc import ABC, abstractmethod
 from jinja2 import Environment
 from graphviz import Digraph
@@ -19,6 +22,9 @@ class BaseModule(ABC):
         return self.name
 
     def add_to_graph(self, graph: Digraph):
+        """ A method for adding the module to a graphviz graph
+        instance.
+        """
         graph.node(self.__str__())
 
     @abstractmethod

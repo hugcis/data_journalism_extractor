@@ -1,3 +1,5 @@
+""" The mention link extractor operation module
+"""
 import os
 from jinja2 import Environment
 from python_modules.utils import format_types
@@ -6,7 +8,7 @@ from .binary_operation import BinaryOperation
 
 class ExtractorLink(BinaryOperation):
     """ A module that extracts the occurrences of a given field of a data flow
-    into an other data flow.
+    into a field of an other data flow.
     The source extraction will always be the right flow and the target will be
     the left flow.
     """

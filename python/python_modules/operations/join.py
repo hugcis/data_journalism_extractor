@@ -1,9 +1,13 @@
+""" The join operation module
+"""
 import os
 from jinja2 import Environment
 from .binary_operation import BinaryOperation
 
 
 class Join(BinaryOperation):
+    """ A module that joins two incoming dataflows on field1 == field2
+    """
     def __init__(self, module, env: Environment, named_modules):
         super().__init__(module, env, named_modules)
 
@@ -29,3 +33,6 @@ class Join(BinaryOperation):
             self.named_modules.get(self.source1).get_out_type(),
             self.named_modules.get(self.source2).get_out_type()
         ]
+
+    def check_integrity(self):
+        pass

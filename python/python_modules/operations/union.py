@@ -1,3 +1,5 @@
+""" The union operation module
+"""
 import os
 from jinja2 import Environment
 from python_modules.exceptions import IntegrityError
@@ -5,6 +7,8 @@ from .binary_operation import BinaryOperation
 
 
 class Union(BinaryOperation):
+    """ A module that does a union of two incoming data flows.
+    """
     def __init__(self, module, env: Environment, named_modules):
         super().__init__(module, env, named_modules)
 

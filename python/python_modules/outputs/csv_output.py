@@ -1,9 +1,13 @@
+""" The CSV output operation module
+"""
 import os
 from jinja2 import Environment
 from .file_output import FileOutput
 
 
 class CsvOutput(FileOutput):
+    """ A module that writes a dataflow to a CSV flink sink (a csv file)
+    """
     def __init__(self, module, env: Environment, named_modules):
         super().__init__(module, env, named_modules)
 

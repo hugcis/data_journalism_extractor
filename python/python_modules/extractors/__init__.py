@@ -1,3 +1,5 @@
+""" The package containing all the extractor operation modules
+"""
 from ..base_module import BaseModule
 
 from .csv_importer import CsvImporter

@@ -1,3 +1,5 @@
+""" The JSON loader operation module
+"""
 import os
 from jinja2 import Environment
 from python_modules.utils import format_types, quote
@@ -5,6 +7,8 @@ from .file_importer import FileImporter
 
 
 class JsonImporter(FileImporter):
+    """ Main JSON loader operation module class
+    """
     def __init__(self, module, env: Environment, named_modules):
         super().__init__(module, env, named_modules)
 

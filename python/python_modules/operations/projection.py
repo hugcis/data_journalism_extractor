@@ -1,3 +1,5 @@
+""" The projection operation module
+"""
 import os
 from jinja2 import Environment
 from python_modules.exceptions import IntegrityError
@@ -5,6 +7,9 @@ from .unary_operation import UnaryOperation
 
 
 class Projection(UnaryOperation):
+    """ A module that projects the incoming dataflow on the fields
+    specified in `fields`
+    """
     def __init__(self, module, env: Environment, named_modules):
         super().__init__(module, env, named_modules)
 

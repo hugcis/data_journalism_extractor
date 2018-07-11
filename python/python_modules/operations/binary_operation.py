@@ -1,8 +1,12 @@
+""" The abstract class for binary operation modules.
+"""
 from abc import ABC, abstractmethod
 from . import BaseModule
 
 
 class BinaryOperation(BaseModule, ABC):
+    """ An binary operation module must have two sources.
+    """
     def __init__(self, module, env, named_modules):
         super().__init__(module, env, named_modules)
         self.source1 = module.get('source1')

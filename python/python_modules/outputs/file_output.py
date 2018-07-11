@@ -1,8 +1,13 @@
+""" The base class for file output modules
+"""
 from abc import ABC, abstractmethod
 from . import BaseModule
 
 
 class FileOutput(BaseModule, ABC):
+    """ A file output module has a source and a path to a
+    file.
+    """
     def __init__(self, module, env, named_modules):
         super().__init__(module, env, named_modules)
         self.file_path = module.get('path')

@@ -1,3 +1,5 @@
+""" The split operation module
+"""
 import os
 from jinja2 import Environment
 from python_modules.exceptions import IntegrityError
@@ -5,6 +7,9 @@ from .unary_operation import UnaryOperation
 
 
 class Split(UnaryOperation):
+    """ A module that split a given string field from an incoming
+    dataflow according to a regex.
+    """
     def __init__(self, module, env: Environment, named_modules):
         super().__init__(module, env, named_modules)
 

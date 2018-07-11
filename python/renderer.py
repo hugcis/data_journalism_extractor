@@ -1,3 +1,5 @@
+""" Module containing the render engine
+"""
 from jinja2 import Environment, FileSystemLoader
 from python_modules.extractors import CsvImporter, JsonImporter, DbImporter
 from python_modules.operations import (Join,
@@ -12,6 +14,10 @@ from python_modules.base_module import BaseModule
 
 
 class ModuleMap:
+    """ The main mapping that links modules
+    to their name through the `get` method.
+    """
+
     module_map = {
         # Importers
         'csvImporter': CsvImporter,
@@ -38,24 +44,15 @@ class ModuleMap:
 
 
 class Renderer:
+    """ The render engine that can check the integrity of
+    the operation graph and generate the rendered Scala code.
+    """
     def __init__(self, module_list, template_dir: str):
         self.env = Environment(loader=FileSystemLoader(template_dir))
         self.name_list = []
         self.named_modules = {}
         for module in module_list:
-            name = module.get('name')
-            self.name_list.append(name)
-
-            base_module = ModuleMap.get(
-                module.get('type'))
-
-            if base_module is None:
-                raise UnknownModuleError(
-                    "Module is {}".format(module.get('type')))
-
-            self.named_modules[name] = base_module(module,
-                                                   self.env,
-                                                   self.named_modules)
+            self._add_module(module)
 
     def check_integrity(self):
         """ Check the integrity of the graph
@@ -78,3 +75,18 @@ class Renderer:
                     rendered_ext.append(rend_ext)
 
         return rendered, rendered_ext
+
+    def _add_module(self, module):
+        name = module.get('name')
+        self.name_list.append(name)
+
+        base_module = ModuleMap.get(
+            module.get('type'))
+
+        if base_module is None:
+            raise UnknownModuleError(
+                "Module is {}".format(module.get('type')))
+
+        self.named_modules[name] = base_module(module,
+                                               self.env,
+                                               self.named_modules)

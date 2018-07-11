@@ -1,8 +1,12 @@
+""" The abstract class for unary operation modules.
+"""
 from abc import ABC, abstractmethod
 from . import BaseModule
 
 
 class UnaryOperation(BaseModule, ABC):
+    """ An unary operation module must have a source.
+    """
     def __init__(self, module, env, named_modules):
         super().__init__(module, env, named_modules)
         self.source = module.get('source')

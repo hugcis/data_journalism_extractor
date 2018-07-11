@@ -1,3 +1,5 @@
+""" The word similarity operation module
+"""
 import os
 from jinja2 import Environment
 from python_modules.utils import format_types

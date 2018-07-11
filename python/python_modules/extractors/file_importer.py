@@ -1,3 +1,5 @@
+""" The file importer operation module base class
+"""
 import os
 from abc import ABC, abstractmethod
 from python_modules.exceptions import IntegrityError
@@ -5,6 +7,8 @@ from . import BaseModule
 
 
 class FileImporter(BaseModule, ABC):
+    """ A file importer operation module has a path.
+    """
     def __init__(self, module, env, named_modules):
         super().__init__(module, env, named_modules)
         self.file_path = module.get('path')

@@ -12,7 +12,8 @@ BASE_DIR = 'scala/src/main/scala/core/'
 
 
 def run(spec, template_dir, output_path):
-    """ Main function
+    """ Main function to compile `spec` with the templates
+    located in `template_dir`.
     """
     input_file = json.load(open(spec))
     module_list = input_file.get('modules', [])
@@ -33,6 +34,8 @@ def run(spec, template_dir, output_path):
 
 
 def main():
+    """ Main entrypoint to the compiler.
+    """
     parser = argparse.ArgumentParser(description="""Command line interface for
         compiling JSON spec file in Scala code.""")
     parser.add_argument('-s', '--spec',

@@ -1,3 +1,5 @@
+""" The Database loader operation module
+"""
 import os
 from jinja2 import Environment
 from python_modules.base_module import BaseModule
@@ -9,11 +11,13 @@ DB_DRIVERS = {
 
 
 class DbImporter(BaseModule):
+    """ Main database loader operation module class
+    """
     def __init__(self, module, env: Environment, named_modules):
         super().__init__(module, env, named_modules)
 
         self.db_url = module.get('dbUrl')
-        self.db_type = self.get_db_type()
+        self.db_type = self._get_db_type()
 
         if module.get('dataType') is None:
             raise ValueError(
@@ -50,5 +54,5 @@ class DbImporter(BaseModule):
     def check_integrity(self):
         pass
 
-    def get_db_type(self):
+    def _get_db_type(self):
         return self.db_url.split(':')[1]
