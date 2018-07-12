@@ -23,15 +23,14 @@ object ScalaTempTest {
     val filePath_extractor1 = "/Users/hugo/Work/limsi-inria/tests/data_journalism_extractor/example/data/deputes.csv"
     val lineDelimiter_extractor1 = "\n"
     val fieldDelimiter_extractor1 = ";"
-    
-    val extractor1 = env.readCsvFile[(String,String)](filePath_extractor1, lineDelimiter_extractor1, fieldDelimiter_extractor1)
-    
+    val includedFields_extractor1 = Array(1, 3, 30)
+    val extractor1 = env.readCsvFile[(String,String,String)](filePath_extractor1, lineDelimiter_extractor1, fieldDelimiter_extractor1, ignoreFirstLine=true, includedFields=includedFields_extractor1)
+
     // ===== CSV Importer module extractor_lex =====
     
     val filePath_extractor_lex = "/Users/hugo/Work/limsi-inria/tests/data_journalism_extractor/example/data/lex.csv"
     val lineDelimiter_extractor_lex = "\n"
     val fieldDelimiter_extractor_lex = ","
-    
     val extractor_lex = env.readCsvFile[(String,String)](filePath_extractor_lex, lineDelimiter_extractor_lex, fieldDelimiter_extractor_lex)
     
     // ===== Split split_lex =====

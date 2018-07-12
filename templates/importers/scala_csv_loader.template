@@ -4,5 +4,13 @@
 val filePath_{{name}} = {{quote(file_path)}}
 val lineDelimiter_{{name}} = {% if line_delimiter %}{{quote(line_delimiter)}}{% else %}{{quote('\\n')}}{% endif %}
 val fieldDelimiter_{{name}} = {% if field_delimiter %}{{quote(field_delimiter)}}{% else %}{{quote(',')}}{% endif %}
-{% if quote_character is not none -%}val quoteCharacter_{{name}} = {{quote_simple(quote_character)}}{%- endif %}
-val {{name}} = env.readCsvFile[{{type}}](filePath_{{name}}, lineDelimiter_{{name}}, fieldDelimiter_{{name}}{% if quote_character is not none %}, quoteCharacter_{{name}}{% endif %}{% if ignore_first_line is not none %}, ignoreFirstLine={{}}{% endif %})
+{%- if quote_character is not none %}
+val quoteCharacter_{{name}} = {{quote_simple(quote_character)}}
+{%- endif -%}
+{%- if included_fields is not none %}
+val includedFields_{{name}} = Array{{included_fields}}
+{%- endif %}
+val {{name}} = env.readCsvFile[{{type}}](filePath_{{name}}, lineDelimiter_{{name}}, fieldDelimiter_{{name}}
+{%- if quote_character is not none %}, quoteCharacter_{{name}}{% endif %}
+{%- if ignore_first_line is not none %}, ignoreFirstLine={{ignore_first_line.__str__().lower()}}{% endif %}
+{%- if included_fields is not none %}, includedFields=includedFields_{{name}}{% endif %})

@@ -4,8 +4,9 @@
             "name": "extractor1",
             "type": "csvImporter",
             "path": "/Users/hugo/Work/limsi-inria/tests/data_journalism_extractor/example/data/deputes.csv",
-            "dataType": ["String", "String"],
-            "fieldDelimiter": ";"
+            "dataType": ["String", "String", "String"],
+            "fieldDelimiter": ";",
+            "namedFields": ["nom", "prenom", "twitter"]
         },
         {
             "name": "extractor_lex",
