@@ -9,6 +9,8 @@ from .file_importer import FileImporter
 class CsvImporter(FileImporter):
     """ Main CSV loader operation module class
     """
+    # Reasonable amount of class attributes
+    # pylint: disable=R0902
     def __init__(self, module, env: Environment, named_modules):
         super().__init__(module, env, named_modules)
 
