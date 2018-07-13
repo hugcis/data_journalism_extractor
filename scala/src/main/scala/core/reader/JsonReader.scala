@@ -18,19 +18,13 @@ class JsonReader[T:ClassTag:TypeInformation](env: ExecutionEnvironment,
 
   def getRequired(elem: Json) = {
     val getFull = {d: Option[Json] => {d.get.string.getOrElse(d.get.toString())}}
+    val tuplify = {i: Int => getFull(elem.field(requiredFields(i)))}
     val d = requiredFields.length match {
-      case 1 => Tuple1(getFull(elem.field(requiredFields(0))))
-      case 2 => (getFull(elem.field(requiredFields(0))),
-                 getFull(elem.field(requiredFields(1))))
-      case 3 => (getFull(elem.field(requiredFields(0))),
-                 getFull(elem.field(requiredFields(1))),
-                 getFull(elem.field(requiredFields(2))))
-      case 4 => (getFull(elem.field(requiredFields(0))),
-                 getFull(elem.field(requiredFields(1))),
-                 getFull(elem.field(requiredFields(2))),
-                 getFull(elem.field(requiredFields(3))))
+      case 1 => Tuple1(tuplify(0))
+      case 2 => (tuplify(0), tuplify(1))
+      case 3 => (tuplify(0), tuplify(1), tuplify(2))
+      case 4 => (tuplify(0), tuplify(1), tuplify(2), tuplify(3))
     }
-
     d.asInstanceOf[T]
   }
 
