@@ -9,7 +9,7 @@ from jinja2 import Environment, FileSystemLoader
 from renderer import Renderer
 
 BASE_DIR = 'scala/src/main/scala/core/'
-
+TEMPLATE_NAME = 'MainTemplate.scala.template'
 
 def run(spec, template_dir, output_path):
     """ Main function to compile `spec` with the templates
@@ -26,8 +26,7 @@ def run(spec, template_dir, output_path):
     modules, ext_modules = render.get_rendered()
 
     final_env = Environment(loader=FileSystemLoader(BASE_DIR))
-    final = final_env.get_template('ScalaTempTest.scala' +
-                                   '.template')
+    final = final_env.get_template(TEMPLATE_NAME)
 
     with open(output_path, 'w') as outfile:
         outfile.write(final.render(modules=modules, ext_modules=ext_modules))

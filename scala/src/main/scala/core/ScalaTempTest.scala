@@ -25,7 +25,7 @@ object ScalaTempTest {
     val fieldDelimiter_extractor1 = ";"
     val includedFields_extractor1 = Array(1, 3, 30)
     val extractor1 = env.readCsvFile[(String,String,String)](filePath_extractor1, lineDelimiter_extractor1, fieldDelimiter_extractor1, ignoreFirstLine=true, includedFields=includedFields_extractor1)
-
+    
     // ===== CSV Importer module extractor_lex =====
     
     val filePath_extractor_lex = "/Users/hugo/Work/limsi-inria/tests/data_journalism_extractor/example/data/lex.csv"
@@ -39,14 +39,14 @@ object ScalaTempTest {
     
     // ===== DB Importer module extractordb =====
     
-    val fieldTypes_extractordb: Array[TypeInformation[_]] = Array(createTypeInformation[Int],createTypeInformation[Long])
-    val fieldNames_extractordb = Array("rid","uid")
+    val fieldTypes_extractordb: Array[TypeInformation[_]] = Array(createTypeInformation[String],createTypeInformation[Long],createTypeInformation[Long])
+    val fieldNames_extractordb = Array("us.screen_name","rt.sid","rt.uid")
     
     val rowTypeInfo_extractordb = new RowTypeInfo(fieldTypes_extractordb, fieldNames_extractordb)
     val inputFormat_extractordb = JDBCInputFormat.buildJDBCInputFormat()
       .setDrivername("org.postgresql.Driver")
       .setDBUrl("jdbc:postgresql://localhost/twitter")
-      .setQuery("select rid, uid from retweetedstatuses")
+      .setQuery("select us.screen_name, rt.sid, rt.uid from retweetedstatuses as rt join users as us on (us.uid=rt.uid)")
       .setRowTypeInfo(rowTypeInfo_extractordb)
       .finish()
     
@@ -64,9 +64,10 @@ object ScalaTempTest {
     
     val filePath_extractor2 = "/Users/hugo/Work/limsi-inria/tests/data_journalism_extractor/example/data/hatvp.json"
     val mainField_extractor2 = "publications"
-    val requiredFields_extractor2 = Array("denomination","identifiantNational")
-    val extractor2 = JsonReader[(String,String)](env, filePath_extractor2, mainField_extractor2, requiredFields_extractor2).getInput
-    
+    val requiredFields_extractor2 = Array("denomination","identifiantNational","activites")
+    val extractor2 = JsonReader[(String,String,String)](env, filePath_extractor2, mainField_extractor2, requiredFields_extractor2).getInput
+
+    extractor2.print()
     // ===== Entity extractor linking1 =====
     
     val linking1 = extractor4.cross(extractor2).flatMap(new extract_extractor4_extractor2)
@@ -89,8 +90,8 @@ object ScalaTempTest {
   
   // ===== Entity extractor FlatMapFunction linking1=====
   
-  private class extract_extractor4_extractor2 extends FlatMapFunction[((String,String), (String,String)), (String,String,String)] {
-      override def flatMap(value: ((String,String), (String,String)), out: Collector[(String,String,String)]): Unit = {
+  private class extract_extractor4_extractor2 extends FlatMapFunction[((String,String), (String,String,String)), (String,String,String)] {
+      override def flatMap(value: ((String,String), (String,String,String)), out: Collector[(String,String,String)]): Unit = {
         val d = (raw"\b(" + value._2._1.toLowerCase + raw")\b").r
         if (d.findFirstIn(value._1._2.toLowerCase).nonEmpty) out.collect((value._1._1,value._1._2,value._2._1))
       }
