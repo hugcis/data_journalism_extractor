@@ -26,5 +26,11 @@ class BinaryOperation(BaseModule, ABC):
     def add_to_graph(self, graph: Digraph):
         super().add_to_graph(graph)
 
-        graph.edge(self.source1, self.__str__())
-        graph.edge(self.source2, self.__str__())
+        graph.edge(
+            self.named_modules.get(self.source1).to_graph_repr(),
+            self.to_graph_repr()
+        )
+        graph.edge(
+            self.named_modules.get(self.source2).to_graph_repr(),
+            self.to_graph_repr()
+        )

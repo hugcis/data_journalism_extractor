@@ -25,4 +25,6 @@ class UnaryOperation(BaseModule, ABC):
     def add_to_graph(self, graph: Digraph):
         super().add_to_graph(graph)
 
-        graph.edge(self.source, self.__str__())
+        graph.edge(
+            self.named_modules.get(self.source).to_graph_repr(),
+            self.to_graph_repr())

@@ -82,7 +82,7 @@ class Renderer:
         and render the pdf output graph.
         """
         graph = Digraph('compiled', graph_attr={'rankdir': 'LR'})
-        for mod in self.named_modules:
+        for mod in self.name_list:
             self.named_modules.get(mod).add_to_graph(graph)
         graph.render('compiled.gv')
 
