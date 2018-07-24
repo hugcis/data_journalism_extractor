@@ -11,7 +11,8 @@ from renderer import Renderer
 BASE_DIR = 'scala/src/main/scala/core/'
 TEMPLATE_NAME = 'MainTemplate.scala.template'
 
-def run(spec, template_dir, output_path):
+
+def run(spec, template_dir, output_path, pdf_output=False):
     """ Main function to compile `spec` with the templates
     located in `template_dir`.
     """
@@ -19,6 +20,9 @@ def run(spec, template_dir, output_path):
     module_list = input_file.get('modules', [])
     render = Renderer(module_list, template_dir)
     render.check_integrity()
+
+    if pdf_output:
+        render.render_pdf_graph()
 
     for mod in render.named_modules:
         print(mod, render.named_modules[mod].get_out_type())
@@ -53,8 +57,13 @@ def main():
                         help='output filename',
                         default=os.path.join(BASE_DIR, 'ScalaTempTest.scala'))
 
+    parser.add_argument('-p', '--pdf-output',
+                        action='store_true',
+                        help='output the rendered graph in a pdf file',
+                        default=False)
+
     args = parser.parse_args()
-    run(args.spec, args.template_dir, args.output)
+    run(args.spec, args.template_dir, args.output, args.pdf_output)
 
 if __name__ == "__main__":
     main()

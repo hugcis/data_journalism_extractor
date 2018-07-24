@@ -1,6 +1,7 @@
 """ The base class for file output modules
 """
 from abc import ABC, abstractmethod
+from graphviz import Digraph
 from . import BaseModule
 
 
@@ -25,3 +26,8 @@ class FileOutput(BaseModule, ABC):
     @abstractmethod
     def rendered_result(self) -> (str, str):
         pass
+
+    def add_to_graph(self, graph: Digraph):
+        super().add_to_graph(graph)
+
+        graph.edge(self.source, self.__str__())

@@ -1,6 +1,7 @@
 """ Module containing the render engine
 """
 from jinja2 import Environment, FileSystemLoader
+from graphviz import Digraph
 from python_modules.extractors import CsvImporter, JsonImporter, DbImporter
 from python_modules.operations import (Join,
                                        ExtractorLink,
@@ -75,6 +76,15 @@ class Renderer:
                     rendered_ext.append(rend_ext)
 
         return rendered, rendered_ext
+
+    def render_pdf_graph(self):
+        """ Create the [graphviz](https://graphviz.gitlab.io/) Digraph
+        and render the pdf output graph.
+        """
+        graph = Digraph('compiled', graph_attr={'rankdir': 'LR'})
+        for mod in self.named_modules:
+            self.named_modules.get(mod).add_to_graph(graph)
+        graph.render('compiled.gv')
 
     def _add_module(self, module):
         name = module.get('name')

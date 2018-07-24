@@ -1,6 +1,7 @@
 """ The abstract class for binary operation modules.
 """
 from abc import ABC, abstractmethod
+from graphviz import Digraph
 from . import BaseModule
 
 
@@ -21,3 +22,9 @@ class BinaryOperation(BaseModule, ABC):
     @abstractmethod
     def rendered_result(self) -> (str, str):
         pass
+
+    def add_to_graph(self, graph: Digraph):
+        super().add_to_graph(graph)
+
+        graph.edge(self.source1, self.__str__())
+        graph.edge(self.source2, self.__str__())
