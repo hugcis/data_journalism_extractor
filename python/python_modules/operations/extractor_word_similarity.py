@@ -2,7 +2,7 @@
 """
 import os
 from jinja2 import Environment
-from python_modules.utils import format_types
+from python_modules.exceptions import IntegrityError
 from .binary_operation import BinaryOperation
 
 
@@ -15,65 +15,41 @@ class ExtractorWordSimilarity(BinaryOperation):
     def __init__(self, module, env: Environment, named_modules):
         super().__init__(module, env, named_modules)
 
-        # Get selected fields for the left and right dataflows
-        # (project while extracting, default is no projection)
-        self.left_fields = module.get('leftFields', 'all')
-        self.right_fields = module.get('rightFields', 'all')
+        # Get selected fields that contain the array of word to
+        # be compared
+        self.left_field = module.get('leftField')
+        self.right_field = module.get('rightField')
 
         # Source and target for extraction
         self.source_extract = module.get('sourceExtract')
         self.target_extract = module.get('targetExtract')
 
         template_path = os.path.join(self.template_path,
-                                     'scala_word_sim.template')
-        template_ext_path = os.path.join(self.template_path,
-                                         'scala_word_sim_ext.template')
+                                     'scala_extract_word_sim.template')
 
         self.template = self.env.get_template(template_path)
-        self.template_ext = self.env.get_template(template_ext_path)
 
     def rendered_result(self) -> (str, str):
         return self.template.render(
             name=self.name,
             source1=self.source1,
-            source2=self.source2
-        ), self.template_ext.render(
-            name=self.name,
-            type_left=format_types(
-                self.named_modules.get(self.source1).get_out_type()),
-            type_right=format_types(
-                self.named_modules.get(self.source2).get_out_type()),
-            type_out=format_types(self.get_out_type()),
-            source_extract=self.source_extract,
-            target_extract=self.target_extract,
-            collect_tuple=self._get_collection_tuple()
-        )
+            source2=self.source2,
+            field1=self.left_field,
+            field2=self.right_field
+        ), ''
 
     def get_out_type(self):
-        type_left = self._get_type(self.source1, self.left_fields)
-        type_right = self._get_type(self.source2, self.right_fields)
+        type_left = self.named_modules.get(self.source1).get_out_type()
+        type_right = self.named_modules.get(self.source2).get_out_type()
 
-        return type_left + type_right
-
-    def _get_type(self, source, fields):
-        source_type = self.named_modules.get(source).get_out_type()
-        if fields == 'all':
-            return source_type
-
-        return [source_type[i-1] for i in fields]
-
-    def _indices(self, source, fields):
-        if fields == 'all':
-            source_type = self.named_modules.get(source).get_out_type()
-            return range(1, len(source_type) + 1)
-        return fields
-
-    def _get_collection_tuple(self):
-        return ','.join(
-            [','.join(['value._1._{}'.format(i) for i in
-                       self._indices(self.source1, self.left_fields)]),
-             ','.join(['value._2._{}'.format(i) for i in
-                       self._indices(self.source2, self.right_fields)])])
+        return [type_left, type_right, 'Double']
 
     def check_integrity(self):
-        pass
+        type_left = self.named_modules.get(self.source1).get_out_type()
+        type_right = self.named_modules.get(self.source2).get_out_type()
+
+        if (not type_left[self.left_field - 1] == 'Array[String]' or
+                not type_right[self.right_field - 1] == 'Array[String]'):
+            raise IntegrityError(
+                "This operation must have arrays as inputs.\n Got {} and \
+{}".format(type_left[self.left_field - 1], type_right[self.right_field - 1]))

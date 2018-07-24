@@ -26,9 +26,9 @@
             "name": "extractordb",
             "type": "dbImporter",
             "dbUrl": "jdbc:postgresql://localhost/twitter",
-            "fieldNames": ["rid", "uid"],
-            "dataType": ["Int", "Long"],
-            "query": "select rid, uid from retweetedstatuses"
+            "fieldNames": ["us.screen_name","rt.sid", "rt.uid"],
+            "dataType": ["String", "Long", "Long"],
+            "query": "select us.screen_name, rt.sid, rt.uid from retweetedstatuses as rt join users as us on (us.uid=rt.uid)"
         },
         {
             "name": "extractor4",
@@ -43,7 +43,15 @@
             "type": "jsonImporter",
             "path": "/Users/hugo/Work/limsi-inria/tests/data_journalism_extractor/example/data/hatvp.json",
             "mainField": "publications",
-            "requiredFields": ["denomination", "identifiantNational"]
+            "requiredFields": ["denomination", "identifiantNational", "activites"]
+        },
+        {
+            "name": "tryExtractorWordSim",
+            "type": "extractorWordSim",
+            "source1": "split_lex",
+            "source2": "split_lex",
+            "leftField": 2,
+            "rightField": 2
         },
         {
             "name": "linking1",

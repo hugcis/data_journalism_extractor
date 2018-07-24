@@ -66,8 +66,17 @@ object ScalaTempTest {
     val mainField_extractor2 = "publications"
     val requiredFields_extractor2 = Array("denomination","identifiantNational","activites")
     val extractor2 = JsonReader[(String,String,String)](env, filePath_extractor2, mainField_extractor2, requiredFields_extractor2).getInput
-
-    extractor2.print()
+    
+    // ===== Word similarity extractor tryExtractorWordSim =====
+    
+    val tryExtractorWordSim = split_lex.cross(split_lex) {
+        (c1, c2) => 
+            val set1 = c1._2.toSet
+            val set2 = c2._2.toSet
+            val dist = set1.intersect(set2).size / set1.union(set2).size
+        (c1, c2, dist)
+    }
+    
     // ===== Entity extractor linking1 =====
     
     val linking1 = extractor4.cross(extractor2).flatMap(new extract_extractor4_extractor2)

@@ -26,7 +26,8 @@ class CsvImporter(FileImporter):
 
         # if fields are named in the modules, ignore first line and
         # compute the column numbers to be passed to the reader
-        # (!! This implies opening the file)
+        # (!! This implies opening the file first)
+        # TODO: Implement for remote file
         if self.named_fields is not None:
             self.ignore_first_line = True
             self.column_list = self._get_column_list()
@@ -60,7 +61,7 @@ class CsvImporter(FileImporter):
         fields
 
         For a csv with column `a` and `b` and the required named
-        field `b`, the mask is `[0,1]`
+        field `b`, the column list is then `[1]`.
         """
         with open(self.file_path) as fle:
             fields = fle.readline().strip().split(self.field_delimiter)
@@ -68,4 +69,5 @@ class CsvImporter(FileImporter):
         for i, field in enumerate(fields):
             if field in self.named_fields:
                 column_list.append(i)
-        return tuple(column_list)   # Tuple for rendering (...)
+        return tuple(column_list)   # Tuple for rendering (...) in a
+        # template
