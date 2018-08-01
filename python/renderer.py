@@ -3,8 +3,8 @@
 from jinja2 import Environment, FileSystemLoader
 from graphviz import Digraph
 from python_modules.extractors import (CsvImporter,
-                                       JsonImporter, 
-                                       DbImporter, 
+                                       JsonImporter,
+                                       DbImporter,
                                        MongoImporter)
 from python_modules.operations import (Join,
                                        ExtractorLink,
@@ -20,7 +20,11 @@ from python_modules.base_module import BaseModule
 class ModuleMap:
     """ The main mapping that links modules
     to their name through the `get` method.
+
+    _Essentially an enum or dictionary_
     """
+    # Wrapped in a class for clarity
+    # pylint: disable=R0903
 
     module_map = {
         # Importers
