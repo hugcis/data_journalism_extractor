@@ -42,6 +42,8 @@ class TestCsvImporter(unittest.TestCase):
         self.template_mock.render.assert_called_once_with(
             file_path=self.module.get('path'),
             name=self.module.get('name'),
+            ignore_first_line=None,
+            included_fields=None,
             field_delimiter=self.module.get('fieldDelimiter'),
             quote_character=self.module.get('quoteCharacter'),
             type=format_types(self.module.get('dataType'))

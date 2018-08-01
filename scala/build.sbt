@@ -34,6 +34,7 @@ libraryDependencies ++= Seq(
   "io.argonaut" %% "argonaut" % "6.2",
   "org.apache.flink" % "flink-jdbc" % flinkVersion,
   "org.postgresql" % "postgresql" % "42.2.2",
+  "org.mongodb.scala" %% "mongo-scala-driver" % "2.1.0",
   //"edu.stanford.nlp" % "stanford-corenlp" % "3.9.1",
   //"edu.stanford.nlp" % "stanford-corenlp" % "3.9.1" classifier "models",
   //"edu.stanford.nlp" % "stanford-corenlp" % "3.9.1" classifier "models-french"

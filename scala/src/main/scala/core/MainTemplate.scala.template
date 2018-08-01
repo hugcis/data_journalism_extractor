@@ -1,6 +1,6 @@
 package core
 
-import core.reader.JsonReader
+import core.reader.{JsonReader, MongoReader}
 import org.apache.flink.api.scala._
 import org.apache.flink.core.fs.FileSystem
 import org.apache.flink.util.Collector

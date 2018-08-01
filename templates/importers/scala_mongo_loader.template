@@ -1,0 +1,4 @@
+{%- from 'utils.template' import quote -%}
+// ===== Mongo Importer module {{name}} =====
+
+val {{name}} = MongoReader[{{type}}](env, {{quote(db_name)}}, {{quote(collection)}}, List({{",".join(required_fields)}})).getDataSet()

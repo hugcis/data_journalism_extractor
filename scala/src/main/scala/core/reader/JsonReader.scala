@@ -28,6 +28,8 @@ class JsonReader[T:ClassTag:TypeInformation](env: ExecutionEnvironment,
       case 2 => (tuplify(0), tuplify(1))
       case 3 => (tuplify(0), tuplify(1), tuplify(2))
       case 4 => (tuplify(0), tuplify(1), tuplify(2), tuplify(3))
+      case 5 => (tuplify(0), tuplify(1), tuplify(2), tuplify(3), tuplify(4))
+      case 6 => (tuplify(0), tuplify(1), tuplify(2), tuplify(3), tuplify(4), tuplify(5))
     }
     d.asInstanceOf[T]
   }

@@ -1,6 +1,6 @@
 package core
 
-import core.reader.JsonReader
+import core.reader.{JsonReader, MongoReader}
 import org.apache.flink.api.scala._
 import org.apache.flink.core.fs.FileSystem
 import org.apache.flink.util.Collector
@@ -26,6 +26,14 @@ object ScalaTempTest {
     val includedFields_extractor1 = Array(1, 3, 30)
     val extractor1 = env.readCsvFile[(String,String,String)](filePath_extractor1, lineDelimiter_extractor1, fieldDelimiter_extractor1, ignoreFirstLine=true, includedFields=includedFields_extractor1)
     
+    // ===== Projection projection_twitter =====
+    
+    val projection_twitter = extractor1.map { set => (set._3)}.distinct()
+    
+    // ===== Mongo Importer module mongo_loader =====
+    
+    val mongo_loader = MongoReader[(String,String)](env, "testdb", "publications", List("lienPageTwitter","denomination")).getDataSet()
+    
     // ===== CSV Importer module extractor_lex =====
     
     val filePath_extractor_lex = "/Users/hugo/Work/limsi-inria/tests/data_journalism_extractor/example/data/lex.csv"
@@ -39,14 +47,14 @@ object ScalaTempTest {
     
     // ===== DB Importer module extractordb =====
     
-    val fieldTypes_extractordb: Array[TypeInformation[_]] = Array(createTypeInformation[String],createTypeInformation[Long],createTypeInformation[Long])
-    val fieldNames_extractordb = Array("us.screen_name","rt.sid","rt.uid")
+    val fieldTypes_extractordb: Array[TypeInformation[_]] = Array(createTypeInformation[String],createTypeInformation[String])
+    val fieldNames_extractordb = Array("rt_name","screen_name")
     
     val rowTypeInfo_extractordb = new RowTypeInfo(fieldTypes_extractordb, fieldNames_extractordb)
     val inputFormat_extractordb = JDBCInputFormat.buildJDBCInputFormat()
       .setDrivername("org.postgresql.Driver")
       .setDBUrl("jdbc:postgresql://localhost/twitter")
-      .setQuery("select us.screen_name, rt.sid, rt.uid from retweetedstatuses as rt join users as us on (us.uid=rt.uid)")
+      .setQuery("select rt_name, screen_name from (select rt_name, uid from (select us.screen_name as rt_name, rt.sid from retweetedstatuses as rt join users as us on (rt.uid=us.uid)) as sub join checkedstatuses as ch on (sub.sid=ch.sid)) as subsub join users on (subsub.uid=users.uid);")
       .setRowTypeInfo(rowTypeInfo_extractordb)
       .finish()
     
@@ -64,8 +72,12 @@ object ScalaTempTest {
     
     val filePath_extractor2 = "/Users/hugo/Work/limsi-inria/tests/data_journalism_extractor/example/data/hatvp.json"
     val mainField_extractor2 = "publications"
-    val requiredFields_extractor2 = Array("denomination","identifiantNational","activites")
-    val extractor2 = JsonReader[(String,String,String)](env, filePath_extractor2, mainField_extractor2, requiredFields_extractor2).getInput
+    val requiredFields_extractor2 = Array("denomination","identifiantNational","activites","lienPageTwitter")
+    val extractor2 = JsonReader[(String,String,String,String)](env, filePath_extractor2, mainField_extractor2, requiredFields_extractor2).getInput
+    
+    // ===== Split split_twitter_hatvp =====
+    
+    val split_twitter_hatvp = extractor2.map { set => (set._1,set._2,set._3,set._4.toLowerCase.split("/"))}
     
     // ===== Word similarity extractor tryExtractorWordSim =====
     
@@ -99,8 +111,8 @@ object ScalaTempTest {
   
   // ===== Entity extractor FlatMapFunction linking1=====
   
-  private class extract_extractor4_extractor2 extends FlatMapFunction[((String,String), (String,String,String)), (String,String,String)] {
-      override def flatMap(value: ((String,String), (String,String,String)), out: Collector[(String,String,String)]): Unit = {
+  private class extract_extractor4_extractor2 extends FlatMapFunction[((String,String), (String,String,String,String)), (String,String,String)] {
+      override def flatMap(value: ((String,String), (String,String,String,String)), out: Collector[(String,String,String)]): Unit = {
         val d = (raw"\b(" + value._2._1.toLowerCase + raw")\b").r
         if (d.findFirstIn(value._1._2.toLowerCase).nonEmpty) out.collect((value._1._1,value._1._2,value._2._1))
       }

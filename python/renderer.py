@@ -2,7 +2,10 @@
 """
 from jinja2 import Environment, FileSystemLoader
 from graphviz import Digraph
-from python_modules.extractors import CsvImporter, JsonImporter, DbImporter
+from python_modules.extractors import (CsvImporter,
+                                       JsonImporter, 
+                                       DbImporter, 
+                                       MongoImporter)
 from python_modules.operations import (Join,
                                        ExtractorLink,
                                        Projection,
@@ -24,6 +27,7 @@ class ModuleMap:
         'csvImporter': CsvImporter,
         'jsonImporter': JsonImporter,
         'dbImporter': DbImporter,
+        'mongoImporter': MongoImporter,
         # Binary ops
         'join': Join,
         'extractorLink': ExtractorLink,

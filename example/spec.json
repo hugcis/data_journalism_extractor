@@ -9,6 +9,19 @@
             "namedFields": ["nom", "prenom", "twitter"]
         },
         {
+            "name": "projection_twitter",
+            "type": "projection",
+            "source": "extractor1",
+            "fields": [3]
+        },
+        {
+            "name": "mongo_loader",
+            "type": "mongoImporter",
+            "dbName": "testdb",
+            "collection": "publications",
+            "requiredFields": ["lienPageTwitter", "denomination"]
+        },
+        {
             "name": "extractor_lex",
             "type": "csvImporter",
             "path": "/Users/hugo/Work/limsi-inria/tests/data_journalism_extractor/example/data/lex.csv",
@@ -26,9 +39,9 @@
             "name": "extractordb",
             "type": "dbImporter",
             "dbUrl": "jdbc:postgresql://localhost/twitter",
-            "fieldNames": ["us.screen_name","rt.sid", "rt.uid"],
-            "dataType": ["String", "Long", "Long"],
-            "query": "select us.screen_name, rt.sid, rt.uid from retweetedstatuses as rt join users as us on (us.uid=rt.uid)"
+            "fieldNames": ["rt_name","screen_name"],
+            "dataType": ["String", "String"],
+            "query": "select rt_name, screen_name from (select rt_name, uid from (select us.screen_name as rt_name, rt.sid from retweetedstatuses as rt join users as us on (rt.uid=us.uid)) as sub join checkedstatuses as ch on (sub.sid=ch.sid)) as subsub join users on (subsub.uid=users.uid);"
         },
         {
             "name": "extractor4",
@@ -43,7 +56,14 @@
             "type": "jsonImporter",
             "path": "/Users/hugo/Work/limsi-inria/tests/data_journalism_extractor/example/data/hatvp.json",
             "mainField": "publications",
-            "requiredFields": ["denomination", "identifiantNational", "activites"]
+            "requiredFields": ["denomination", "identifiantNational", "activites", "lienPageTwitter"]
+        },
+        {
+            "name": "split_twitter_hatvp",
+            "type": "split",
+            "source": "extractor2",
+            "delimiter": "/",
+            "field": 4
         },
         {
             "name": "tryExtractorWordSim",
