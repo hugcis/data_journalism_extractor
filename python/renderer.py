@@ -13,7 +13,7 @@ from python_modules.operations import (Join,
                                        Split,
                                        ExtractorWordSimilarity)
 from python_modules.outputs import CsvOutput
-from python_modules.exceptions import UnknownModuleError
+from python_modules.exceptions import UnknownModuleError, IntegrityError
 from python_modules.base_module import BaseModule
 
 
@@ -62,6 +62,9 @@ class Renderer:
         self.named_modules = {}
         for module in module_list:
             self._add_module(module)
+
+        if len(self.name_list) != len(set(self.name_list)):
+            raise IntegrityError("Some modules have the same name")
 
     def check_integrity(self):
         """ Check the integrity of the graph

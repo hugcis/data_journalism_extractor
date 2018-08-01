@@ -15,10 +15,17 @@ class Split(UnaryOperation):
 
         self.field = module.get('field')
         self.delimiter = module.get('delimiter', ' ')
+        self.reduce = module.get('reduce')
 
         if self.field is None:
             raise ValueError(
                 "No fields provided in projection module {}".format(module))
+
+        if not isinstance(self.reduce, int) and self.reduce is not None:
+            raise ValueError(
+                "Wrong reduce parameter {}, must be Int or \
+null".format(self.reduce)
+            )
 
         self.template_path = os.path.join(self.template_path,
                                           'scala_split.template')
@@ -29,7 +36,7 @@ class Split(UnaryOperation):
             self.named_modules.get(self.source).get_out_type())
         projection_tuple = ','.join(
             ['set._{}'.format(i + 1) if i != self.field - 1 else
-             'set._{}.toLowerCase.split("{}")'.format(i + 1, self.delimiter)
+             self._get_main_render(i + 1)
              for i in range(source_length)]
         )
         return self.template.render(
@@ -37,6 +44,16 @@ class Split(UnaryOperation):
             source=self.source,
             projection_tuple=projection_tuple
         ), ''
+
+    def _get_main_render(self, index):
+        if self.reduce is None:
+            return 'set._{}.toLowerCase.split("{}")'.format(index,
+                                                            self.delimiter)
+
+        return r'match set._{0}.toLowerCase.split("{1}").length { case 0 => "" case _ \
+=> set._{0}.toLowerCase.split("{1}")({2})}'.format(index,
+                                                   self.delimiter,
+                                                   self.reduce)
 
     def get_out_type(self):
         source_type = self.named_modules.get(self.source).get_out_type()
