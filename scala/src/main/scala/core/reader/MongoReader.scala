@@ -17,16 +17,16 @@ class MongoReader[T:ClassTag:TypeInformation](env: ExecutionEnvironment,
                                               dbName: String,
                                               collectionName: String,
                                               fields: List[String]) {
-  val mongoClient: MongoClient = MongoClient()
-  val database: MongoDatabase = mongoClient.getDatabase(dbName)
-  var finalCollection: List[T] = null
+  private val mongoClient: MongoClient = MongoClient()
+  private val database: MongoDatabase = mongoClient.getDatabase(dbName)
+  private var finalCollection: List[T] = null
 
   def getDataSet(): DataSet[T] = {
     getElements()
     env.fromCollection(finalCollection)
   }
 
-  def getElements(): Unit = {
+  private def getElements(): Unit = {
     val collection = database.getCollection(collectionName)
     val result = collection.find(getFilter(fields))
       .projection(Projections.fields(Projections.include(fields: _*), Projections.excludeId()))
@@ -35,13 +35,13 @@ class MongoReader[T:ClassTag:TypeInformation](env: ExecutionEnvironment,
     Await.result(result, 3000 millis)
   }
 
-  def documentToCollection(doc: Document): T = {
+  private def documentToCollection(doc: Document): T = {
     getRequired(fields.map(fieldExtractor(doc)).map(bsonValueToValue))
   }
 
-  def fieldExtractor(doc: Document): String => BsonValue = (field: String) => doc.get(field).get
+  private def fieldExtractor(doc: Document): String => BsonValue = (field: String) => doc.get(field).get
 
-  def bsonValueToValue(elem: BsonValue): Either[String, Array[String]] = {
+  private def bsonValueToValue(elem: BsonValue): Either[String, Array[String]] = {
     if (elem.isArray) {
       Right(elem.asArray.getValues.asScala.toArray.map((elem: BsonValue) => {
         if (elem.isString) elem.asString.getValue else elem.asDocument.toJson
@@ -51,7 +51,7 @@ class MongoReader[T:ClassTag:TypeInformation](env: ExecutionEnvironment,
     } else Left(elem.asString.getValue)
   }
 
-  def getRequired(elem: List[Either[String, Array[String]]]): T = {
+  private def getRequired(elem: List[Either[String, Array[String]]]): T = {
     val tuplify = (i: Int) => elem.apply(i) match {
       case Right(x) => x
       case Left(x) => x
@@ -67,7 +67,7 @@ class MongoReader[T:ClassTag:TypeInformation](env: ExecutionEnvironment,
     d.asInstanceOf[T]
   }
 
-  def getFilter(fields: List[String]): conversions.Bson = {
+  private def getFilter(fields: List[String]): conversions.Bson = {
     fields.length match {
       case 0 => null
       case 1 => Filters.exists(fields.head)

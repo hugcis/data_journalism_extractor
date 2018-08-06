@@ -16,7 +16,7 @@ class JsonReader[T:ClassTag:TypeInformation](env: ExecutionEnvironment,
     try source.mkString finally source.close
   }
 
-  def getRequired(elem: Json) = {
+  private def getRequired(elem: Json) = {
     val getFull = {d: Option[Json] => {
       d.get.string.getOrElse(
         d.get.toString()
@@ -34,7 +34,7 @@ class JsonReader[T:ClassTag:TypeInformation](env: ExecutionEnvironment,
     d.asInstanceOf[T]
   }
 
-  def getElements = Parse
+  private def getElements = Parse
     .parseOption(fetchSource)
     .get
     .field(mainArrayField)
@@ -43,7 +43,7 @@ class JsonReader[T:ClassTag:TypeInformation](env: ExecutionEnvironment,
 
 
 
-  def getInput = env.fromCollection[T](getElements)
+  def getDataSet = env.fromCollection[T](getElements)
 }
 
 object JsonReader {

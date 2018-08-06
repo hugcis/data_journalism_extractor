@@ -16,9 +16,6 @@ class SQLDBReader[T:ClassTag:TypeInformation](fieldNames: Array[String],
                                  query: String,
                                  env: ExecutionEnvironment) {
 
-  def getDataSeet: DataSet[T] = {
-    getDataSet.map((item: Row) => getRequired(item))
-  }
 
   def getDataSet = {
     val rowTypeInfo = new RowTypeInfo(fieldTypes, fieldNames)

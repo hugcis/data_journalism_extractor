@@ -86,6 +86,9 @@ class Renderer:
                 if rend_ext:
                     rendered_ext.append(rend_ext)
 
+        # Ensure that we don't write general purpose external
+        # helpers multiple times
+        rendered_ext = list(set(rendered_ext))
         return rendered, rendered_ext
 
     def render_pdf_graph(self):
