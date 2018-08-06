@@ -49,11 +49,14 @@ null".format(self.reduce)
         if self.reduce is None:
             return 'set._{}.toLowerCase.split("{}")'.format(index,
                                                             self.delimiter)
+        elif self.reduce == -1:
+            return 'set._{}.toLowerCase.split("{}")(set._{}.toLowerCase.split\
+("{}").length - 1)'.format(index, self.delimiter, index, self.delimiter)
 
-        return r'match set._{0}.toLowerCase.split("{1}").length { case 0 => "" case _ \
-=> set._{0}.toLowerCase.split("{1}")({2})}'.format(index,
-                                                   self.delimiter,
-                                                   self.reduce)
+        return 'set._{}.toLowerCase.split("{}").length match {{ case 1\
+ => set._{}.toLowerCase.split("{}")(0) case _ => set._{}.toLowerCase.\
+split("{}")({})}}'.format(index, self.delimiter, index, self.delimiter, index,
+                          self.delimiter, self.reduce)
 
     def get_out_type(self):
         source_type = self.named_modules.get(self.source).get_out_type()
