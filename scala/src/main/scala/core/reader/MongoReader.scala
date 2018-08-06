@@ -2,14 +2,16 @@ package core.reader
 
 import org.apache.flink.api.common.typeinfo.TypeInformation
 import org.apache.flink.api.scala.{DataSet, ExecutionEnvironment}
+import org.bson.BsonValue
 import org.mongodb.scala.bson.conversions
 import org.mongodb.scala.{Document, MongoClient, MongoDatabase, SingleObservable}
 import org.mongodb.scala.model.{Filters, Projections}
+
 import scala.concurrent.duration._
 import scala.concurrent.ExecutionContext.Implicits.global
-
 import scala.concurrent.Await
 import scala.reflect.ClassTag
+import collection.JavaConverters._
 
 class MongoReader[T:ClassTag:TypeInformation](env: ExecutionEnvironment,
                                               dbName: String,
@@ -32,14 +34,27 @@ class MongoReader[T:ClassTag:TypeInformation](env: ExecutionEnvironment,
       .map((results: Seq[Document]) => {
         val pop: List[Document] = results.toList
         finalCollection = pop.map((doc: Document) => {
-          getRequired(fields.map((field: String) => doc.get(field).get.asString.getValue))
+          getRequired(fields.map((field: String) => doc.get(field).get)
+            .map((elem: BsonValue) => {
+              if (elem.isArray) {
+                Right(elem.asArray.getValues.asScala.toArray.map((elem: BsonValue) => {
+                  if (elem.isString) elem.asString.getValue
+                  else elem.asDocument.toJson
+                }))
+              } else if (elem.isDocument) {
+                Left(elem.asDocument.toJson)
+              } else Left(elem.asString.getValue)
+            }))
         })
       })
     Await.result(result, 3000 millis)
   }
 
-  def getRequired(elem: List[String]): T = {
-    val tuplify = (i: Int) => elem.apply(i)
+  def getRequired(elem: List[Either[String, Array[String]]]): T = {
+    val tuplify = (i: Int) => elem.apply(i) match {
+      case Right(x) => x
+      case Left(x) => x
+    }
     val d = fields.length match {
       case 1 => Tuple1(tuplify(0))
       case 2 => (tuplify(0), tuplify(1))
