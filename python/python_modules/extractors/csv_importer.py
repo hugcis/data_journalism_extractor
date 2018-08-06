@@ -36,7 +36,7 @@ class CsvImporter(FileImporter):
         if self.data_type is None:
             raise ValueError(
                 "No dataType provided for module {}".format(module))
-        self.type = format_types(self.data_type)
+        self.formatted_type = format_types(self.data_type)
 
         self.template_path = os.path.join(self.template_path,
                                           'scala_csv_loader.template')
@@ -48,7 +48,7 @@ class CsvImporter(FileImporter):
             name=self.name,
             field_delimiter=self.field_delimiter,
             quote_character=self.quote_character,
-            type=self.type,
+            type=self.formatted_type,
             included_fields=self.column_list,
             ignore_first_line=self.ignore_first_line
         ), ''
