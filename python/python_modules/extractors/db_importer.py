@@ -3,7 +3,7 @@
 import os
 from jinja2 import Environment
 from python_modules.base_module import BaseModule
-from python_modules.utils import quote
+from python_modules.utils import quote, format_types
 
 DB_DRIVERS = {
     'postgresql': 'org.postgresql.Driver'
@@ -34,8 +34,10 @@ class DbImporter(BaseModule):
 
         self.template_path = os.path.join('importers',
                                           'scala_db_loader.template')
-
+        self.template_ext_path = os.path.join('importers',
+                                              'scala_db_loader_ext.template')
         self.template = self.env.get_template(self.template_path)
+        self.template_ext = self.env.get_template(self.template_ext_path)
 
     def rendered_result(self) -> (str, str):
         return self.template.render(
@@ -43,10 +45,11 @@ class DbImporter(BaseModule):
             field_types=['createTypeInformation[{}]'.format(i) for
                          i in self.data_type],
             field_names=[quote(i) for i in self.field_names],
+            data_type=format_types(self.data_type),
             driver=self.driver,
             db_url=self.db_url,
             query=self.query,
-        ), ''
+        ), self.template_ext.render()
 
     def get_out_type(self):
         return self.data_type

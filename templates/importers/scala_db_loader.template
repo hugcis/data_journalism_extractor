@@ -3,13 +3,7 @@
 
 val fieldTypes_{{name}}: Array[TypeInformation[_]] = Array({{','.join(field_types)}})
 val fieldNames_{{name}} = Array({{','.join(field_names)}})
+val query_{{name}} = {{quote(query)}}
+val interm_{{name}} = SQLDBReader[{{data_type}}](fieldNames_extractordb, fieldTypes_extractordb, {{quote(driver)}}, {{quote(db_url)}}, query_{{name}}, env).getDataSet
 
-val rowTypeInfo_{{name}} = new RowTypeInfo(fieldTypes_{{name}}, fieldNames_{{name}})
-val inputFormat_{{name}} = JDBCInputFormat.buildJDBCInputFormat()
-  .setDrivername({{quote(driver)}})
-  .setDBUrl({{quote(db_url)}})
-  .setQuery({{quote(query)}})
-  .setRowTypeInfo(rowTypeInfo_{{name}})
-  .finish()
-
-val {{name}} = env.createInput(inputFormat_{{name}})
+val {{name}} = interm_extractordb.map((elem: Row)=> getRequired[{{data_type}}](elem))
