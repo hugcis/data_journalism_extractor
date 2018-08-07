@@ -1,13 +1,12 @@
 package core
 
-import core.reader.{JsonReader, MongoReader}
+import core.reader.{JsonReader, MongoReader, SQLDBReader}
 import org.apache.flink.api.scala._
 import org.apache.flink.core.fs.FileSystem
 import org.apache.flink.util.Collector
 import org.apache.flink.api.common.functions.FlatMapFunction
 import org.apache.flink.api.common.typeinfo.TypeInformation
-import org.apache.flink.api.java.io.jdbc.JDBCInputFormat
-import org.apache.flink.api.java.typeutils.RowTypeInfo
+import org.apache.flink.types.Row
 
 object ScalaTempTest {
 
@@ -23,16 +22,20 @@ object ScalaTempTest {
     val filePath_extractor1 = "/Users/hugo/Work/limsi-inria/tests/data_journalism_extractor/example/data/deputes.csv"
     val lineDelimiter_extractor1 = "\n"
     val fieldDelimiter_extractor1 = ";"
-    val includedFields_extractor1 = Array(1, 3, 30)
-    val extractor1 = env.readCsvFile[(String,String,String)](filePath_extractor1, lineDelimiter_extractor1, fieldDelimiter_extractor1, ignoreFirstLine=true, includedFields=includedFields_extractor1)
-    
-    // ===== Projection projection_twitter =====
-    
-    val projection_twitter = extractor1.map { set => (set._3)}.distinct()
+    val includedFields_extractor1 = Array(1, 30)
+    val extractor1 = env.readCsvFile[(String,String)](filePath_extractor1, lineDelimiter_extractor1, fieldDelimiter_extractor1, ignoreFirstLine=true, includedFields=includedFields_extractor1)
     
     // ===== Mongo Importer module mongo_loader =====
     
     val mongo_loader = MongoReader[(String,String)](env, "testdb", "publications", List("lienPageTwitter","denomination")).getDataSet()
+    
+    // ===== Split split_twitter_hatvp =====
+    
+    val split_twitter_hatvp = mongo_loader.map { set => (set._1.toLowerCase.split("/")(set._1.toLowerCase.split("/").length - 1),set._2)}
+    
+    // ===== Split split_twitter_hatvp2 =====
+    
+    val split_twitter_hatvp2 = split_twitter_hatvp.map { set => (set._1.toLowerCase.split("\\?").length match { case 1 => set._1.toLowerCase.split("\\?")(0) case _ => set._1.toLowerCase.split("\\?")(0)},set._2)}
     
     // ===== CSV Importer module extractor_lex =====
     
@@ -49,17 +52,11 @@ object ScalaTempTest {
     
     val fieldTypes_extractordb: Array[TypeInformation[_]] = Array(createTypeInformation[String],createTypeInformation[String])
     val fieldNames_extractordb = Array("rt_name","screen_name")
+    val query_extractordb = "select rt_name, screen_name from (select rt_name, uid from (select us.screen_name as rt_name, rt.sid from retweetedstatuses as rt join users as us on (rt.uid=us.uid)) as sub join checkedstatuses as ch on (sub.sid=ch.sid)) as subsub join users on (subsub.uid=users.uid);"
+    val interm_extractordb = SQLDBReader[(String,String)](fieldNames_extractordb, fieldTypes_extractordb, "org.postgresql.Driver", "jdbc:postgresql://localhost/twitter", query_extractordb, env).getDataSet
     
-    val rowTypeInfo_extractordb = new RowTypeInfo(fieldTypes_extractordb, fieldNames_extractordb)
-    val inputFormat_extractordb = JDBCInputFormat.buildJDBCInputFormat()
-      .setDrivername("org.postgresql.Driver")
-      .setDBUrl("jdbc:postgresql://localhost/twitter")
-      .setQuery("select rt_name, screen_name from (select rt_name, uid from (select us.screen_name as rt_name, rt.sid from retweetedstatuses as rt join users as us on (rt.uid=us.uid)) as sub join checkedstatuses as ch on (sub.sid=ch.sid)) as subsub join users on (subsub.uid=users.uid);")
-      .setRowTypeInfo(rowTypeInfo_extractordb)
-      .finish()
-    
-    val extractordb = env.createInput(inputFormat_extractordb)
-    
+    val extractordb = interm_extractordb.map((elem: Row)=> getRequired[(String,String)](elem))
+
     // ===== CSV Importer module extractor4 =====
     
     val filePath_extractor4 = "/Users/hugo/Work/limsi-inria/tests/data_journalism_extractor/example/data/wiki.csv"
@@ -68,19 +65,8 @@ object ScalaTempTest {
     val quoteCharacter_extractor4 = '$'
     val extractor4 = env.readCsvFile[(String,String)](filePath_extractor4, lineDelimiter_extractor4, fieldDelimiter_extractor4, quoteCharacter_extractor4)
     
-    // ===== JSON Importer module extractor2 =====
-    
-    val filePath_extractor2 = "/Users/hugo/Work/limsi-inria/tests/data_journalism_extractor/example/data/hatvp.json"
-    val mainField_extractor2 = "publications"
-    val requiredFields_extractor2 = Array("denomination","identifiantNational","activites","lienPageTwitter")
-    val extractor2 = JsonReader[(String,String,String,String)](env, filePath_extractor2, mainField_extractor2, requiredFields_extractor2).getInput
-    
-    // ===== Split split_twitter_hatvp =====
-    
-    val split_twitter_hatvp = extractor2.map { set => (set._1,set._2,set._3,set._4.toLowerCase.split("/"))}
-    
     // ===== Word similarity extractor tryExtractorWordSim =====
-    
+
     val tryExtractorWordSim = split_lex.cross(split_lex) {
         (c1, c2) => 
             val set1 = c1._2.toSet
@@ -91,7 +77,7 @@ object ScalaTempTest {
     
     // ===== Entity extractor linking1 =====
     
-    val linking1 = extractor4.cross(extractor2).flatMap(new extract_extractor4_extractor2)
+    val linking1 = extractor4.cross(mongo_loader).flatMap(new extract_extractor4_mongo_loader)
     
     // ===== Projection projection1 =====
     
@@ -111,10 +97,25 @@ object ScalaTempTest {
   
   // ===== Entity extractor FlatMapFunction linking1=====
   
-  private class extract_extractor4_extractor2 extends FlatMapFunction[((String,String), (String,String,String,String)), (String,String,String)] {
-      override def flatMap(value: ((String,String), (String,String,String,String)), out: Collector[(String,String,String)]): Unit = {
+  private class extract_extractor4_mongo_loader extends FlatMapFunction[((String,String), (String,String)), (String,String,String,String)] {
+      override def flatMap(value: ((String,String), (String,String)), out: Collector[(String,String,String,String)]): Unit = {
         val d = (raw"\b(" + value._2._1.toLowerCase + raw")\b").r
-        if (d.findFirstIn(value._1._2.toLowerCase).nonEmpty) out.collect((value._1._1,value._1._2,value._2._1))
+        if (d.findFirstIn(value._1._2.toLowerCase).nonEmpty) out.collect((value._1._1,value._1._2,value._2._1,value._2._2))
       }
+  }
+  
+  // ===== DB Importer module ext =====
+  
+  private def getRequired[T](elem: Row): T = {
+      def tuplify = (i: Int) => elem.getField(i)
+      val d = elem.getArity match {
+        case 1 => Tuple1(tuplify(0))
+        case 2 => (tuplify(0), tuplify(1))
+        case 3 => (tuplify(0), tuplify(1), tuplify(2))
+        case 4 => (tuplify(0), tuplify(1), tuplify(2), tuplify(3))
+        case 5 => (tuplify(0), tuplify(1), tuplify(2), tuplify(3), tuplify(4))
+        case 6 => (tuplify(0), tuplify(1), tuplify(2), tuplify(3), tuplify(4), tuplify(5))
+      }
+      d.asInstanceOf[T]
   }
 }
