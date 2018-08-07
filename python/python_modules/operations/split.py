@@ -14,7 +14,7 @@ class Split(UnaryOperation):
         super().__init__(module, env, named_modules)
 
         self.field = module.get('field')
-        self.delimiter = module.get('delimiter', ' ')
+        self.delimiter = module.get('delimiter', ' ').replace('\\', '\\\\')
         self.reduce = module.get('reduce')
 
         if self.field is None:
@@ -63,7 +63,10 @@ split("{}")({})}}'.format(index, self.delimiter, index, self.delimiter, index,
         return_type = []
         for i, s_type in enumerate(source_type):
             if i == self.field - 1:
-                return_type.append("Array[{}]".format(s_type))
+                if self.reduce is not None:
+                    return_type.append(s_type)
+                else:
+                    return_type.append("Array[{}]".format(s_type))
             else:
                 return_type.append(s_type)
         return return_type
