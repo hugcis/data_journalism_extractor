@@ -46,7 +46,9 @@ class ExtractorLink(BinaryOperation):
             type_out=format_types(self.get_out_type()),
             source_extract=self.source_extract,
             target_extract=self.target_extract,
-            collect_tuple=self._get_collection_tuple()
+            collect_tuple=self._get_collection_tuple(),
+            source1=self.source1,
+            source2=self.source2
         )
 
     def get_out_type(self):
