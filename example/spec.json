@@ -4,15 +4,9 @@
             "name": "extractor1",
             "type": "csvImporter",
             "path": "/Users/hugo/Work/limsi-inria/tests/data_journalism_extractor/example/data/deputes.csv",
-            "dataType": ["String", "String", "String"],
+            "dataType": ["String", "String"],
             "fieldDelimiter": ";",
-            "namedFields": ["nom", "prenom", "twitter"]
-        },
-        {
-            "name": "projection_twitter",
-            "type": "projection",
-            "source": "extractor1",
-            "fields": [3]
+            "namedFields": ["nom", "twitter"]
         },
         {
             "name": "mongo_loader",
@@ -20,6 +14,22 @@
             "dbName": "testdb",
             "collection": "publications",
             "requiredFields": ["lienPageTwitter", "denomination"]
+        },
+        {
+            "name": "split_twitter_hatvp",
+            "type": "split",
+            "source": "mongo_loader",
+            "delimiter": "/",
+            "field": 1,
+            "reduce": -1
+        },
+        {
+            "name": "split_twitter_hatvp2",
+            "type": "split",
+            "source": "split_twitter_hatvp",
+            "delimiter": "\\?",
+            "field": 1,
+            "reduce": 1
         },
         {
             "name": "extractor_lex",
@@ -52,20 +62,6 @@
             "fieldDelimiter": "|"
         },
         {
-            "name": "extractor2",
-            "type": "jsonImporter",
-            "path": "/Users/hugo/Work/limsi-inria/tests/data_journalism_extractor/example/data/hatvp.json",
-            "mainField": "publications",
-            "requiredFields": ["denomination", "identifiantNational", "activites", "lienPageTwitter"]
-        },
-        {
-            "name": "split_twitter_hatvp",
-            "type": "split",
-            "source": "extractor2",
-            "delimiter": "/",
-            "field": 4
-        },
-        {
             "name": "tryExtractorWordSim",
             "type": "extractorWordSim",
             "source1": "split_lex",
@@ -77,8 +73,7 @@
             "name": "linking1",
             "type": "extractorLink",
             "source1": "extractor4",
-            "source2": "extractor2",
-            "rightFields": [1],
+            "source2": "mongo_loader",
             "sourceExtract": 1,
             "targetExtract": 2
         },
