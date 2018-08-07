@@ -56,7 +56,7 @@ null".format(self.reduce)
         return 'set._{}.toLowerCase.split("{}").length match {{ case 1\
  => set._{}.toLowerCase.split("{}")(0) case _ => set._{}.toLowerCase.\
 split("{}")({})}}'.format(index, self.delimiter, index, self.delimiter, index,
-                          self.delimiter, self.reduce)
+                          self.delimiter, self.reduce - 1)
 
     def get_out_type(self):
         source_type = self.named_modules.get(self.source).get_out_type()
