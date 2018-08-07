@@ -4,4 +4,4 @@
 val filePath_{{name}} = {{quote(file_path)}}
 val mainField_{{name}} = {{quote(main_field)}}
 val requiredFields_{{name}} = Array({{','.join(required_fields)}})
-val {{name}} = JsonReader[{{type}}](env, filePath_{{name}}, mainField_{{name}}, requiredFields_{{name}}).getInput
+val {{name}} = JsonReader[{{type}}](env, filePath_{{name}}, mainField_{{name}}, requiredFields_{{name}}).getDataSet
