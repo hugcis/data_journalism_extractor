@@ -32,8 +32,12 @@ def run(spec, template_dir, output_path, pdf_output=False):
     final_env = Environment(loader=FileSystemLoader(BASE_DIR))
     final = final_env.get_template(TEMPLATE_NAME)
 
+    object_name = output_path.split('/')[-1].split('.')[0]
+
     with open(output_path, 'w') as outfile:
-        outfile.write(final.render(modules=modules, ext_modules=ext_modules))
+        outfile.write(final.render(name=object_name,
+                                   modules=modules,
+                                   ext_modules=ext_modules))
 
 
 def main():
@@ -55,7 +59,7 @@ def main():
                         metavar='output',
                         type=str,
                         help='output filename',
-                        default=os.path.join(BASE_DIR, 'ScalaTempTest.scala'))
+                        default=os.path.join(BASE_DIR, 'Main.scala'))
 
     parser.add_argument('-p', '--pdf-output',
                         action='store_true',

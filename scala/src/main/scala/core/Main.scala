@@ -8,7 +8,7 @@ import org.apache.flink.api.common.functions.FlatMapFunction
 import org.apache.flink.api.common.typeinfo.TypeInformation
 import org.apache.flink.types.Row
 
-object ScalaTempTest {
+object Main {
 
   def main(args: Array[String]) {
 
@@ -53,7 +53,14 @@ object ScalaTempTest {
     val fieldTypes_extractordb: Array[TypeInformation[_]] = Array(createTypeInformation[String],createTypeInformation[String])
     val fieldNames_extractordb = Array("rt_name","screen_name")
     val query_extractordb = "select rt_name, screen_name from (select rt_name, uid from (select us.screen_name as rt_name, rt.sid from retweetedstatuses as rt join users as us on (rt.uid=us.uid)) as sub join checkedstatuses as ch on (sub.sid=ch.sid)) as subsub join users on (subsub.uid=users.uid);"
-    val interm_extractordb = SQLDBReader[(String,String)](fieldNames_extractordb, fieldTypes_extractordb, "org.postgresql.Driver", "jdbc:postgresql://localhost/twitter", query_extractordb, env).getDataSet
+    val interm_extractordb = SQLDBReader[(String,String)](
+      fieldNames_extractordb,
+      fieldTypes_extractordb,
+      "org.postgresql.Driver",
+      "jdbc:postgresql://localhost/twitter",
+      query_extractordb,
+      env
+    ).getDataSet
     
     val extractordb = interm_extractordb.map((elem: Row)=> getRequired[(String,String)](elem))
     
@@ -74,13 +81,13 @@ object ScalaTempTest {
     val join_dbhatvp_extractor1 = join_extractordb_splittwit.filter(_._1 != null)
       .join(extractor1.filter(_._2 != null))
       .where(0).equalTo(1) {(l, r) => (l._3, r._1)}
-    join_dbhatvp_extractor1.print()
+    
     // ===== Join module join_db1_hatvp =====
     
     val join_db1_hatvp = join_extractordb_exctractor1.filter(_._1 != null)
       .join(split_twitter_hatvp2.filter(_._1 != null))
       .where(0).equalTo(0) {(l, r) => (l._2, r._2)}
-    join_db1_hatvp.print()
+    
     // ===== CSV Importer module extractor4 =====
     
     val filePath_extractor4 = "/Users/hugo/Work/limsi-inria/tests/data_journalism_extractor/example/data/wiki.csv"

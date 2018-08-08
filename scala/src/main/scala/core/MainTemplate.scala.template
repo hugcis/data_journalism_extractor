@@ -8,7 +8,7 @@ import org.apache.flink.api.common.functions.FlatMapFunction
 import org.apache.flink.api.common.typeinfo.TypeInformation
 import org.apache.flink.types.Row
 
-object ScalaTempTest {
+object {{name}} {
 
   def main(args: Array[String]) {
 
