@@ -44,17 +44,17 @@ class Join(BinaryOperation):
 
     def _get_out_fields(self):
         return ([
-            'l._{}'.format(i) for i in
+            'l._{}'.format(i + 1) for i in
             self._field_numbers(self.left_fields, self.source1)
         ] + [
-            'r._{}'.format(i) for i in
+            'r._{}'.format(i + 1) for i in
             self._field_numbers(self.right_fields, self.source2)
         ])
 
     def _field_numbers(self, fields, source):
         in_type = self.named_modules.get(source).get_out_type()
         if fields == 'all':
-            return list(range(1, len(in_type) + 1))
+            return list(range(len(in_type)))
         return fields
 
 
