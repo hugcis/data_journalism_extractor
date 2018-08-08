@@ -1,0 +1,3 @@
+// ===== Map module {{name}} =====
+
+val {{name}} = {{source}}.map { {{function}} }

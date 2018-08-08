@@ -11,7 +11,8 @@ from python_modules.operations import (Join,
                                        Projection,
                                        Union,
                                        Split,
-                                       ExtractorWordSimilarity)
+                                       ExtractorWordSimilarity,
+                                       Map)
 from python_modules.outputs import CsvOutput
 from python_modules.exceptions import UnknownModuleError, IntegrityError
 from python_modules.base_module import BaseModule
@@ -40,6 +41,7 @@ class ModuleMap:
         'projection': Projection,
         'union': Union,
         'split': Split,
+        'map': Map,
         # Outputs
         'csvOutput': CsvOutput,
     }
