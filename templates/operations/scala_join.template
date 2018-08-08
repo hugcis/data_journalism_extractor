@@ -1,3 +1,5 @@
 // ===== Join module {{name}} =====
 
-val {{name}} = {{source1}}.join({{source2}}).where({{field1}}).equalTo({{field2}})
+val {{name}} = {{source1}}.filter(_._{{field1 + 1}} != null)
+  .join({{source2}}.filter(_._{{field2 + 1}} != null))
+  .where({{field1}}).equalTo({{field2}}) {(l, r) => ({{out_fields}})}
