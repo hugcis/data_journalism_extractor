@@ -56,7 +56,31 @@ object ScalaTempTest {
     val interm_extractordb = SQLDBReader[(String,String)](fieldNames_extractordb, fieldTypes_extractordb, "org.postgresql.Driver", "jdbc:postgresql://localhost/twitter", query_extractordb, env).getDataSet
     
     val extractordb = interm_extractordb.map((elem: Row)=> getRequired[(String,String)](elem))
-
+    
+    // ===== Join module join_extractordb_splittwit =====
+    
+    val join_extractordb_splittwit = extractordb.filter(_._2 != null)
+      .join(split_twitter_hatvp2.filter(_._1 != null))
+      .where(1).equalTo(0) {(l, r) => (l._1, r._1, r._2)}
+    
+    // ===== Join module join_extractordb_exctractor1 =====
+    
+    val join_extractordb_exctractor1 = extractordb.filter(_._2 != null)
+      .join(extractor1.filter(_._2 != null))
+      .where(1).equalTo(1) {(l, r) => (l._1, r._1, r._2)}
+    
+    // ===== Join module join_dbhatvp_extractor1 =====
+    
+    val join_dbhatvp_extractor1 = join_extractordb_splittwit.filter(_._1 != null)
+      .join(extractor1.filter(_._2 != null))
+      .where(0).equalTo(1) {(l, r) => (l._3, r._1)}
+    join_dbhatvp_extractor1.print()
+    // ===== Join module join_db1_hatvp =====
+    
+    val join_db1_hatvp = join_extractordb_exctractor1.filter(_._1 != null)
+      .join(split_twitter_hatvp2.filter(_._1 != null))
+      .where(0).equalTo(0) {(l, r) => (l._2, r._2)}
+    join_db1_hatvp.print()
     // ===== CSV Importer module extractor4 =====
     
     val filePath_extractor4 = "/Users/hugo/Work/limsi-inria/tests/data_journalism_extractor/example/data/wiki.csv"
@@ -66,7 +90,7 @@ object ScalaTempTest {
     val extractor4 = env.readCsvFile[(String,String)](filePath_extractor4, lineDelimiter_extractor4, fieldDelimiter_extractor4, quoteCharacter_extractor4)
     
     // ===== Word similarity extractor tryExtractorWordSim =====
-
+    
     val tryExtractorWordSim = split_lex.cross(split_lex) {
         (c1, c2) => 
             val set1 = c1._2.toSet
@@ -81,7 +105,7 @@ object ScalaTempTest {
     
     // ===== Projection projection1 =====
     
-    val projection1 = linking1.map { set => (set._1,set._3)}.distinct()
+    val projection1 = linking1.map { set => (set._1,set._4)}.distinct()
     
     // ===== CSV Output File output1 =====
     
@@ -99,7 +123,7 @@ object ScalaTempTest {
   
   private class extract_extractor4_mongo_loader extends FlatMapFunction[((String,String), (String,String)), (String,String,String,String)] {
       override def flatMap(value: ((String,String), (String,String)), out: Collector[(String,String,String,String)]): Unit = {
-        val d = (raw"\b(" + value._2._1.toLowerCase + raw")\b").r
+        val d = (raw"\b(" + value._2._2.toLowerCase + raw")\b").r
         if (d.findFirstIn(value._1._2.toLowerCase).nonEmpty) out.collect((value._1._1,value._1._2,value._2._1,value._2._2))
       }
   }
