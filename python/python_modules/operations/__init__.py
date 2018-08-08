@@ -9,3 +9,4 @@ from .projection import Projection
 from .union import Union
 from .split import Split
 from .extractor_word_similarity import ExtractorWordSimilarity
+from .map import Map
