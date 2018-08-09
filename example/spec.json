@@ -139,6 +139,24 @@
             "type": "csvOutput",
             "source": "join_db1_hatvp",
             "path": "/Users/hugo/Work/limsi-inria/tests/data_journalism_extractor/example/output/output_hatvp_retweet_dep.csv"
+        },
+        {
+            "name": "glob_union1",
+            "type": "union",
+            "source1": "projection1",
+            "source2": "join_dbhatvp_extractor1"
+        },
+        {
+            "name": "glob_union2",
+            "type": "union",
+            "source1": "glob_union1",
+            "source2": "join_db1_hatvp"
+        },
+        {
+            "name": "globOutput",
+            "type": "csvOutput",
+            "source": "glob_union2",
+            "path": "/Users/hugo/Work/limsi-inria/tests/data_journalism_extractor/example/output/output_all.csv"
         }
     ]
 }

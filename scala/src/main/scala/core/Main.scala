@@ -122,6 +122,19 @@ object Main {
     
     val filePath_output3 = "/Users/hugo/Work/limsi-inria/tests/data_journalism_extractor/example/output/output_hatvp_retweet_dep.csv"
     join_db1_hatvp.writeAsCsv(filePath_output3, writeMode=FileSystem.WriteMode.OVERWRITE)
+    
+    // ===== Union module glob_union1 =====
+    
+    val glob_union1 = projection1.union(join_dbhatvp_extractor1)
+    
+    // ===== Union module glob_union2 =====
+    
+    val glob_union2 = glob_union1.union(join_db1_hatvp)
+    
+    // ===== CSV Output File globOutput =====
+    
+    val filePath_globOutput = "/Users/hugo/Work/limsi-inria/tests/data_journalism_extractor/example/output/output_all.csv"
+    glob_union2.writeAsCsv(filePath_globOutput, writeMode=FileSystem.WriteMode.OVERWRITE)
 
     // ===== Execution =====
 
