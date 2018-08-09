@@ -53,16 +53,10 @@ object Main {
     val fieldTypes_extractordb: Array[TypeInformation[_]] = Array(createTypeInformation[String],createTypeInformation[String])
     val fieldNames_extractordb = Array("rt_name","screen_name")
     val query_extractordb = "select rt_name, screen_name from (select rt_name, uid from (select us.screen_name as rt_name, rt.sid from retweetedstatuses as rt join users as us on (rt.uid=us.uid)) as sub join checkedstatuses as ch on (sub.sid=ch.sid)) as subsub join users on (subsub.uid=users.uid);"
-    val interm_extractordb = SQLDBReader[(String,String)](
-      fieldNames_extractordb,
-      fieldTypes_extractordb,
-      "org.postgresql.Driver",
-      "jdbc:postgresql://localhost/twitter",
-      query_extractordb,
-      env
-    ).getDataSet
+    val interm_extractordb = SQLDBReader[(String,String)](fieldNames_extractordb, fieldTypes_extractordb, "org.postgresql.Driver", "jdbc:postgresql://localhost/twitter", query_extractordb, env).getDataSet
     
     val extractordb = interm_extractordb.map((elem: Row)=> getRequired[(String,String)](elem))
+      .filter(t => t._1 != null && t._2 != null)
     
     // ===== Join module join_extractordb_splittwit =====
     
@@ -116,8 +110,18 @@ object Main {
     
     // ===== CSV Output File output1 =====
     
-    val filePath_output1 = "/Users/hugo/Work/limsi-inria/tests/data_journalism_extractor/example/output/output.csv"
+    val filePath_output1 = "/Users/hugo/Work/limsi-inria/tests/data_journalism_extractor/example/output/output_mention_wiki.csv"
     projection1.writeAsCsv(filePath_output1, writeMode=FileSystem.WriteMode.OVERWRITE)
+    
+    // ===== CSV Output File output2 =====
+    
+    val filePath_output2 = "/Users/hugo/Work/limsi-inria/tests/data_journalism_extractor/example/output/output_dep_retweet_hatvp.csv"
+    join_dbhatvp_extractor1.writeAsCsv(filePath_output2, writeMode=FileSystem.WriteMode.OVERWRITE)
+    
+    // ===== CSV Output File output3 =====
+    
+    val filePath_output3 = "/Users/hugo/Work/limsi-inria/tests/data_journalism_extractor/example/output/output_hatvp_retweet_dep.csv"
+    join_db1_hatvp.writeAsCsv(filePath_output3, writeMode=FileSystem.WriteMode.OVERWRITE)
 
     // ===== Execution =====
 
@@ -125,15 +129,6 @@ object Main {
   }
 
   
-  
-  // ===== Entity extractor FlatMapFunction linking1=====
-  
-  private class extract_extractor4_mongo_loader extends FlatMapFunction[((String,String), (String,String)), (String,String,String,String)] {
-      override def flatMap(value: ((String,String), (String,String)), out: Collector[(String,String,String,String)]): Unit = {
-        val d = (raw"\b(" + value._2._2.toLowerCase + raw")\b").r
-        if (d.findFirstIn(value._1._2.toLowerCase).nonEmpty) out.collect((value._1._1,value._1._2,value._2._1,value._2._2))
-      }
-  }
   
   // ===== DB Importer module ext =====
   
@@ -148,5 +143,14 @@ object Main {
         case 6 => (tuplify(0), tuplify(1), tuplify(2), tuplify(3), tuplify(4), tuplify(5))
       }
       d.asInstanceOf[T]
+  }
+  
+  // ===== Entity extractor FlatMapFunction linking1=====
+  
+  private class extract_extractor4_mongo_loader extends FlatMapFunction[((String,String), (String,String)), (String,String,String,String)] {
+      override def flatMap(value: ((String,String), (String,String)), out: Collector[(String,String,String,String)]): Unit = {
+        val d = (raw"\b(" + value._2._2.toLowerCase + raw")\b").r
+        if (d.findFirstIn(value._1._2.toLowerCase).nonEmpty) out.collect((value._1._1,value._1._2,value._2._1,value._2._2))
+      }
   }
 }

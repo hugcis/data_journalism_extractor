@@ -51,7 +51,8 @@
             "dbUrl": "jdbc:postgresql://localhost/twitter",
             "fieldNames": ["rt_name","screen_name"],
             "dataType": ["String", "String"],
-            "query": "select rt_name, screen_name from (select rt_name, uid from (select us.screen_name as rt_name, rt.sid from retweetedstatuses as rt join users as us on (rt.uid=us.uid)) as sub join checkedstatuses as ch on (sub.sid=ch.sid)) as subsub join users on (subsub.uid=users.uid);"
+            "query": "select rt_name, screen_name from (select rt_name, uid from (select us.screen_name as rt_name, rt.sid from retweetedstatuses as rt join users as us on (rt.uid=us.uid)) as sub join checkedstatuses as ch on (sub.sid=ch.sid)) as subsub join users on (subsub.uid=users.uid);",
+            "filterNull": true
         },
         {
             "name": "join_extractordb_splittwit",
@@ -125,7 +126,19 @@
             "name": "output1",
             "type": "csvOutput",
             "source": "projection1",
-            "path": "/Users/hugo/Work/limsi-inria/tests/data_journalism_extractor/example/output/output.csv"
+            "path": "/Users/hugo/Work/limsi-inria/tests/data_journalism_extractor/example/output/output_mention_wiki.csv"
+        },
+        {
+            "name": "output2",
+            "type": "csvOutput",
+            "source": "join_dbhatvp_extractor1",
+            "path": "/Users/hugo/Work/limsi-inria/tests/data_journalism_extractor/example/output/output_dep_retweet_hatvp.csv"
+        },
+        {
+            "name": "output3",
+            "type": "csvOutput",
+            "source": "join_db1_hatvp",
+            "path": "/Users/hugo/Work/limsi-inria/tests/data_journalism_extractor/example/output/output_hatvp_retweet_dep.csv"
         }
     ]
 }

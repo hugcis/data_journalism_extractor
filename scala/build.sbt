@@ -41,7 +41,7 @@ libraryDependencies ++= Seq(
 )
 
 
-assembly / mainClass := Some("core.ScalaTempTest")
+assembly / mainClass := Some("core.Main")
 
 // make run command include the provided dependencies
 Compile / run  := Defaults.runTask(Compile / fullClasspath,
