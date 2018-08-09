@@ -30,7 +30,7 @@ class BaseModule(ABC):
 
         Used for pdf graph generation
         """
-        return self.__str__() + '\nType: {}'.format(self.type)
+        return self.__str__() + '\nType {}'.format(self.type)
 
     def add_to_graph(self, graph: Digraph):
         """ A method for adding the module to a graphviz graph
