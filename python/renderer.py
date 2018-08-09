@@ -12,7 +12,8 @@ from python_modules.operations import (Join,
                                        Union,
                                        Split,
                                        ExtractorWordSimilarity,
-                                       Map)
+                                       Map,
+                                       CountDistinct)
 from python_modules.outputs import CsvOutput
 from python_modules.exceptions import UnknownModuleError, IntegrityError
 from python_modules.base_module import BaseModule
@@ -42,6 +43,7 @@ class ModuleMap:
         'union': Union,
         'split': Split,
         'map': Map,
+        'countDistinct': CountDistinct,
         # Outputs
         'csvOutput': CsvOutput,
     }

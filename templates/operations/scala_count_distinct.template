@@ -1,0 +1,3 @@
+// ===== Count Distinct module {{name}} =====
+
+val {{name}} = {{source}}.map(t => ({{', '.join(in_fields)}}, 1)).groupBy({{field1}}, {{field2}}).sum({{in_fields|length}}).sortPartition({{in_fields|length}}, Order.DESCENDING)
