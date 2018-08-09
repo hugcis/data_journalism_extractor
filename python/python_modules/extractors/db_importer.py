@@ -26,6 +26,7 @@ class DbImporter(BaseModule):
         self.data_type = module.get('dataType')
         self.field_names = module.get('fieldNames')
         self.query = module.get('query')
+        self.filter_null = module.get('filterNull', False)
         self.driver = DB_DRIVERS.get(self.db_type)
         if self.driver is None:
             raise ValueError(
@@ -49,6 +50,9 @@ class DbImporter(BaseModule):
             driver=self.driver,
             db_url=self.db_url,
             query=self.query,
+            filter_null=self.filter_null,
+            filter_fields=['t._{} != null'.format(i + 1) for i
+                           in range(len(self.data_type))]
         ), self.template_ext.render()
 
     def get_out_type(self):
