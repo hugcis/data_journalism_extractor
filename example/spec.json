@@ -153,9 +153,15 @@
             "source2": "join_db1_hatvp"
         },
         {
+            "name": "globCount",
+            "type": "countDistinct",
+            "source": "glob_union2",
+            "fields": [0, 1]
+        },
+        {
             "name": "globOutput",
             "type": "csvOutput",
-            "source": "glob_union2",
+            "source": "globCount",
             "path": "/Users/hugo/Work/limsi-inria/tests/data_journalism_extractor/example/output/output_all.csv"
         }
     ]

@@ -5,6 +5,7 @@ import org.apache.flink.api.scala._
 import org.apache.flink.core.fs.FileSystem
 import org.apache.flink.util.Collector
 import org.apache.flink.api.common.functions.FlatMapFunction
+import org.apache.flink.api.common.operators.Order
 import org.apache.flink.api.common.typeinfo.TypeInformation
 import org.apache.flink.types.Row
 
@@ -131,10 +132,14 @@ object Main {
     
     val glob_union2 = glob_union1.union(join_db1_hatvp)
     
+    // ===== Count Distinct module globCount =====
+    
+    val globCount = glob_union2.map(t => (t._1, t._2, 1)).groupBy(0, 1).sum(2).sortPartition(2, Order.DESCENDING)
+    
     // ===== CSV Output File globOutput =====
     
     val filePath_globOutput = "/Users/hugo/Work/limsi-inria/tests/data_journalism_extractor/example/output/output_all.csv"
-    glob_union2.writeAsCsv(filePath_globOutput, writeMode=FileSystem.WriteMode.OVERWRITE)
+    globCount.writeAsCsv(filePath_globOutput, writeMode=FileSystem.WriteMode.OVERWRITE)
 
     // ===== Execution =====
 
