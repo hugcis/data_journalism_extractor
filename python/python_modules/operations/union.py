@@ -25,10 +25,8 @@ class Union(BinaryOperation):
         ), ''
 
     def get_out_type(self):
-        return [
-            self.named_modules.get(self.source1).get_out_type(),
-            self.named_modules.get(self.source2).get_out_type()
-        ]
+        # Equality is checked during integrity test
+        return self.named_modules.get(self.source1).get_out_type()
 
     def check_integrity(self):
         type1 = self.named_modules.get(self.source1).get_out_type()
