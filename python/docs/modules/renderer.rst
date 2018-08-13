@@ -1,2 +1,5 @@
 Renderer
 ========
+
+.. automodule:: renderer
+   :members:

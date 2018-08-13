@@ -7,7 +7,8 @@ from graphviz import Digraph
 
 
 class BaseModule(ABC):
-    """ The abstract base class for operation modules
+    """ The abstract base class for operation modules.
+    All modules expose the following common API.
     """
     def __init__(self, module, env: Environment, named_modules):
         self.env = env
@@ -23,10 +24,9 @@ class BaseModule(ABC):
 
     def to_graph_repr(self):
         """ Generate the representation of the node in the form
-        ```
-        Name
-        Type: $type
-        ```
+        
+        `Name
+        Type: $type``
 
         Used for pdf graph generation
         """

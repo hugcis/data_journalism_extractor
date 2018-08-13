@@ -3,39 +3,20 @@
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
-Welcome to data_journalism_extractor's documentation!
+Welcome to Data Journalism Extractor's documentation!
 =====================================================
-
-.. toctree::
-   :maxdepth: 2
-   
-   modules/renderer   
-   :caption: Contents:
-   
 
 This project is an attempt to create a tool to allow journalists to 
 extract and process data from multiple heterogenous data sources with
 limited programming knowledge.
 
-Getting started
-===============
+.. toctree::
+   :maxdepth: 2
+   :caption: Contents:
 
-Modules
-=======
-
-:doc:`Renderer <modules/renderer>`
-----------------------------------
-.. automodule:: renderer
-
-Compile
--------
-.. automodule:: compile
-
-Exceptions
-----------
-.. automodule:: python_modules.exceptions
-   
-   
+   getting-started
+   example-walkthrough
+   modules
 
 
 Indices and tables

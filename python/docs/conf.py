@@ -17,6 +17,9 @@
 # add these directories to sys.path here. If the directory is relative to the
 # documentation root, use os.path.abspath to make it absolute, like shown here.
 #
+
+# pylint: skip-file
+# The file is auto-generated
 import os
 import sys
 from recommonmark.parser import CommonMarkParser
@@ -33,7 +36,7 @@ sys.path.insert(0, os.path.abspath('..'))
 # extensions coming with Sphinx (named 'sphinx.ext.*') or your custom
 # ones.
 extensions = ['sphinx.ext.autodoc',
-    'sphinx.ext.doctest']
+              'sphinx.ext.doctest']
 
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ['_templates']
@@ -48,7 +51,7 @@ source_suffix = '.rst'
 master_doc = 'index'
 
 # General information about the project.
-project = 'data_journalism_extractor'
+project = 'Data Journalism Extractor'
 copyright = '2018, Hugo Cisneros'
 author = 'Hugo Cisneros'
 
@@ -144,7 +147,8 @@ latex_elements = {
 # (source start file, target name, title,
 #  author, documentclass [howto, manual, or own class]).
 latex_documents = [
-    (master_doc, 'data_journalism_extractor.tex', 'data\\_journalism\\_extractor Documentation',
+    (master_doc, 'data_journalism_extractor.tex',
+     'data\\_journalism\\_extractor Documentation',
      'Hugo Cisneros', 'manual'),
 ]
 
@@ -154,7 +158,8 @@ latex_documents = [
 # One entry per manual page. List of tuples
 # (source start file, name, description, authors, manual section).
 man_pages = [
-    (master_doc, 'data_journalism_extractor', 'data_journalism_extractor Documentation',
+    (master_doc, 'data_journalism_extractor',
+     'data_journalism_extractor Documentation',
      [author], 1)
 ]
 
@@ -165,7 +170,8 @@ man_pages = [
 # (source start file, target name, title, author,
 #  dir menu entry, description, category)
 texinfo_documents = [
-    (master_doc, 'data_journalism_extractor', 'data_journalism_extractor Documentation',
+    (master_doc, 'data_journalism_extractor',
+     'data_journalism_extractor Documentation',
      author, 'data_journalism_extractor', 'One line description of project.',
      'Miscellaneous'),
 ]
