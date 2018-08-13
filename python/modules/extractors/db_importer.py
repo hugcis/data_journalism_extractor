@@ -2,8 +2,8 @@
 """
 import os
 from jinja2 import Environment
-from python_modules.base_module import BaseModule
-from python_modules.utils import quote, format_types
+from modules.base_module import BaseModule
+from modules.utils import quote, format_types
 
 DB_DRIVERS = {
     'postgresql': 'org.postgresql.Driver'

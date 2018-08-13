@@ -2,7 +2,7 @@
 """
 import os
 from abc import ABC, abstractmethod
-from python_modules.exceptions import IntegrityError
+from extractor_exceptions import IntegrityError
 from . import BaseModule
 
 

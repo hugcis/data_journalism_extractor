@@ -2,8 +2,8 @@
 """
 import os
 from jinja2 import Environment
-from python_modules.utils import format_types, quote
-from python_modules.base_module import BaseModule
+from modules.utils import format_types, quote
+from modules.base_module import BaseModule
 
 
 class MongoImporter(BaseModule):

@@ -9,8 +9,8 @@ class Map(UnaryOperation):
     """ A module that maps an arbitrary scala function to the
     incoming data flow.
 
-    __!!! Arbitrary scala code will only be checked at compilation
-    of that code and therefore could fail__
+    **Warning: Arbitrary scala code will only be checked at compilation
+    and therefore could make the final program fail**
     """
     def __init__(self, module, env: Environment, named_modules):
         super().__init__(module, env, named_modules)

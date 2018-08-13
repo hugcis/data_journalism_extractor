@@ -2,7 +2,7 @@
 """
 import os
 from jinja2 import Environment
-from python_modules.exceptions import IntegrityError
+from extractor_exceptions import IntegrityError
 from .binary_operation import BinaryOperation
 
 

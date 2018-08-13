@@ -2,7 +2,7 @@ import unittest
 import json
 import os
 from renderer import Renderer
-from python_modules.exceptions import UnknownModuleError
+from extractor_exceptions import UnknownModuleError
 
 TEMPLATE_DIR = 'templates'
 

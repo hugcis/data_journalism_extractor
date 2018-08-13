@@ -6,8 +6,9 @@
 Welcome to Data Journalism Extractor's documentation!
 =====================================================
 
-This project is an attempt to create a tool to allow journalists to 
-extract and process data from multiple heterogenous data sources with
+This project is an attempt to create a tool that would allow journalists to 
+extract and process data from multiple heterogenous data sources while leveraging
+powerful and complex database, information extraction and NLP tools with
 limited programming knowledge.
 
 .. toctree::

@@ -2,21 +2,21 @@
 """
 from jinja2 import Environment, FileSystemLoader
 from graphviz import Digraph
-from python_modules.extractors import (CsvImporter,
-                                       JsonImporter,
-                                       DbImporter,
-                                       MongoImporter)
-from python_modules.operations import (Join,
-                                       ExtractorLink,
-                                       Projection,
-                                       Union,
-                                       Split,
-                                       ExtractorWordSimilarity,
-                                       Map,
-                                       CountDistinct)
-from python_modules.outputs import CsvOutput
-from python_modules.exceptions import UnknownModuleError, IntegrityError
-from python_modules.base_module import BaseModule
+from modules.base_module import BaseModule
+from modules.extractors import (CsvImporter,
+                                JsonImporter,
+                                DbImporter,
+                                MongoImporter)
+from modules.operations import (Join,
+                                ExtractorLink,
+                                Projection,
+                                Union,
+                                Split,
+                                ExtractorWordSimilarity,
+                                Map,
+                                CountDistinct)
+from modules.outputs import CsvOutput
+from extractor_exceptions import UnknownModuleError, IntegrityError
 
 
 class ModuleMap:

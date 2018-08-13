@@ -2,7 +2,6 @@
 """
 import os
 from jinja2 import Environment
-from python_modules.exceptions import IntegrityError
 from .unary_operation import UnaryOperation
 
 

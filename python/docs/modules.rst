@@ -7,9 +7,11 @@ Modules Reference
    
    modules/renderer
    modules/extractors
+   modules/operations
+   modules/outputs
 
 Base Module
 -----------
 
-.. automodule:: python_modules.base_module
+.. automodule:: modules.base_module
    :members:

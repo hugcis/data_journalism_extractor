@@ -22,10 +22,10 @@ class BaseModule(ABC):
     def __str__(self):
         return self.name
 
-    def to_graph_repr(self):
+    def _to_graph_repr(self):
         """ Generate the representation of the node in the form
         
-        `Name
+        ``Name
         Type: $type``
 
         Used for pdf graph generation
@@ -36,7 +36,7 @@ class BaseModule(ABC):
         """ A method for adding the module to a graphviz graph
         instance.
         """
-        graph.node(self.to_graph_repr())
+        graph.node(self._to_graph_repr())
 
     @abstractmethod
     def rendered_result(self) -> (str, str):

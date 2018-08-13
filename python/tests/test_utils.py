@@ -1,5 +1,5 @@
 import unittest
-from python_modules.utils import format_types, quote
+from modules.utils import format_types, quote
 
 
 class TestFormatTypes(unittest.TestCase):

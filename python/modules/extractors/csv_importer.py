@@ -2,7 +2,7 @@
 """
 import os
 from jinja2 import Environment
-from python_modules.utils import format_types
+from modules.utils import format_types
 from .file_importer import FileImporter
 
 

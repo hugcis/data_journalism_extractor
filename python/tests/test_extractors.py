@@ -1,8 +1,8 @@
 import unittest
 import unittest.mock
 from jinja2 import Environment
-from python_modules.extractors import CsvImporter, JsonImporter
-from python_modules.utils import format_types, quote
+from modules.extractors import CsvImporter, JsonImporter
+from modules.utils import format_types, quote
 
 
 class TestCsvImporter(unittest.TestCase):
