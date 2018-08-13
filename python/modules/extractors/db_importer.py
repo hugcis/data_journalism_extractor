@@ -11,7 +11,22 @@ DB_DRIVERS = {
 
 
 class DbImporter(BaseModule):
-    """ Main database loader operation module class
+    """ Main database loader operation module class.
+
+    Args:
+        module (dict): The module dict must have:
+
+            * A ``dbUrl`` field with the database entrypoint for JDBC. (e.g
+              for a Postgres db named test running on localhost
+              ``"jdbc:postgresql://localhost/test"``).
+            * A ``dataType`` field with the input data types.
+            * The names of the desired columns in ``fieldNames``.
+            * The ``query`` to be interpreted by the db.
+
+
+            Other optional fields are:
+                * ``filterNull`` for filtering null values from the db output.
+
     """
     def __init__(self, module, env: Environment, named_modules):
         super().__init__(module, env, named_modules)

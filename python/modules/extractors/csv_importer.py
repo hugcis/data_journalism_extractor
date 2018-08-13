@@ -7,7 +7,18 @@ from .file_importer import FileImporter
 
 
 class CsvImporter(FileImporter):
-    """ Main CSV loader operation module class
+    """ Main CSV loader operation module class.
+
+    Args:
+        module (dict): The module dict must have a ``dataType``
+            field that contains the input types as a list of strings.
+
+            Other optional fields are:
+                * ``fieldDelimiter`` (csv delimiter if other than comma)
+                * ``quoteCharacter`` (don't separate within quoted fields)
+                * ``namedFields`` (for selecting only some of the columns
+                  by their name)
+
     """
     # Reasonable amount of class attributes
     # pylint: disable=R0902

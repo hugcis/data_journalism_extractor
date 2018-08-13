@@ -1,4 +1,4 @@
-""" The module containing the base class for all operation modules
+""" The module containing the abstract base class for all operation modules
 used throughout the rest of the code.
 """
 from abc import ABC, abstractmethod
@@ -7,10 +7,23 @@ from graphviz import Digraph
 
 
 class BaseModule(ABC):
-    """ The abstract base class for operation modules.
+    """ The abstract base class for modules. All modules are subclasses
+    of ``BaseModule``
+
+    Every module object passed to the constructor must contain the
+    ``type`` and ``name`` fields.
+
     All modules expose the following common API.
+
+    Args:
+        module (dict): The ``dict`` containing the specification of
+            the module.
+        env (jinja2.Environment): The jinja environment where the
+            templates can be retrieved.
+        named_modules (List[BaseModule]): A list of all the other modules
+            of the DAG.
     """
-    def __init__(self, module, env: Environment, named_modules):
+    def __init__(self, module: dict, env: Environment, named_modules):
         self.env = env
         self.type = module.get('type')
         self.name = module.get('name')
@@ -24,7 +37,7 @@ class BaseModule(ABC):
 
     def _to_graph_repr(self):
         """ Generate the representation of the node in the form
-        
+
         ``Name
         Type: $type``
 
@@ -35,6 +48,9 @@ class BaseModule(ABC):
     def add_to_graph(self, graph: Digraph):
         """ A method for adding the module to a graphviz graph
         instance.
+
+        Args:
+            graph (graphviz.dot.Digraph): A graphviz Digraph object
         """
         graph.node(self._to_graph_repr())
 

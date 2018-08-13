@@ -23,7 +23,7 @@ class ModuleMap:
     """ The main mapping that links modules
     to their name through the ``get`` method.
 
-    *Essentially an enum or dictionary*
+    (Essentially an enum or dictionary)
     """
     # Wrapped in a class for clarity
     # pylint: disable=R0903
@@ -49,16 +49,24 @@ class ModuleMap:
     }
 
     @classmethod
-    def get(cls, name: str) -> BaseModule:
+    def get(cls, module_type: str) -> BaseModule:
         """ Returns the module corresponding to the name
         passed in argument.
+
+        Args:
+            module_type (str): The desired module type.
         """
-        return cls.module_map.get(name)
+        return cls.module_map.get(module_type)
 
 
 class Renderer:
-    """ The render engine that can check the integrity of
+    """ The render engine that can build the DAG, check the integrity of
     the operation graph and generate the rendered Scala code.
+
+    Args:
+        module_list (List[dict]): The list of module specifications to be
+            parsed and added to the operation graph.
+        template_dir (str): The path to the template directory.
     """
     def __init__(self, module_list, template_dir: str):
         self.env = Environment(loader=FileSystemLoader(template_dir))
@@ -71,13 +79,15 @@ class Renderer:
             raise IntegrityError("Some modules have the same name")
 
     def check_integrity(self):
-        """ Check the integrity of the graph
+        """ Check the integrity of the graph. Should be called
+        after all the modules have been added to the graph (i.e. after
+        initialization).
         """
         for module in self.named_modules:
             self.named_modules[module].check_integrity()
 
     def get_rendered(self):
-        """ Get the rendered code from the module list
+        """ Get the rendered code from the module list.
         """
         rendered = []
         rendered_ext = []

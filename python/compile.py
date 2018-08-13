@@ -15,6 +15,13 @@ TEMPLATE_NAME = 'MainTemplate.scala.template'
 def run(spec, template_dir, output_path, pdf_output=False):
     """ Main function to compile `spec` with the templates
     located in `template_dir`.
+
+    Args:
+        spec (str): Name of the JSON specification file.
+        template_dir (str): Path to the template dir.
+        output_path (str): Path to the output file.
+        pdf_output (bool): Boolean indicating wether to
+            generate a pdf graph.
     """
     input_file = json.load(open(spec))
     module_list = input_file.get('modules', [])
@@ -41,7 +48,8 @@ def run(spec, template_dir, output_path, pdf_output=False):
 
 
 def main():
-    """ Main entrypoint to the compiler.
+    """ Main entrypoint to the compiler. Command line interface for
+    compilation.
     """
     parser = argparse.ArgumentParser(description="""Command line interface for
         compiling JSON spec file in Scala code.""")

@@ -7,7 +7,14 @@ from . import BaseModule
 
 
 class FileImporter(BaseModule, ABC):
-    """ A file importer operation module has a path.
+    """ File Importer is an abstract class that is used for
+    building modules that read files on disk.
+
+    **It cannot be used by as is because it is an abstract class**.
+
+    Args:
+        module (dict): The module dict must have a ``path`` field
+            that contains the path to the file to be read by the module.
     """
     def __init__(self, module, env, named_modules):
         super().__init__(module, env, named_modules)
