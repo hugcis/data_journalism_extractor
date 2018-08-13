@@ -21,9 +21,9 @@ from python_modules.base_module import BaseModule
 
 class ModuleMap:
     """ The main mapping that links modules
-    to their name through the `get` method.
+    to their name through the ``get`` method.
 
-    _Essentially an enum or dictionary_
+    *Essentially an enum or dictionary*
     """
     # Wrapped in a class for clarity
     # pylint: disable=R0903
@@ -96,7 +96,7 @@ class Renderer:
         return rendered, rendered_ext
 
     def render_pdf_graph(self):
-        """ Create the [graphviz](https://graphviz.gitlab.io/) Digraph
+        """ Create the `graphviz <https://graphviz.gitlab.io/>`_ Digraph
         and render the pdf output graph.
         """
         graph = Digraph('compiled', graph_attr={'rankdir': 'LR'})

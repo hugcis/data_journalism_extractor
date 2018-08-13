@@ -12,3 +12,4 @@ scala/project/target
 *.gv
 *.gv.pdf
 .cache/
+_build/
