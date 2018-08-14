@@ -1,0 +1,2 @@
+jinja2>=2.9.6
+graphviz>=0.8.2
