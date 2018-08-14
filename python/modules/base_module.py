@@ -35,7 +35,7 @@ class BaseModule(ABC):
     def __str__(self):
         return self.name
 
-    def _to_graph_repr(self):
+    def to_graph_repr(self):
         """ Generate the representation of the node in the form
 
         ``Name
@@ -52,7 +52,7 @@ class BaseModule(ABC):
         Args:
             graph (graphviz.dot.Digraph): A graphviz Digraph object
         """
-        graph.node(self._to_graph_repr())
+        graph.node(self.to_graph_repr())
 
     @abstractmethod
     def rendered_result(self) -> (str, str):
