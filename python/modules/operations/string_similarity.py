@@ -5,6 +5,17 @@ from jinja2 import Environment
 from extractor_exceptions import IntegrityError
 from .binary_operation import BinaryOperation
 
+ALGO_TO_FUNCTION = {
+    'Levenshtein': 'distance',
+    'NormalizedLevenshtein': 'distance',
+    'Damerau': 'distance',
+    'OptimalStringAlignment': 'distance',
+    'JaroWinkler': 'similarity',
+    'LongestCommonSubsequence': 'distance',
+    'MetricLCS': 'distance',
+    'Cosine': 'similarity'
+}
+
 
 class StringSimilarity(BinaryOperation):
     """ A module that compute similarity scores between two string inputs
@@ -26,6 +37,13 @@ class StringSimilarity(BinaryOperation):
         self.right_out_fields = module.get('rightOutFields', 'all')
 
         self.algorithm = module.get('algorithm', 'Levenshtein')
+        if self.algorithm not in ALGO_TO_FUNCTION:
+            raise ValueError(
+                'The desired algorithm {} isn\'t in the list.\
+The available algorithms are: {}'.format(self.algorithm,
+                                         ', '.join(ALGO_TO_FUNCTION.keys())))
+
+        self.function = ALGO_TO_FUNCTION.get(self.algorithm)
 
         template_path = os.path.join(self.template_path,
                                      'scala_string_similarity.template')
@@ -45,7 +63,8 @@ class StringSimilarity(BinaryOperation):
             right_out_fields=['r._{}'.format(i + 1) for i in
                               self._get_types(self.source2,
                                               self.right_out_fields)],
-            algo_name=self.algorithm
+            algo_name=self.algorithm,
+            func_type=self.function
         ), ''
 
     def get_out_type(self):
