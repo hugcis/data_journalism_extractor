@@ -10,6 +10,9 @@ class MongoImporter(BaseModule):
     """ Main Mongo loader operation module class
     The Mongo loader allows to retreive an arbitrary number of fields
     from MongoDb Documents on convert the into a Flink DataSet.
+
+    Args:
+        module (dict): 
     """
     def __init__(self, module, env: Environment, named_modules):
         super().__init__(module, env, named_modules)

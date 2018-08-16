@@ -19,13 +19,16 @@ class DbImporter(BaseModule):
             * A ``dbUrl`` field with the database entrypoint for JDBC. (e.g
               for a Postgres db named test running on localhost
               ``"jdbc:postgresql://localhost/test"``).
-            * A ``dataType`` field with the input data types.
-            * The names of the desired columns in ``fieldNames``.
+            * A ``dataType`` field with the input data types (Ex:
+              ``["String", "Int", "Double"]``).
+            * The names of the desired columns in ``fieldNames``
+              (Ex: ``["age", "date", "name"]``).
             * The ``query`` to be interpreted by the db.
 
 
             Other optional fields are:
-                * ``filterNull`` for filtering null values from the db output.
+                * ``filterNull`` a boolean value for filtering null values from
+                  the db output.
 
     """
     def __init__(self, module, env: Environment, named_modules):

@@ -7,10 +7,13 @@ from .binary_operation import BinaryOperation
 
 
 class ExtractorWordSimilarity(BinaryOperation):
-    """ A module that extracts pairs of entities based on a similarity score
-    of two sets of strings.
-    The source extraction will always be the right flow and the target will be
-    the left flow.
+    """ A module that computes a Jaccard similarity measure on two
+    input sets.
+
+    Args:
+        module (dict): The module dict must contain ``leftField``
+            ``rightField`` that correspond to the index of the set to be
+            compared in the input flows.
     """
     def __init__(self, module, env: Environment, named_modules):
         super().__init__(module, env, named_modules)
@@ -19,10 +22,6 @@ class ExtractorWordSimilarity(BinaryOperation):
         # be compared
         self.left_field = module.get('leftField')
         self.right_field = module.get('rightField')
-
-        # Source and target for extraction
-        self.source_extract = module.get('sourceExtract')
-        self.target_extract = module.get('targetExtract')
 
         template_path = os.path.join(self.template_path,
                                      'scala_extract_word_sim.template')

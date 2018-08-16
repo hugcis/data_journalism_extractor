@@ -7,7 +7,13 @@ from modules.base_module import BaseModule
 
 
 class BinaryOperation(BaseModule, ABC):
-    """ An binary operation module must have two sources.
+    """ The abstract base module for all binary operations
+    (Operations that take two data flows as input).
+
+    Args:
+        module (dict): The module dict must have the two
+        fields ``source1`` and ``source2`` that contain the names
+        of the two input flows.
     """
     def __init__(self, module, env, named_modules):
         super().__init__(module, env, named_modules)
