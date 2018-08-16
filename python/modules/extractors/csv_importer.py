@@ -12,12 +12,15 @@ class CsvImporter(FileImporter):
     Args:
         module (dict): The module dict must have a ``dataType``
             field that contains the input types as a list of strings.
+            (Ex: ``["String", "Int", "Double"]``)
 
             Other optional fields are:
-                * ``fieldDelimiter`` (csv delimiter if other than comma)
-                * ``quoteCharacter`` (don't separate within quoted fields)
+                * ``fieldDelimiter`` (csv delimiter if other than comma,
+                  Ex: ``"|"``)
+                * ``quoteCharacter`` (don't separate within quoted fields,
+                  Ex: ``"\""``)
                 * ``namedFields`` (for selecting only some of the columns
-                  by their name)
+                  by their name, Ex: ``["name", "age"]``)
 
     """
     # Reasonable amount of class attributes

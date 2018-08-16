@@ -1,5 +1,0 @@
-Renderer
-========
-
-.. automodule:: renderer
-   :members:

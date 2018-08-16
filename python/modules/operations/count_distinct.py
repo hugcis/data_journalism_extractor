@@ -8,6 +8,11 @@ from modules.operations.unary_operation import UnaryOperation
 class CountDistinct(UnaryOperation):
     """ A module that count distinct elements of a dataflow
     and append it to the dataflow as a separate column.
+
+    Args:
+        module (dict): The module dict must contain the ``fields`` field
+            which corresponds to a list of columns to group the flow by in
+            order to count the number of distinct elements.
     """
     def __init__(self, module, env: Environment, named_modules):
         super().__init__(module, env, named_modules)

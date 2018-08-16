@@ -14,7 +14,8 @@ class FileImporter(BaseModule, ABC):
 
     Args:
         module (dict): The module dict must have a ``path`` field
-            that contains the path to the file to be read by the module.
+            that contains the path to the file to be read by the module
+            (Ex: ``~/project/file.csv``).
     """
     def __init__(self, module, env, named_modules):
         super().__init__(module, env, named_modules)
@@ -24,7 +25,7 @@ class FileImporter(BaseModule, ABC):
             raise ValueError(
                 'path not provided in module {}'.format(module))
         self.file_path = os.path.expanduser(self.file_path)
-        
+
         self.template_path = 'importers'
 
     @abstractmethod

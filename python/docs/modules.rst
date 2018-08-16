@@ -1,17 +1,23 @@
 Modules Reference
 =================
 
-.. toctree::
-   :maxdepth: 2
-   :caption: Module list:
-   
-   modules/renderer
-   modules/extractors
-   modules/operations
-   modules/outputs
+Renderer
+--------
+
+.. automodule:: renderer
+   :members:
 
 Base Module
 -----------
 
 .. automodule:: modules.base_module
    :members:
+
+
+.. toctree::
+   :maxdepth: 3
+   :caption: Module list:
+   
+   modules/extractors
+   modules/operations
+   modules/outputs
