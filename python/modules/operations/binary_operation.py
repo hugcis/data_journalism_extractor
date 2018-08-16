@@ -2,6 +2,7 @@
 """
 from abc import ABC, abstractmethod
 from graphviz import Digraph
+from modules.utils import format_types
 from . import BaseModule
 
 
@@ -28,9 +29,11 @@ class BinaryOperation(BaseModule, ABC):
 
         graph.edge(
             self.named_modules.get(self.source1).to_graph_repr(),
-            self.to_graph_repr()
+            self.to_graph_repr(),
+            label=format_types(self.named_modules.get(self.source1).get_out_type())
         )
         graph.edge(
             self.named_modules.get(self.source2).to_graph_repr(),
-            self.to_graph_repr()
+            self.to_graph_repr(),
+            label=format_types(self.named_modules.get(self.source2).get_out_type())
         )

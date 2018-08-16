@@ -2,6 +2,7 @@
 """
 from abc import ABC, abstractmethod
 from graphviz import Digraph
+from modules.utils import format_types
 from . import BaseModule
 
 
@@ -27,4 +28,5 @@ class UnaryOperation(BaseModule, ABC):
 
         graph.edge(
             self.named_modules.get(self.source).to_graph_repr(),
-            self.to_graph_repr())
+            self.to_graph_repr(),
+            label=format_types(self.named_modules.get(self.source).get_out_type()))

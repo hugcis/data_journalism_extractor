@@ -14,7 +14,7 @@ def format_types(type_list):
         return type_list
     elif len(type_list) == 1:
         return "Tuple1[{}]".format(type_list[0])
-    return "({})".format(','.join(
+    return "({})".format(', '.join(
         [format_types(i) for i in type_list]))
 
 
