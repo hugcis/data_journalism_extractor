@@ -1,7 +1,7 @@
 {
     "modules": [
         {
-            "name": "extractor1",
+            "name": "extractorMPs",
             "type": "csvImporter",
             "path": "/Users/hugo/Work/limsi-inria/tests/data_journalism_extractor/example/data/deputes.csv",
             "dataType": ["String", "String"],
@@ -9,24 +9,24 @@
             "namedFields": ["nom", "twitter"]
         },
         {
-            "name": "mongo_loader",
+            "name": "mongoDBHATVP",
             "type": "mongoImporter",
             "dbName": "testdb",
             "collection": "publications",
             "requiredFields": ["lienPageTwitter", "denomination"]
         },
         {
-            "name": "split_twitter_hatvp",
+            "name": "splitTwitterHATVP",
             "type": "split",
-            "source": "mongo_loader",
+            "source": "mongoDBHATVP",
             "delimiter": "/",
             "field": 1,
             "reduce": -1
         },
         {
-            "name": "split_twitter_hatvp2",
+            "name": "splitTwitterHATVP2",
             "type": "split",
-            "source": "split_twitter_hatvp",
+            "source": "splitTwitterHATVP",
             "delimiter": "\\?",
             "field": 1,
             "reduce": 1
@@ -55,28 +55,28 @@
             "filterNull": true
         },
         {
-            "name": "join_extractordb_splittwit",
+            "name": "joinExtractorDBTwitterSplit",
             "type": "join",
             "source1": "extractordb",
-            "source2": "split_twitter_hatvp2",
+            "source2": "splitTwitterHATVP2",
             "field1": 1,
             "field2": 0,
             "leftFields": [0]
         },
         {
-            "name": "join_extractordb_exctractor1",
+            "name": "joinExtractorDBMPs",
             "type": "join",
             "source1": "extractordb",
-            "source2": "extractor1",
+            "source2": "extractorMPs",
             "field1": 1,
             "field2": 1,
             "leftFields": [0]
         },
         {
-            "name": "join_dbhatvp_extractor1",
+            "name": "joinDBHATVPMPs",
             "type": "join",
-            "source1": "join_extractordb_splittwit",
-            "source2": "extractor1",
+            "source1": "joinExtractorDBTwitterSplit",
+            "source2": "extractorMPs",
             "field1": 0,
             "field2": 1,
             "leftFields": [2],
@@ -85,8 +85,8 @@
         {
             "name": "join_db1_hatvp",
             "type": "join",
-            "source1": "join_extractordb_exctractor1",
-            "source2": "split_twitter_hatvp2",
+            "source1": "joinExtractorDBMPs",
+            "source2": "splitTwitterHATVP2",
             "field1": 0,
             "field2": 0,
             "leftFields": [1],
@@ -109,10 +109,20 @@
             "rightField": 2
         },
         {
+            "name": "stringSimilarity",
+            "type": "stringSimilarity",
+            "source1": "split_lex",
+            "source2": "split_lex",
+            "leftField": 0,
+            "rightField": 0,
+            "leftOutFields": [0],
+            "rightOutFields": [0]
+        },
+        {
             "name": "linking1",
             "type": "extractorLink",
             "source1": "extractor4",
-            "source2": "mongo_loader",
+            "source2": "mongoDBHATVP",
             "sourceExtract": 2,
             "targetExtract": 2
         },
@@ -131,7 +141,7 @@
         {
             "name": "output2",
             "type": "csvOutput",
-            "source": "join_dbhatvp_extractor1",
+            "source": "joinDBHATVPMPs",
             "path": "/Users/hugo/Work/limsi-inria/tests/data_journalism_extractor/example/output/output_dep_retweet_hatvp.csv"
         },
         {
@@ -141,21 +151,21 @@
             "path": "/Users/hugo/Work/limsi-inria/tests/data_journalism_extractor/example/output/output_hatvp_retweet_dep.csv"
         },
         {
-            "name": "glob_union1",
+            "name": "globalUnion1",
             "type": "union",
             "source1": "projection1",
-            "source2": "join_dbhatvp_extractor1"
+            "source2": "joinDBHATVPMPs"
         },
         {
-            "name": "glob_union2",
+            "name": "globalUnion2",
             "type": "union",
-            "source1": "glob_union1",
+            "source1": "globalUnion1",
             "source2": "join_db1_hatvp"
         },
         {
             "name": "globCount",
             "type": "countDistinct",
-            "source": "glob_union2",
+            "source": "globalUnion2",
             "fields": [0, 1]
         },
         {
