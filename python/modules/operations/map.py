@@ -2,7 +2,7 @@
 """
 import os
 from jinja2 import Environment
-from .unary_operation import UnaryOperation
+from modules.unary_operation import UnaryOperation
 
 
 class Map(UnaryOperation):

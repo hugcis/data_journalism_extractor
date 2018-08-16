@@ -3,7 +3,7 @@
 import os
 from abc import ABC, abstractmethod
 from extractor_exceptions import IntegrityError
-from . import BaseModule
+from modules.base_module import BaseModule
 
 
 class FileImporter(BaseModule, ABC):

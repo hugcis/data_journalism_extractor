@@ -3,7 +3,7 @@
 import os
 from jinja2 import Environment
 from extractor_exceptions import IntegrityError
-from .unary_operation import UnaryOperation
+from modules.unary_operation import UnaryOperation
 
 
 class Split(UnaryOperation):
