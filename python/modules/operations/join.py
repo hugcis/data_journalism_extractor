@@ -36,8 +36,8 @@ class Join(BinaryOperation):
         type_left = self.named_modules.get(self.source1).get_out_type()
         type_right = self.named_modules.get(self.source2).get_out_type()
 
-        return (compute_out_types(self.left_fields, type_left) +
-                compute_out_types(self.right_fields, type_right))
+        return (_compute_out_types(self.left_fields, type_left) +
+                _compute_out_types(self.right_fields, type_right))
 
     def check_integrity(self):
         pass
@@ -58,7 +58,7 @@ class Join(BinaryOperation):
         return fields
 
 
-def compute_out_types(fields, type_list):
+def _compute_out_types(fields, type_list):
     """ Utility function for returning the right
     field types from the `type_list`.
 
