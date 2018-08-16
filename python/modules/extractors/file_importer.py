@@ -23,7 +23,8 @@ class FileImporter(BaseModule, ABC):
         if self.file_path is None:
             raise ValueError(
                 'path not provided in module {}'.format(module))
-
+        self.file_path = os.path.expanduser(self.file_path)
+        
         self.template_path = 'importers'
 
     @abstractmethod
@@ -31,5 +32,5 @@ class FileImporter(BaseModule, ABC):
         pass
 
     def check_integrity(self):
-        if not os.path.exists(os.path.expanduser(self.file_path)):
+        if not os.path.exists(self.file_path):
             raise IntegrityError("File {} not in path".format(self.file_path))

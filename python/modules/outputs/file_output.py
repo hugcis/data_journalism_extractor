@@ -1,5 +1,6 @@
 """ The base class for file output modules
 """
+import os
 from abc import ABC, abstractmethod
 from graphviz import Digraph
 from modules.utils import format_types
@@ -21,6 +22,8 @@ class FileOutput(BaseModule, ABC):
         if self.source is None:
             raise ValueError(
                 'source not provided in module {}'.format(module))
+
+        self.file_path = os.path.expanduser(self.file_path)
 
         self.template_path = 'outputs'
 
