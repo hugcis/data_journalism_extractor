@@ -24,11 +24,11 @@ object Main {
     val lineDelimiter_extractor1 = "\n"
     val fieldDelimiter_extractor1 = ";"
     val includedFields_extractor1 = Array(1, 30)
-    val extractor1 = env.readCsvFile[(String,String)](filePath_extractor1, lineDelimiter_extractor1, fieldDelimiter_extractor1, ignoreFirstLine=true, includedFields=includedFields_extractor1)
+    val extractor1 = env.readCsvFile[(String, String)](filePath_extractor1, lineDelimiter_extractor1, fieldDelimiter_extractor1, ignoreFirstLine=true, includedFields=includedFields_extractor1)
     
     // ===== Mongo Importer module mongo_loader =====
     
-    val mongo_loader = MongoReader[(String,String)](env, "testdb", "publications", List("lienPageTwitter","denomination")).getDataSet()
+    val mongo_loader = MongoReader[(String, String)](env, "testdb", "publications", List("lienPageTwitter","denomination")).getDataSet()
     
     // ===== Split split_twitter_hatvp =====
     
@@ -43,7 +43,7 @@ object Main {
     val filePath_extractor_lex = "/Users/hugo/Work/limsi-inria/tests/data_journalism_extractor/example/data/lex.csv"
     val lineDelimiter_extractor_lex = "\n"
     val fieldDelimiter_extractor_lex = ","
-    val extractor_lex = env.readCsvFile[(String,String)](filePath_extractor_lex, lineDelimiter_extractor_lex, fieldDelimiter_extractor_lex)
+    val extractor_lex = env.readCsvFile[(String, String)](filePath_extractor_lex, lineDelimiter_extractor_lex, fieldDelimiter_extractor_lex)
     
     // ===== Split split_lex =====
     
@@ -54,9 +54,9 @@ object Main {
     val fieldTypes_extractordb: Array[TypeInformation[_]] = Array(createTypeInformation[String],createTypeInformation[String])
     val fieldNames_extractordb = Array("rt_name","screen_name")
     val query_extractordb = "select rt_name, screen_name from (select rt_name, uid from (select us.screen_name as rt_name, rt.sid from retweetedstatuses as rt join users as us on (rt.uid=us.uid)) as sub join checkedstatuses as ch on (sub.sid=ch.sid)) as subsub join users on (subsub.uid=users.uid);"
-    val interm_extractordb = SQLDBReader[(String,String)](fieldNames_extractordb, fieldTypes_extractordb, "org.postgresql.Driver", "jdbc:postgresql://localhost/twitter", query_extractordb, env).getDataSet
+    val interm_extractordb = SQLDBReader[(String, String)](fieldNames_extractordb, fieldTypes_extractordb, "org.postgresql.Driver", "jdbc:postgresql://localhost/twitter", query_extractordb, env).getDataSet
     
-    val extractordb = interm_extractordb.map((elem: Row)=> getRequired[(String,String)](elem))
+    val extractordb = interm_extractordb.map((elem: Row)=> getRequired[(String, String)](elem))
       .filter(t => t._1 != null && t._2 != null)
     
     // ===== Join module join_extractordb_splittwit =====
@@ -89,7 +89,7 @@ object Main {
     val lineDelimiter_extractor4 = "\n"
     val fieldDelimiter_extractor4 = "|"
     val quoteCharacter_extractor4 = '$'
-    val extractor4 = env.readCsvFile[(String,String)](filePath_extractor4, lineDelimiter_extractor4, fieldDelimiter_extractor4, quoteCharacter_extractor4)
+    val extractor4 = env.readCsvFile[(String, String)](filePath_extractor4, lineDelimiter_extractor4, fieldDelimiter_extractor4, quoteCharacter_extractor4)
     
     // ===== Word similarity extractor tryExtractorWordSim =====
     
@@ -148,15 +148,6 @@ object Main {
 
   
   
-  // ===== Entity extractor FlatMapFunction linking1=====
-  
-  private class extract_extractor4_mongo_loader extends FlatMapFunction[((String,String), (String,String)), (String,String,String,String)] {
-      override def flatMap(value: ((String,String), (String,String)), out: Collector[(String,String,String,String)]): Unit = {
-        val d = (raw"\b(" + value._2._2.toLowerCase + raw")\b").r
-        if (d.findFirstIn(value._1._2.toLowerCase).nonEmpty) out.collect((value._1._1,value._1._2,value._2._1,value._2._2))
-      }
-  }
-  
   // ===== DB Importer module ext =====
   
   private def getRequired[T](elem: Row): T = {
@@ -170,5 +161,14 @@ object Main {
         case 6 => (tuplify(0), tuplify(1), tuplify(2), tuplify(3), tuplify(4), tuplify(5))
       }
       d.asInstanceOf[T]
+  }
+  
+  // ===== Entity extractor FlatMapFunction linking1=====
+  
+  private class extract_extractor4_mongo_loader extends FlatMapFunction[((String, String), (String, String)), (String, String, String, String)] {
+      override def flatMap(value: ((String, String), (String, String)), out: Collector[(String, String, String, String)]): Unit = {
+        val d = (raw"\b(" + value._2._2.toLowerCase + raw")\b").r
+        if (d.findFirstIn(value._1._2.toLowerCase).nonEmpty) out.collect((value._1._1,value._1._2,value._2._1,value._2._2))
+      }
   }
 }

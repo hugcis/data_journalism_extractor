@@ -16,7 +16,7 @@ organization := "core"
 
 ThisBuild / scalaVersion := "2.11.12"
 
-val flinkVersion = "1.5.0"
+val flinkVersion = "1.6.0"
 
 val flinkDependencies = Seq(
   "org.apache.flink" %% "flink-scala" % flinkVersion % "provided",
@@ -35,6 +35,7 @@ libraryDependencies ++= Seq(
   "org.apache.flink" % "flink-jdbc" % flinkVersion,
   "org.postgresql" % "postgresql" % "42.2.2",
   "org.mongodb.scala" %% "mongo-scala-driver" % "2.1.0",
+  "info.debatty" % "java-string-similarity" % "1.1.0"
   //"edu.stanford.nlp" % "stanford-corenlp" % "3.9.1",
   //"edu.stanford.nlp" % "stanford-corenlp" % "3.9.1" classifier "models",
   //"edu.stanford.nlp" % "stanford-corenlp" % "3.9.1" classifier "models-french"

@@ -14,7 +14,8 @@ from modules.operations import (Join,
                                 Split,
                                 ExtractorWordSimilarity,
                                 Map,
-                                CountDistinct)
+                                CountDistinct,
+                                StringSimilarity)
 from modules.outputs import CsvOutput
 from extractor_exceptions import UnknownModuleError, IntegrityError
 
@@ -38,6 +39,7 @@ class ModuleMap:
         'join': Join,
         'extractorLink': ExtractorLink,
         'extractorWordSim': ExtractorWordSimilarity,
+        'stringSimilarity': StringSimilarity,
         # Unary ops
         'projection': Projection,
         'union': Union,

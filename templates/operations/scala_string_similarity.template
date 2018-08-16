@@ -1,0 +1,5 @@
+// ===== String similarity operation module {{name}} =====
+
+val algo_{{name}} = new {{algo_name}}()
+val {{name}} = {{source1}}.cross({{source2}}) 
+    { (l, r) => ({{', '.join(left_out_fields)}}, {{', '.join(right_out_fields)}}, algo_{{name}}.{{func_type}}(l._{{left_field + 1}}, r._{{right_field + 1}})) }
