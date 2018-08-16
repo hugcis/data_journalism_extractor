@@ -8,6 +8,7 @@ import org.apache.flink.api.common.functions.FlatMapFunction
 import org.apache.flink.api.common.operators.Order
 import org.apache.flink.api.common.typeinfo.TypeInformation
 import org.apache.flink.types.Row
+import info.debatty.java.stringsimilarity._
 
 object Main {
 
