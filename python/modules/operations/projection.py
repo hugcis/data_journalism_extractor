@@ -3,7 +3,7 @@
 import os
 from jinja2 import Environment
 from extractor_exceptions import IntegrityError
-from modules.unary_operation import UnaryOperation
+from modules.operations.unary_operation import UnaryOperation
 
 
 class Projection(UnaryOperation):
