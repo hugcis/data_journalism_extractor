@@ -28,4 +28,4 @@ All the python tests are in `$ROOT/python/tests`.
 
 ## Documentation
 
-Documentation about the project is available at this [link]<https://data-journalism-extractor.readthedocs.io/en/latest/>
+Documentation about the project is available at this [link](https://data-journalism-extractor.readthedocs.io/en/latest/).
