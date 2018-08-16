@@ -106,7 +106,7 @@ object Main {
     
     val algo_stringSimilarity = new Levenshtein()
     val stringSimilarity = split_lex.cross(split_lex) 
-        { (l, r) => (l._1, r._1, algo_stringSimilarity.(l._1, r._1)) }
+        { (l, r) => (l._1, r._1, algo_stringSimilarity.distance(l._1, r._1)) }
     
     // ===== Entity extractor linking1 =====
     
