@@ -31,5 +31,5 @@ class FileImporter(BaseModule, ABC):
         pass
 
     def check_integrity(self):
-        if not os.path.exists(self.file_path):
+        if not os.path.exists(os.path.expanduser(self.file_path)):
             raise IntegrityError("File {} not in path".format(self.file_path))
