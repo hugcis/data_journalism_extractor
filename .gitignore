@@ -13,3 +13,4 @@ scala/project/target
 *.gv.pdf
 .cache/
 _build/
+*.bz2
