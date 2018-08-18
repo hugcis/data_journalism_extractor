@@ -35,7 +35,7 @@ null".format(self.reduce)
         source_length = len(
             self.named_modules.get(self.source).get_out_type())
         projection_tuple = ','.join(
-            ['set._{}'.format(i + 1) if i != self.field - 1 else
+            ['set._{}'.format(i + 1) if i != self.field else
              self._get_main_render(i + 1)
              for i in range(source_length)]
         )
