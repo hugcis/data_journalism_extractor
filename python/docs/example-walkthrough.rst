@@ -176,8 +176,14 @@ represented by ``"\?"``, but the antislash must be escaped in strings hence
 ``"\\?"``. Also, column indexing starts at 0 and negative indexing is supported
 for -1 only (``"reduce": -1``).
 
-Then, a series of joins allows to go from pairs of Twitter names and retweeter names 
-to pairs of Lobbyists and MPs names. 
+Then, a series of joins transforms pairs of Twitter names and retweeter names 
+into pairs of Lobbyists and MPs names. 
+
+There are two separate flows:
+   * One for the tweets authored by lobbyists and retweeted by MPs 
+     (``joinExtractorDBTwitterSplit`` and ``joinDBHATVPMPs``)
+   * The other for tweets authored by MPs and retweeted by lobbyists
+     (``joinExtractorDBMPs`` and ``joinDB1HATVP``)
 
 They are explained below:
 
@@ -212,7 +218,7 @@ They are explained below:
        "rightFields": [0]
    },
    {
-       "name": "join_db1_hatvp",
+       "name": "joinDB1HATVP",
        "type": "join",
        "source1": "joinExtractorDBMPs",
        "source2": "splitTwitterHATVP2",
@@ -231,4 +237,81 @@ For example column 0 on the left and all columns on the right for module
 Output
 ######
 
-An arbitrary number of outputs can be added at any step of the process. 
+An arbitrary number of outputs can be added at any step of the process to 
+log an intermediray output for debugging or store a result. 
+
+Two CSV outputs correspond to  both MPs' retweets of lobbyists and lobbyists'
+retweets of MPs.
+
+.. code-block:: javascript
+
+    {
+        "name": "output2",
+        "type": "csvOutput",
+        "source": "joinDBHATVPMPs",
+        "path": "/Users/hugo/Work/limsi-inria/tests/data_journalism_extractor/example/output/output_dep_retweet_hatvp.csv"
+    },
+    {
+        "name": "output3",
+        "type": "csvOutput",
+        "source": "joinDB1HATVP",
+        "path": "/Users/hugo/Work/limsi-inria/tests/data_journalism_extractor/example/output/output_hatvp_retweet_dep.csv"
+    }
+
+
+The 
+
+Wikipedia mentions
+^^^^^^^^^^^^^^^^^^
+
+All French MPs have Wikipedia pages. They usually contain a short bio that
+gives useful information such as previous occupations or major events in the MP's
+political career. The Wikipedia API can be used to download the bios and sentence
+splitting can be applied to obtain the file in ``example/data/wiki.csv``.
+
+From a list of pairs of MP name and sentence, different approaches can extract
+links between MPs and lobbyists. The simplest one is consists in matching every 
+occurence of a lobby's name in the sentences and treating it as an indication
+of the existence of a link between the two entities. It obviously yields some false
+positives but nonetheless give an indication that the corresponding lobby has had
+a relation with the MP. 
+
+Extraction
+##########
+
+Data in ``wiki.csv`` is already pre-processed and thus simply needs an CSV importer
+module to extract the data.
+
+The second field is quoted between ``$`` s.
+
+.. code-block:: javascript
+
+   {
+      "name": "extractorWiki",
+      "type": "csvImporter",
+      "path": "/Users/hugo/Work/limsi-inria/tests/data_journalism_extractor/example/data/wiki.csv",
+      "dataType": ["String", "String"],
+      "quoteCharacter": "$",
+      "fieldDelimiter": "|"
+   }
+
+Processing
+##########
+
+The ``extractorLink`` module implements a mention extraction algorithm to extract
+mentions of a given data flow's elements into an other data flow. 
+
+The ``sourceExtract`` and ``targetExtract`` fields correspond to the column index 
+of the source and target flow. **The source is the content mention of the target will
+be extracted from.**
+
+.. code-block:: javascript
+
+   {
+      "name": "mentionExtraction",
+      "type": "extractorLink",
+      "source1": "extractorWiki",
+      "source2": "mongoDBHATVP",
+      "sourceExtract": 1,
+      "targetExtract": 1
+   }

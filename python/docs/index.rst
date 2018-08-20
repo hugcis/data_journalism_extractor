@@ -6,10 +6,18 @@
 Welcome to Data Journalism Extractor's documentation!
 =====================================================
 
-This project is an attempt to create a tool that would allow journalists to 
-extract and process data from multiple heterogenous data sources while leveraging
-powerful and complex database, information extraction and NLP tools with
-limited programming knowledge.
+This project is an attempt to create a tool to help journalists extract and process
+data at scale, from multiple **heterogenous data sources** while leveraging
+powerful and complex **database**, **information extraction** and **NLP** tools with
+**limited programming knowledge**.
+
+Features
+--------
+
+* Extract data from **relational databases** (Postgres, MySQL, Oracle), **NoSQL** databases 
+  (MongoDB), CSV files, HDFS, etc.
+* Use complex processing tools such as **soft string-matching functions**, **link extractions**, etc.
+* Store outputs in multiple different data sinks (CSV files, databases, HDFS, etc.)
 
 .. toctree::
    :maxdepth: 2
