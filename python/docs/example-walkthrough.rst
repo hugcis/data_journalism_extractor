@@ -274,7 +274,7 @@ links between MPs and lobbyists. The simplest one is consists in matching every
 occurence of a lobby's name in the sentences and treating it as an indication
 of the existence of a link between the two entities. It obviously yields some false
 positives but nonetheless give an indication that the corresponding lobby has had
-a relation with the MP. 
+a relation with the MP. It is the example described below. 
 
 Extraction
 ##########

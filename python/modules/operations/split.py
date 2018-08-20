@@ -9,6 +9,17 @@ from modules.operations.unary_operation import UnaryOperation
 class Split(UnaryOperation):
     """ A module that split a given string field from an incoming
     dataflow according to a regex.
+
+    Args:
+        module (dict): The module dict must contain a ``field`` that
+            specify the column index on which to perform the split
+            operation (ex: ``0``)
+            A ``delimiter`` field indicates the separator (ex: ``","``)
+
+            Other optional fields are:
+                * The ``reduce`` optional field is used to select only one
+                  element of the array resulting of the split function (ex:
+                  ``null``, ``-1``, ``2``).
     """
     def __init__(self, module, env: Environment, named_modules):
         super().__init__(module, env, named_modules)

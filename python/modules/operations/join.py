@@ -7,6 +7,17 @@ from .binary_operation import BinaryOperation
 
 class Join(BinaryOperation):
     """ A module that joins two incoming dataflows on field1 == field2
+
+    Args:
+        module (dict): The module dict must contain the ``field1`` and
+            ``field2`` fields that correspond to the desired index to
+            make the join on.
+            
+            Other optional fields are:
+                * ``leftFields`` and ``rightFields`` are lists of integers
+                  specifying the indexes to keep in the join's output. Default
+                  value is ``"all"``.
+                  (ex: ``[0, 2]``)
     """
     def __init__(self, module, env: Environment, named_modules):
         super().__init__(module, env, named_modules)

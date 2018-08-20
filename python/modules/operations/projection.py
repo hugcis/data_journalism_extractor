@@ -10,7 +10,10 @@ class Projection(UnaryOperation):
     """ A module that projects the incoming dataflow on the fields
     specified in `fields`.
 
-
+    Args:
+        module (dict): The module dict must contain a ``fields``
+            field, an array of integer representing the columns
+            to project on (ex: ``[0, 2]``).
     """
     def __init__(self, module, env: Environment, named_modules):
         super().__init__(module, env, named_modules)
