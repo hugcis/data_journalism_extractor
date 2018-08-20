@@ -9,7 +9,7 @@ class TestFormatTypes(unittest.TestCase):
     def test_multiple_types(self):
         for i in range(2, 5):
             self.assertEqual(
-                "({})".format(','.join(i*["TEST"])),
+                "({})".format(', '.join(i*["TEST"])),
                 format_types(i*["TEST"]))
 
 
