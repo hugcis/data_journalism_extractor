@@ -37,7 +37,7 @@ object Main {
     
     // ===== Split splitTwitterHATVP2 =====
     
-    val splitTwitterHATVP2 = splitTwitterHATVP.map { set => (set._1.toLowerCase.split("\\?").length match { case 1 => set._1.toLowerCase.split("\\?")(0) case _ => set._1.toLowerCase.split("\\?")(0)},set._2)}
+    val splitTwitterHATVP2 = splitTwitterHATVP.map { set => (set._1,set._2.toLowerCase.split("\\?").length match { case 1 => set._2.toLowerCase.split("\\?")(0) case _ => set._2.toLowerCase.split("\\?")(-1)})}
     
     // ===== CSV Importer module extractor_lex =====
     
@@ -48,7 +48,7 @@ object Main {
     
     // ===== Split split_lex =====
     
-    val split_lex = extractor_lex.map { set => (set._1,set._2.toLowerCase.split("|"))}
+    val split_lex = extractor_lex.map { set => (set._1,set._2)}
     
     // ===== DB Importer module extractordb =====
     
@@ -78,19 +78,19 @@ object Main {
       .join(extractorMPs.filter(_._2 != null))
       .where(0).equalTo(1) {(l, r) => (l._3, r._1)}
     
-    // ===== Join module join_db1_hatvp =====
+    // ===== Join module joinDB1HATVP =====
     
-    val join_db1_hatvp = joinExtractorDBMPs.filter(_._1 != null)
+    val joinDB1HATVP = joinExtractorDBMPs.filter(_._1 != null)
       .join(splitTwitterHATVP2.filter(_._1 != null))
       .where(0).equalTo(0) {(l, r) => (l._2, r._2)}
     
-    // ===== CSV Importer module extractor4 =====
+    // ===== CSV Importer module extractorWiki =====
     
-    val filePath_extractor4 = "/Users/hugo/Work/limsi-inria/tests/data_journalism_extractor/example/data/wiki.csv"
-    val lineDelimiter_extractor4 = "\n"
-    val fieldDelimiter_extractor4 = "|"
-    val quoteCharacter_extractor4 = '$'
-    val extractor4 = env.readCsvFile[(String, String)](filePath_extractor4, lineDelimiter_extractor4, fieldDelimiter_extractor4, quoteCharacter_extractor4)
+    val filePath_extractorWiki = "/Users/hugo/Work/limsi-inria/tests/data_journalism_extractor/example/data/wiki.csv"
+    val lineDelimiter_extractorWiki = "\n"
+    val fieldDelimiter_extractorWiki = "|"
+    val quoteCharacter_extractorWiki = '$'
+    val extractorWiki = env.readCsvFile[(String, String)](filePath_extractorWiki, lineDelimiter_extractorWiki, fieldDelimiter_extractorWiki, quoteCharacter_extractorWiki)
     
     // ===== Word similarity extractor tryExtractorWordSim =====
     
@@ -108,13 +108,13 @@ object Main {
     val stringSimilarity = split_lex.cross(split_lex) 
         { (l, r) => (l._1, r._1, algo_stringSimilarity.distance(l._1, r._1)) }
     
-    // ===== Entity extractor linking1 =====
+    // ===== Entity extractor mentionExtraction =====
     
-    val linking1 = extractor4.cross(mongoDBHATVP).flatMap(new extract_extractor4_mongoDBHATVP)
+    val mentionExtraction = extractorWiki.cross(mongoDBHATVP).flatMap(new extract_extractorWiki_mongoDBHATVP)
     
     // ===== Projection projection1 =====
     
-    val projection1 = linking1.map { set => (set._1,set._4)}.distinct()
+    val projection1 = mentionExtraction.map { set => (set._1,set._4)}.distinct()
     
     // ===== CSV Output File output1 =====
     
@@ -129,7 +129,7 @@ object Main {
     // ===== CSV Output File output3 =====
     
     val filePath_output3 = "/Users/hugo/Work/limsi-inria/tests/data_journalism_extractor/example/output/output_hatvp_retweet_dep.csv"
-    join_db1_hatvp.writeAsCsv(filePath_output3, writeMode=FileSystem.WriteMode.OVERWRITE)
+    joinDB1HATVP.writeAsCsv(filePath_output3, writeMode=FileSystem.WriteMode.OVERWRITE)
     
     // ===== Union module globalUnion1 =====
     
@@ -137,7 +137,7 @@ object Main {
     
     // ===== Union module globalUnion2 =====
     
-    val globalUnion2 = globalUnion1.union(join_db1_hatvp)
+    val globalUnion2 = globalUnion1.union(joinDB1HATVP)
     
     // ===== Count Distinct module globCount =====
     
@@ -155,9 +155,9 @@ object Main {
 
   
   
-  // ===== Entity extractor FlatMapFunction linking1=====
+  // ===== Entity extractor FlatMapFunction mentionExtraction=====
   
-  private class extract_extractor4_mongoDBHATVP extends FlatMapFunction[((String, String), (String, String)), (String, String, String, String)] {
+  private class extract_extractorWiki_mongoDBHATVP extends FlatMapFunction[((String, String), (String, String)), (String, String, String, String)] {
       override def flatMap(value: ((String, String), (String, String)), out: Collector[(String, String, String, String)]): Unit = {
         val d = (raw"\b(" + value._2._2.toLowerCase + raw")\b").r
         if (d.findFirstIn(value._1._2.toLowerCase).nonEmpty) out.collect((value._1._1,value._1._2,value._2._1,value._2._2))

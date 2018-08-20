@@ -8,7 +8,7 @@
             "fieldDelimiter": ";"
         },
         {
-            "name": "extractor4",
+            "name": "extractorWiki",
             "type": "csvImporter",
             "path": "/Users/hugo/Work/limsi-inria/tests/test/wiki.csv",
             "dataType": ["String", "String"],
@@ -23,16 +23,16 @@
             "requiredFields": ["denomination", "identifiantNational"]
         },
         {
-            "name": "linking1",
+            "name": "mentionExtraction",
             "type": "extractorLink",
-            "source1": "extractor4",
+            "source1": "extractorWiki",
             "source2": "extractor2",
             "rightFields": [1]
         },
         {
             "name": "projection1",
             "type": "projection",
-            "source": "linking1",
+            "source": "mentionExtraction",
             "fields": [1, 3]
         },
         {

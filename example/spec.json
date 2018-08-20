@@ -83,7 +83,7 @@
             "rightFields": [0]
         },
         {
-            "name": "join_db1_hatvp",
+            "name": "joinDB1HATVP",
             "type": "join",
             "source1": "joinExtractorDBMPs",
             "source2": "splitTwitterHATVP2",
@@ -93,7 +93,7 @@
             "rightFields": [1]
         },
         {
-            "name": "extractor4",
+            "name": "extractorWiki",
             "type": "csvImporter",
             "path": "/Users/hugo/Work/limsi-inria/tests/data_journalism_extractor/example/data/wiki.csv",
             "dataType": ["String", "String"],
@@ -119,17 +119,17 @@
             "rightOutFields": [0]
         },
         {
-            "name": "linking1",
+            "name": "mentionExtraction",
             "type": "extractorLink",
-            "source1": "extractor4",
+            "source1": "extractorWiki",
             "source2": "mongoDBHATVP",
-            "sourceExtract": 2,
-            "targetExtract": 2
+            "sourceExtract": 1,
+            "targetExtract": 1
         },
         {
             "name": "projection1",
             "type": "projection",
-            "source": "linking1",
+            "source": "mentionExtraction",
             "fields": [1, 4]
         },
         {
@@ -147,7 +147,7 @@
         {
             "name": "output3",
             "type": "csvOutput",
-            "source": "join_db1_hatvp",
+            "source": "joinDB1HATVP",
             "path": "/Users/hugo/Work/limsi-inria/tests/data_journalism_extractor/example/output/output_hatvp_retweet_dep.csv"
         },
         {
@@ -160,7 +160,7 @@
             "name": "globalUnion2",
             "type": "union",
             "source1": "globalUnion1",
-            "source2": "join_db1_hatvp"
+            "source2": "joinDB1HATVP"
         },
         {
             "name": "globCount",
