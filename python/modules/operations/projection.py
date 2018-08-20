@@ -8,7 +8,9 @@ from modules.operations.unary_operation import UnaryOperation
 
 class Projection(UnaryOperation):
     """ A module that projects the incoming dataflow on the fields
-    specified in `fields`
+    specified in `fields`.
+
+
     """
     def __init__(self, module, env: Environment, named_modules):
         super().__init__(module, env, named_modules)
@@ -26,13 +28,13 @@ class Projection(UnaryOperation):
         return self.template.render(
             name=self.name,
             source=self.source,
-            projection_tuple=','.join(['set._{}'.format(i)
+            projection_tuple=','.join(['set._{}'.format(i + 1)
                                        for i in self.fields])
         ), ''
 
     def get_out_type(self):
         source_type = self.named_modules.get(self.source).get_out_type()
-        return [source_type[i-1] for i in self.fields]
+        return [source_type[i] for i in self.fields]
 
     def check_integrity(self):
         source_type = self.named_modules.get(self.source).get_out_type()

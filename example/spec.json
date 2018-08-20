@@ -130,7 +130,7 @@
             "name": "projection1",
             "type": "projection",
             "source": "mentionExtraction",
-            "fields": [1, 4]
+            "fields": [0, 3]
         },
         {
             "name": "output1",
