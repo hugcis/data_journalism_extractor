@@ -16,7 +16,7 @@ class Map(UnaryOperation):
         module (dict): The module dict must contain a ``function`` field
             that contains the desired scala function to be mapped to the data
             flow. (ex: ``"(tuple) => (tuple._1*2, tuple._2)"``).
-            
+
             The ``outType`` field must also be provided to ensure
             compatibility with downstream modules.
     """

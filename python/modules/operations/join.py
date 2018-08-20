@@ -12,7 +12,7 @@ class Join(BinaryOperation):
         module (dict): The module dict must contain the ``field1`` and
             ``field2`` fields that correspond to the desired index to
             make the join on.
-            
+
             Other optional fields are:
                 * ``leftFields`` and ``rightFields`` are lists of integers
                   specifying the indexes to keep in the join's output. Default
