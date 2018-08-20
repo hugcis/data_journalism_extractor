@@ -67,14 +67,14 @@ class ExtractorLink(BinaryOperation):
     def _indices(self, source, fields):
         if fields == 'all':
             source_type = self.named_modules.get(source).get_out_type()
-            return range(1, len(source_type) + 1)
+            return range(len(source_type))
         return fields
 
     def _get_collection_tuple(self):
         return ','.join(
-            [','.join(['value._1._{}'.format(i) for i in
+            [','.join(['value._1._{}'.format(i + 1) for i in
                        self._indices(self.source1, self.left_fields)]),
-             ','.join(['value._2._{}'.format(i) for i in
+             ','.join(['value._2._{}'.format(i + 1) for i in
                        self._indices(self.source2, self.right_fields)])])
 
     def check_integrity(self):

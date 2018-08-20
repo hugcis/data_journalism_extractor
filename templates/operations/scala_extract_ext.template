@@ -2,7 +2,7 @@
 
 private class extract_{{source1}}_{{source2}} extends FlatMapFunction[({{type_left}}, {{type_right}}), {{type_out}}] {
     override def flatMap(value: ({{type_left}}, {{type_right}}), out: Collector[{{type_out}}]): Unit = {
-      val d = (raw"\b(" + value._2._{{source_extract}}.toLowerCase + raw")\b").r
-      if (d.findFirstIn(value._1._{{target_extract}}.toLowerCase).nonEmpty) out.collect(({{collect_tuple}}))
+      val d = (raw"\b(" + value._2._{{source_extract + 1}}.toLowerCase + raw")\b").r
+      if (d.findFirstIn(value._1._{{target_extract + 1}}.toLowerCase).nonEmpty) out.collect(({{collect_tuple}}))
     }
 }
