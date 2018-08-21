@@ -12,7 +12,7 @@ BASE_DIR = 'scala/src/main/scala/core/'
 TEMPLATE_NAME = 'MainTemplate.scala.template'
 
 
-def run(spec, template_dir, output_path, pdf_output=False):
+def run(spec: str, template_dir: str, output_path: str, pdf_output=False):
     """ Main function to compile `spec` with the templates
     located in `template_dir`.
 
@@ -76,6 +76,7 @@ def main():
 
     args = parser.parse_args()
     run(args.spec, args.template_dir, args.output, args.pdf_output)
+
 
 if __name__ == "__main__":
     main()

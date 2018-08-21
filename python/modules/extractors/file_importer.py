@@ -17,6 +17,9 @@ class FileImporter(BaseModule, ABC):
             that contains the path to the file to be read by the module
             (Ex: ``~/project/file.csv``).
     """
+    file_path: str
+    template_path: str
+
     def __init__(self, module, env, named_modules):
         super().__init__(module, env, named_modules)
         self.file_path = module.get('path')
