@@ -2,7 +2,7 @@
 """
 import os
 from jinja2 import Environment
-from .file_output import FileOutput
+from modules.outputs.file_output import FileOutput
 
 
 class CsvOutput(FileOutput):

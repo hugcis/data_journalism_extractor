@@ -148,3 +148,6 @@ You should the be able to see ``out.csv`` in ``~/project`` and the following job
 web interface:
 
 .. image:: images/mini_interface.png
+
+
+A more thorough introduction to this software can be found a :doc:`this link <../example-walkthrough>`

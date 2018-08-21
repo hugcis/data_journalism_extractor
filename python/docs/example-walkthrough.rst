@@ -70,15 +70,16 @@ The twitter accounts of both the MPs and lobbyists come from their respective da
 ``deputes.csv`` under the column ``twitter`` and the ``lienPageTwitter`` field in 
 MongoDB documents representing the lobbyists. 
 
-The operations and modules needed for extracting and using data from those sources are 
-the following (you can find more detailed explanation of the capacities of each module
-in the :
 
 Extraction
 ##########
 
 Three extraction modules are needed for reading the Mongo database, reading the ``deputes.csv``
 file and fetching data from the Postgres database.
+
+The operations and modules needed for extracting and using data from those sources are 
+the following (you can find more detailed explanation of the capacities of each module
+in the detailed module :doc:`reference <../modules>`:
   
   * The Mongo reader module is specified below, where ``dbName`` is the name you chose for your
     Mongo DB, and ``"publications"`` is the name of the main collection. 
