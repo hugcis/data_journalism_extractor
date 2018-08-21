@@ -43,6 +43,16 @@ String Similarity
 .. automodule:: modules.operations.string_similarity
    :members:
 
+Mention Extraction
+^^^^^^^^^^^^^^^^^^
+.. automodule:: modules.operations.extractor_link
+   :members:
+
+Jaccard Measure on Sets
+^^^^^^^^^^^^^^^^^^^^^^^
+.. automodule:: modules.operations.extractor_word_similarity
+   :members:
+
 Union
 ^^^^^
 .. automodule:: modules.operations.union

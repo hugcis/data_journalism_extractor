@@ -7,7 +7,12 @@ from .binary_operation import BinaryOperation
 
 
 class Union(BinaryOperation):
-    """ A module that does a union of two incoming data flows.
+    """ A module that performs the union of two incoming data flows.
+
+    Args:
+        module (dict): The module dict must contain the fields
+            ``leftField`` and ``rightField`` that are integers corresponding
+            to the columns that will be compared (ex: ``0``).
     """
     def __init__(self, module, env: Environment, named_modules):
         super().__init__(module, env, named_modules)

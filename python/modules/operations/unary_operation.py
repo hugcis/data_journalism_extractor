@@ -7,7 +7,11 @@ from modules.base_module import BaseModule
 
 
 class UnaryOperation(BaseModule, ABC):
-    """ An unary operation module must have a source.
+    """ The Unary operation base abstract class.
+
+    Args:
+        module (dict): The module must contain a ``source`` field
+            with the name of the incoming data flow.
     """
     def __init__(self, module, env, named_modules):
         super().__init__(module, env, named_modules)

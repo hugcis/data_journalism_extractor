@@ -24,6 +24,40 @@ class StringSimilarity(BinaryOperation):
     **Warning: Some algorithms compute a distance, some others a similarity
     score. Besides, some are normalized and some aren't. See the documentation
     for more details on each algorithm.**
+
+    The default ``algorithm`` is the Levenshtein distance, but any one
+    from the following list can be chosen:
+
+        * Levenshtein
+        * NormalizedLevenshtein
+        * Damerau
+        * OptimalStringAlignment
+        * JaroWinkler
+        * LongestCommonSubsequence
+        * MetricLCS
+        * Cosine
+
+    All implemetations are from Thibault Debatty's
+    `string similarity <https://github.com/tdebatty/java-string-similarity>`_
+    Java library. See the `javadoc
+    <http://www.javadoc.io/doc/info.debatty/java-string-similarity/1.1.0>`_ for
+    a detailed description of all algorithms
+
+    Args:
+        module (dict): The module dict must contain the fields
+            ``leftField`` and ``rightField`` that are integers corresponding
+            to the columns that will be compared (ex: ``0``).
+
+            An ``algorithm`` field should also be included in module with
+            a string containing the name of the desired algorithm (ex:
+            ``"Levenshtein"``).
+
+            Other optional fields are:
+                * ``leftOutFields`` and ``rightOutFields`` that are
+                  by default set to ``"all"`` but can be a list of integers
+                  that represent the columns on which the result should be
+                  projected (ex: [0, 2, 3]).
+
     """
     def __init__(self, module, env: Environment, named_modules):
         super().__init__(module, env, named_modules)

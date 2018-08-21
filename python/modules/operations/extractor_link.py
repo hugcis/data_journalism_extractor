@@ -11,6 +11,17 @@ class ExtractorLink(BinaryOperation):
     into a field of an other data flow.
     The source extraction will always be the right flow and the target will be
     the left flow.
+
+    Args:
+        module (dict): The module dict must contain ``sourceExtract``
+            and ``targetExtract`` with the index of source and target
+            columns.
+
+            ``sourceExtract`` corresponds to the ``source1`` data flow
+            with text to make extraction from.
+
+            ``targetExtract`` corresponds to ``source2`` and contains
+            the patterns that will be searched for in the ``sourceExtract``.
     """
     def __init__(self, module, env: Environment, named_modules):
         super().__init__(module, env, named_modules)
