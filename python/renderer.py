@@ -120,6 +120,9 @@ class Renderer:
         # Ensure that we don't write general purpose external
         # helpers multiple times
         rendered_ext = list(set(rendered_ext))
+        # Sort output for consistency
+        rendered_ext.sort(key=hash)
+
         return rendered, rendered_ext
 
     def render_pdf_graph(self):
