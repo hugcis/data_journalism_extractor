@@ -1,6 +1,7 @@
 """ The module containing the abstract base class for all operation modules
 used throughout the rest of the code.
 """
+from typing import Dict, Type
 from abc import ABC, abstractmethod
 from jinja2 import Environment
 from graphviz import Digraph
@@ -11,7 +12,7 @@ class BaseModule(ABC):
     of ``BaseModule``
 
     Every module object passed to the constructor must contain the
-    ``type`` and ``name`` fields.
+    ``moduleType`` and ``name`` fields.
 
     All modules expose the following common API.
 
@@ -20,12 +21,18 @@ class BaseModule(ABC):
             the module.
         env (jinja2.Environment): The jinja environment where the
             templates can be retrieved.
-        named_modules (List[BaseModule]): A list of all the other modules
-            of the DAG.
+        named_modules (Dict[str, Type[BaseModule]]): A list of all the
+            other modules of the DAG.
     """
-    def __init__(self, module: dict, env: Environment, named_modules):
+    module_type: str
+    name: str
+    env: Environment
+    named_modules: Dict[str, Type['BaseModule']]
+
+    def __init__(self, module: dict, env: Environment,
+                 named_modules: Dict[str, Type['BaseModule']]):
         self.env = env
-        self.type = module.get('type')
+        self.module_type: str = module.get('moduleType')
         self.name = module.get('name')
         if self.name is None:
             raise ValueError('Name not provided in module {}'.format(module))
@@ -35,15 +42,15 @@ class BaseModule(ABC):
     def __str__(self):
         return self.name
 
-    def to_graph_repr(self):
+    def to_graph_repr(self) -> str:
         """ Generate the representation of the node in the form
 
         ``Name
-        Type: $type``
+        Type: $moduleType``
 
         Used for pdf graph generation
         """
-        return self.__str__() + '\nType {}'.format(self.type)
+        return self.__str__() + '\nType {}'.format(self.module_type)
 
     def add_to_graph(self, graph: Digraph):
         """ A method for adding the module to a graphviz graph

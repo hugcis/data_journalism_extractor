@@ -87,7 +87,7 @@ file and fetching data from the Postgres database.
 
        {
             "name": "mongoDBHATVP",
-            "type": "mongoImporter",
+            "moduleType": "mongoImporter",
             "dbName": "testdb",
             "collection": "publications",
             "requiredFields": ["lienPageTwitter", "denomination"]
@@ -108,7 +108,7 @@ file and fetching data from the Postgres database.
 
        {
             "name": "extractorMPs",
-            "type": "csvImporter",
+            "moduleType": "csvImporter",
             "path": "~/data_journalism_extractor/example/data/deputes.csv",
             "dataType": ["String", "String"],
             "fieldDelimiter": ";",
@@ -122,7 +122,7 @@ file and fetching data from the Postgres database.
 
        {
             "name": "extractordb",
-            "type": "dbImporter",
+            "moduleType": "dbImporter",
             "dbUrl": "jdbc:postgresql://localhost/twitter",
             "fieldNames": ["rt_name","screen_name"],
             "dataType": ["String", "String"],
@@ -156,7 +156,7 @@ corresponding modules are:
 
     {
         "name": "splitTwitterHATVP",
-        "type": "split",
+        "moduleType": "split",
         "source": "mongoDBHATVP",
         "delimiter": "/",
         "field": 0,
@@ -164,7 +164,7 @@ corresponding modules are:
     },
     {
         "name": "splitTwitterHATVP2",
-        "type": "split",
+        "moduleType": "split",
         "source": "splitTwitterHATVP",
         "delimiter": "\\?",
         "field": 1,
@@ -191,7 +191,7 @@ They are explained below:
 
    {
        "name": "joinExtractorDBTwitterSplit",
-       "type": "join",
+       "moduleType": "join",
        "source1": "extractordb",
        "source2": "splitTwitterHATVP2",
        "field1": 1,
@@ -200,7 +200,7 @@ They are explained below:
    },
    {
        "name": "joinExtractorDBMPs",
-       "type": "join",
+       "moduleType": "join",
        "source1": "extractordb",
        "source2": "extractorMPs",
        "field1": 1,
@@ -209,7 +209,7 @@ They are explained below:
    },
    {
        "name": "joinDBHATVPMPs",
-       "type": "join",
+       "moduleType": "join",
        "source1": "joinExtractorDBTwitterSplit",
        "source2": "extractorMPs",
        "field1": 0,
@@ -219,7 +219,7 @@ They are explained below:
    },
    {
        "name": "joinDB1HATVP",
-       "type": "join",
+       "moduleType": "join",
        "source1": "joinExtractorDBMPs",
        "source2": "splitTwitterHATVP2",
        "field1": 0,
@@ -247,13 +247,13 @@ retweets of MPs.
 
     {
         "name": "output2",
-        "type": "csvOutput",
+        "moduleType": "csvOutput",
         "source": "joinDBHATVPMPs",
         "path": "/Users/hugo/Work/limsi-inria/tests/data_journalism_extractor/example/output/output_dep_retweet_hatvp.csv"
     },
     {
         "name": "output3",
-        "type": "csvOutput",
+        "moduleType": "csvOutput",
         "source": "joinDB1HATVP",
         "path": "/Users/hugo/Work/limsi-inria/tests/data_journalism_extractor/example/output/output_hatvp_retweet_dep.csv"
     }
@@ -288,7 +288,7 @@ The second field is quoted between ``$`` s.
 
    {
       "name": "extractorWiki",
-      "type": "csvImporter",
+      "moduleType": "csvImporter",
       "path": "/Users/hugo/Work/limsi-inria/tests/data_journalism_extractor/example/data/wiki.csv",
       "dataType": ["String", "String"],
       "quoteCharacter": "$",
@@ -302,14 +302,14 @@ The ``extractorLink`` module implements a mention extraction algorithm to extrac
 mentions of a given data flow's elements into an other data flow. 
 
 The ``sourceExtract`` and ``targetExtract`` fields correspond to the column index 
-of the source and target flow. **The source is the content mention of the target will
+of the source and target flow. **The source is the data flow mentions of the target will
 be extracted from.**
 
 .. code-block:: javascript
 
    {
       "name": "mentionExtraction",
-      "type": "extractorLink",
+      "moduleType": "extractorLink",
       "source1": "extractorWiki",
       "source2": "mongoDBHATVP",
       "sourceExtract": 1,

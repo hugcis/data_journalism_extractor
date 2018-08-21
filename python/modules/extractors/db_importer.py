@@ -49,7 +49,7 @@ class DbImporter(BaseModule):
         if self.driver is None:
             raise ValueError(
                 "No known driver for this\
- database type : {}".format(self.type))
+ database type : {}".format(self.module_type))
 
         self.template_path = os.path.join('importers',
                                           'scala_db_loader.template')

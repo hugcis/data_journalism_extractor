@@ -33,7 +33,6 @@ class MongoImporter(BaseModule):
         self.required_fields = [quote(i) for i in module.get('requiredFields')]
 
         self.data_type = ["String"]*len(module.get('requiredFields'))
-        self.type = format_types(self.data_type)
 
         self.template_path = os.path.join('importers',
                                           'scala_mongo_loader.template')
@@ -44,7 +43,7 @@ class MongoImporter(BaseModule):
             name=self.name,
             db_name=self.db_name,
             collection=self.collection,
-            type=self.type,
+            type=format_types(self.data_type),
             required_fields=self.required_fields
         ), ''
 

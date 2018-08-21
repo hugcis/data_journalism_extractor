@@ -26,7 +26,6 @@ class JsonImporter(FileImporter):
         self.required_fields = [quote(i) for i in module.get('requiredFields')]
 
         self.data_type = ["String"]*len(module.get('requiredFields'))
-        self.type = format_types(self.data_type)
 
         self.template_path = os.path.join(self.template_path,
                                           'scala_json_loader.template')
@@ -37,7 +36,7 @@ class JsonImporter(FileImporter):
             file_path=self.file_path,
             name=self.name,
             main_field=self.main_field,
-            type=self.type,
+            type=format_types(self.data_type),
             required_fields=self.required_fields
         ), ''
 

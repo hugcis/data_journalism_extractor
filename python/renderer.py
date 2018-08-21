@@ -1,5 +1,6 @@
 """ Module containing the render engine
 """
+from typing import List, Dict, Any, Type
 from jinja2 import Environment, FileSystemLoader
 from graphviz import Digraph
 from modules.base_module import BaseModule
@@ -29,7 +30,7 @@ class ModuleMap:
     # Wrapped in a class for clarity
     # pylint: disable=R0903
 
-    module_map = {
+    module_map: Dict[str, Type[BaseModule]] = {
         # Importers
         'csvImporter': CsvImporter,
         'jsonImporter': JsonImporter,
@@ -51,14 +52,28 @@ class ModuleMap:
     }
 
     @classmethod
-    def get(cls, module_type: str) -> BaseModule:
+    def get(cls, module_type: str) -> Type[BaseModule]:
         """ Returns the module corresponding to the name
         passed in argument.
 
         Args:
             module_type (str): The desired module type.
         """
+        if module_type not in cls.module_map:
+            raise UnknownModuleError(
+                "Module is {}".format(module_type))
+
         return cls.module_map.get(module_type)
+
+    @classmethod
+    def add_module(cls, module_name: str, module: Type[BaseModule]):
+        """ Set a new module in the mapping.
+
+        Args:
+            module_name (str): Name of the new module
+            module (BaseModule): Module class to add to the mapping
+        """
+        cls.module_map[module_name] = module
 
 
 class Renderer:
@@ -66,11 +81,11 @@ class Renderer:
     the operation graph and generate the rendered Scala code.
 
     Args:
-        module_list (List[dict]): The list of module specifications to be
-            parsed and added to the operation graph.
+        module_list (List[Dict[str, Any]]): The list of module specifications
+            to be parsed and added to the operation graph.
         template_dir (str): The path to the template directory.
     """
-    def __init__(self, module_list, template_dir: str):
+    def __init__(self, module_list: List[Dict[str, Any]], template_dir: str):
         self.env = Environment(loader=FileSystemLoader(template_dir))
         self.name_list = []
         self.named_modules = {}
@@ -116,16 +131,12 @@ class Renderer:
             self.named_modules.get(mod).add_to_graph(graph)
         graph.render('compiled.gv')
 
-    def _add_module(self, module):
+    def _add_module(self, module: Dict[str, Any]):
         name = module.get('name')
         self.name_list.append(name)
 
         base_module = ModuleMap.get(
-            module.get('type'))
-
-        if base_module is None:
-            raise UnknownModuleError(
-                "Module is {}".format(module.get('type')))
+            module.get('moduleType'))
 
         self.named_modules[name] = base_module(module,
                                                self.env,

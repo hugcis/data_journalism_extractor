@@ -53,12 +53,12 @@ Specifications come in the following JSON structure:
    {
        modules: [
            {
-               type: "string",
+               moduleType: "string",
                name: "string", 
                ...
            },
            {
-               type: "string",
+               moduleType: "string",
                name: "string", 
                ...
            },
@@ -89,13 +89,13 @@ Take the following simple program:
    {
        "modules": [
            {
-               "type": "csvImporter",
+               "moduleType": "csvImporter",
                "name": "In", 
                "path": "~/project/in.csv",
                "dataType": ["String", "String"]
            },
            {
-               "type": "csvOutput",
+               "moduleType": "csvOutput",
                "name": "Out", 
                "path": "~/project/out.csv",
                "source": "In"

@@ -2,7 +2,7 @@
     "modules": [
         {
             "name": "extractorMPs",
-            "type": "csvImporter",
+            "moduleType": "csvImporter",
             "path": "/Users/hugo/Work/limsi-inria/tests/data_journalism_extractor/example/data/deputes.csv",
             "dataType": ["String", "String"],
             "fieldDelimiter": ";",
@@ -10,14 +10,14 @@
         },
         {
             "name": "mongoDBHATVP",
-            "type": "mongoImporter",
+            "moduleType": "mongoImporter",
             "dbName": "testdb",
             "collection": "publications",
             "requiredFields": ["lienPageTwitter", "denomination"]
         },
         {
             "name": "splitTwitterHATVP",
-            "type": "split",
+            "moduleType": "split",
             "source": "mongoDBHATVP",
             "delimiter": "/",
             "field": 0,
@@ -25,7 +25,7 @@
         },
         {
             "name": "splitTwitterHATVP2",
-            "type": "split",
+            "moduleType": "split",
             "source": "splitTwitterHATVP",
             "delimiter": "\\?",
             "field": 1,
@@ -33,21 +33,21 @@
         },
         {
             "name": "extractor_lex",
-            "type": "csvImporter",
+            "moduleType": "csvImporter",
             "path": "/Users/hugo/Work/limsi-inria/tests/data_journalism_extractor/example/data/lex.csv",
             "dataType": ["String", "String"],
             "fieldDelimiter": ","
         },
         {
             "name": "split_lex",
-            "type": "split",
+            "moduleType": "split",
             "source": "extractor_lex",
             "delimiter": "|",
             "field": 2
         },
         {
             "name": "extractordb",
-            "type": "dbImporter",
+            "moduleType": "dbImporter",
             "dbUrl": "jdbc:postgresql://localhost/twitter",
             "fieldNames": ["rt_name","screen_name"],
             "dataType": ["String", "String"],
@@ -56,7 +56,7 @@
         },
         {
             "name": "joinExtractorDBTwitterSplit",
-            "type": "join",
+            "moduleType": "join",
             "source1": "extractordb",
             "source2": "splitTwitterHATVP2",
             "field1": 1,
@@ -65,7 +65,7 @@
         },
         {
             "name": "joinExtractorDBMPs",
-            "type": "join",
+            "moduleType": "join",
             "source1": "extractordb",
             "source2": "extractorMPs",
             "field1": 1,
@@ -74,7 +74,7 @@
         },
         {
             "name": "joinDBHATVPMPs",
-            "type": "join",
+            "moduleType": "join",
             "source1": "joinExtractorDBTwitterSplit",
             "source2": "extractorMPs",
             "field1": 0,
@@ -84,7 +84,7 @@
         },
         {
             "name": "joinDB1HATVP",
-            "type": "join",
+            "moduleType": "join",
             "source1": "joinExtractorDBMPs",
             "source2": "splitTwitterHATVP2",
             "field1": 0,
@@ -94,7 +94,7 @@
         },
         {
             "name": "extractorWiki",
-            "type": "csvImporter",
+            "moduleType": "csvImporter",
             "path": "/Users/hugo/Work/limsi-inria/tests/data_journalism_extractor/example/data/wiki.csv",
             "dataType": ["String", "String"],
             "quoteCharacter": "$",
@@ -102,7 +102,7 @@
         },
         {
             "name": "tryExtractorWordSim",
-            "type": "extractorWordSim",
+            "moduleType": "extractorWordSim",
             "source1": "split_lex",
             "source2": "split_lex",
             "leftField": 2,
@@ -110,7 +110,7 @@
         },
         {
             "name": "stringSimilarity",
-            "type": "stringSimilarity",
+            "moduleType": "stringSimilarity",
             "source1": "split_lex",
             "source2": "split_lex",
             "leftField": 0,
@@ -120,7 +120,7 @@
         },
         {
             "name": "mentionExtraction",
-            "type": "extractorLink",
+            "moduleType": "extractorLink",
             "source1": "extractorWiki",
             "source2": "mongoDBHATVP",
             "sourceExtract": 1,
@@ -128,49 +128,49 @@
         },
         {
             "name": "projection1",
-            "type": "projection",
+            "moduleType": "projection",
             "source": "mentionExtraction",
             "fields": [0, 3]
         },
         {
             "name": "output1",
-            "type": "csvOutput",
+            "moduleType": "csvOutput",
             "source": "projection1",
             "path": "/Users/hugo/Work/limsi-inria/tests/data_journalism_extractor/example/output/output_mention_wiki.csv"
         },
         {
             "name": "output2",
-            "type": "csvOutput",
+            "moduleType": "csvOutput",
             "source": "joinDBHATVPMPs",
             "path": "/Users/hugo/Work/limsi-inria/tests/data_journalism_extractor/example/output/output_dep_retweet_hatvp.csv"
         },
         {
             "name": "output3",
-            "type": "csvOutput",
+            "moduleType": "csvOutput",
             "source": "joinDB1HATVP",
             "path": "/Users/hugo/Work/limsi-inria/tests/data_journalism_extractor/example/output/output_hatvp_retweet_dep.csv"
         },
         {
             "name": "globalUnion1",
-            "type": "union",
+            "moduleType": "union",
             "source1": "projection1",
             "source2": "joinDBHATVPMPs"
         },
         {
             "name": "globalUnion2",
-            "type": "union",
+            "moduleType": "union",
             "source1": "globalUnion1",
             "source2": "joinDB1HATVP"
         },
         {
             "name": "globCount",
-            "type": "countDistinct",
+            "moduleType": "countDistinct",
             "source": "globalUnion2",
             "fields": [0, 1]
         },
         {
             "name": "globOutput",
-            "type": "csvOutput",
+            "moduleType": "csvOutput",
             "source": "globCount",
             "path": "/Users/hugo/Work/limsi-inria/tests/data_journalism_extractor/example/output/output_all.csv"
         }
