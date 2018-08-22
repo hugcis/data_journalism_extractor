@@ -155,6 +155,15 @@ object Main {
 
   
   
+  // ===== Entity extractor FlatMapFunction mentionExtraction=====
+  
+  private class extract_extractorWiki_mongoDBHATVP extends FlatMapFunction[((String, String), (String, String)), (String, String, String, String)] {
+      override def flatMap(value: ((String, String), (String, String)), out: Collector[(String, String, String, String)]): Unit = {
+        val d = (raw"\b(" + value._2._2.toLowerCase + raw")\b").r
+        if (d.findFirstIn(value._1._2.toLowerCase).nonEmpty) out.collect((value._1._1,value._1._2,value._2._1,value._2._2))
+      }
+  }
+  
   // ===== DB Importer module ext =====
   
   private def getRequired[T](elem: Row): T = {
@@ -168,14 +177,5 @@ object Main {
         case 6 => (tuplify(0), tuplify(1), tuplify(2), tuplify(3), tuplify(4), tuplify(5))
       }
       d.asInstanceOf[T]
-  }
-  
-  // ===== Entity extractor FlatMapFunction mentionExtraction=====
-  
-  private class extract_extractorWiki_mongoDBHATVP extends FlatMapFunction[((String, String), (String, String)), (String, String, String, String)] {
-      override def flatMap(value: ((String, String), (String, String)), out: Collector[(String, String, String, String)]): Unit = {
-        val d = (raw"\b(" + value._2._2.toLowerCase + raw")\b").r
-        if (d.findFirstIn(value._1._2.toLowerCase).nonEmpty) out.collect((value._1._1,value._1._2,value._2._1,value._2._2))
-      }
   }
 }

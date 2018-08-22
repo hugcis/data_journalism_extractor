@@ -120,7 +120,7 @@ class Renderer:
         # Ensure that we don't write general purpose external
         # helpers multiple times
         rendered_ext = list(set(rendered_ext))
-        # Sort output for consistency
+        # Sort output for consistency from run to run
         rendered_ext.sort(key=hash)
 
         return rendered, rendered_ext

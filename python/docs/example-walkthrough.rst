@@ -49,6 +49,11 @@ The data is available in the ``example/data`` directory. The list of files is:
 Anatomy of the program
 ----------------------
 
+.. figure:: images/walk_ex.*
+   
+   DAG representing the program. 
+   (It was generated with the ``-p`` option of compile.py)
+
 Tweets
 ^^^^^^
 
