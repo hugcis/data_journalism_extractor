@@ -13,7 +13,11 @@ class MongoImporter(BaseModule):
     from MongoDb Documents on convert the into a Flink DataSet.
 
     Args:
-        module (dict): 
+        module (dict): The module dict must have a ``dbName`` field with
+            the name of the DB (ex: ``"hatvpDb"``), a ``collection`` with the
+            name of the desired collection (ex: ``"publications"``), the
+            ``requiredFields`` of the obtained documents (ex:
+            ``["age", "name"]``)
     """
     def __init__(self, module, env: Environment, named_modules):
         super().__init__(module, env, named_modules)
@@ -21,9 +25,9 @@ class MongoImporter(BaseModule):
         self.db_name = module.get('dbName')
         self.collection = module.get('collection')
 
-        if self.db_name is None:
+        if self.db_name is None or self.collection is None:
             raise ValueError(
-                "No db name specified in module MongoImporter\
+                "No db name, collection pair specified in module MongoImporter\
  {}".format(self.name))
 
         if not isinstance(module.get('requiredFields'), list):

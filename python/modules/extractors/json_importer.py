@@ -4,7 +4,7 @@ import os
 from typing import Tuple
 from jinja2 import Environment
 from modules.utils import format_types, quote
-from .file_importer import FileImporter
+from modules.extractors.file_importer import FileImporter
 
 
 class JsonImporter(FileImporter):

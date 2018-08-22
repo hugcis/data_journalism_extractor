@@ -13,8 +13,8 @@ class BinaryOperation(BaseModule, ABC):
 
     Args:
         module (dict): The module dict must have the two
-        fields ``source1`` and ``source2`` that contain the names
-        of the two input flows.
+            fields ``source1`` and ``source2`` that contain the names
+            of the two input flows.
     """
     def __init__(self, module, env, named_modules):
         super().__init__(module, env, named_modules)

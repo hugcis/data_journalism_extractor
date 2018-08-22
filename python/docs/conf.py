@@ -176,4 +176,3 @@ texinfo_documents = [
      author, 'data_journalism_extractor', 'One line description of project.',
      'Miscellaneous'),
 ]
-

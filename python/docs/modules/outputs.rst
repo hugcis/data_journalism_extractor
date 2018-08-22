@@ -11,3 +11,4 @@ CSV Output
 
 .. automodule:: modules.outputs.csv_output
    :members:
+   :show-inheritance:
