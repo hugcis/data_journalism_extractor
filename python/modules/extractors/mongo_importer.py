@@ -3,6 +3,7 @@
 import os
 from typing import Tuple
 from jinja2 import Environment
+import graphviz
 from modules.utils import format_types, quote
 from modules.base_module import BaseModule
 
@@ -57,3 +58,10 @@ class MongoImporter(BaseModule):
 
     def check_integrity(self):
         pass
+
+    def add_to_graph(self, graph: graphviz.Digraph):
+        graph.node(str(hash(self)),
+                   label=self.to_graph_repr(),
+                   fillcolor='green',
+                   style='filled',
+                   shape='cylinder')

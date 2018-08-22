@@ -2,6 +2,7 @@
 """
 import os
 from typing import Tuple
+import graphviz
 from jinja2 import Environment
 from modules.base_module import BaseModule
 from modules.utils import quote, format_types
@@ -79,6 +80,13 @@ class DbImporter(BaseModule):
 
     def check_integrity(self):
         pass
+
+    def add_to_graph(self, graph: graphviz.Digraph):
+        graph.node(str(hash(self)),
+                   label=self.to_graph_repr(),
+                   fillcolor='green',
+                   style='filled',
+                   shape='cylinder')
 
     def _get_db_type(self):
         return self.db_url.split(':')[1]

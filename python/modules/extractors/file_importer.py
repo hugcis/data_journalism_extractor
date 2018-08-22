@@ -3,6 +3,7 @@
 import os
 from typing import Tuple
 from abc import ABC, abstractmethod
+from graphviz import Digraph
 from extractor_exceptions import IntegrityError
 from modules.base_module import BaseModule
 
@@ -39,3 +40,10 @@ class FileImporter(BaseModule, ABC):
     def check_integrity(self):
         if not os.path.exists(self.file_path):
             raise IntegrityError("File {} not in path".format(self.file_path))
+
+    def add_to_graph(self, graph: Digraph):
+        graph.node(str(hash(self)),
+                   label=self.to_graph_repr(),
+                   fillcolor='green',
+                   style='filled',
+                   shape='note')

@@ -32,17 +32,21 @@ class BinaryOperation(BaseModule, ABC):
         pass
 
     def add_to_graph(self, graph: Digraph):
-        super().add_to_graph(graph)
+        graph.node(str(hash(self)),
+                   label=self.to_graph_repr(),
+                   fillcolor='lightblue',
+                   style='filled',
+                   shape='component')
 
         graph.edge(
-            self.named_modules.get(self.source1).to_graph_repr(),
-            self.to_graph_repr(),
+            str(hash(self.named_modules.get(self.source1))),
+            str(hash(self)),
             label=format_types(
                 self.named_modules.get(self.source1).get_out_type())
         )
         graph.edge(
-            self.named_modules.get(self.source2).to_graph_repr(),
-            self.to_graph_repr(),
+            str(hash(self.named_modules.get(self.source2))),
+            str(hash(self)),
             label=format_types(
                 self.named_modules.get(self.source2).get_out_type())
         )

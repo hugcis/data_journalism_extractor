@@ -1,7 +1,7 @@
 """ The module containing the abstract base class for all operation modules
 used throughout the rest of the code.
 """
-from typing import Dict, Type, Tuple
+from typing import Dict, Type, Tuple, List
 from abc import ABC, abstractmethod
 from jinja2 import Environment
 from graphviz import Digraph
@@ -43,6 +43,9 @@ class BaseModule(ABC):
     def __str__(self):
         return self.name
 
+    def __hash__(self):
+        return hash(self.name + self.module_type)
+
     def to_graph_repr(self) -> str:
         """ Generate the representation of the node in the form
 
@@ -51,7 +54,8 @@ class BaseModule(ABC):
 
         Used for pdf graph generation
         """
-        return self.__str__() + '\nType {}'.format(self.module_type)
+        return '''<{}<BR/><U>{}</U>>'''.format(str(self),
+                                               self.module_type.capitalize())
 
     def add_to_graph(self, graph: Digraph):
         """ A method for adding the module to a graphviz graph
@@ -60,7 +64,7 @@ class BaseModule(ABC):
         Args:
             graph (graphviz.dot.Digraph): A graphviz Digraph object
         """
-        graph.node(self.to_graph_repr())
+        graph.node(hash(self), label=self.to_graph_repr())
 
     @abstractmethod
     def rendered_result(self) -> Tuple[str, str]:
@@ -71,7 +75,7 @@ class BaseModule(ABC):
         pass
 
     @abstractmethod
-    def get_out_type(self):
+    def get_out_type(self) -> List[str]:
         """ Returns the output type of the module
         as a list of strings.
         """

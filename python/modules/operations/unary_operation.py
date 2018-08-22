@@ -29,10 +29,15 @@ class UnaryOperation(BaseModule, ABC):
         pass
 
     def add_to_graph(self, graph: Digraph):
-        super().add_to_graph(graph)
+        graph.node(str(hash(self)),
+                   label=self.to_graph_repr(),
+                   fillcolor='blue',
+                   style='filled',
+                   shape='cds',
+                   height='0.8')
 
         graph.edge(
-            self.named_modules.get(self.source).to_graph_repr(),
-            self.to_graph_repr(),
+            str(hash(self.named_modules.get(self.source))),
+            str(hash(self)),
             label=format_types(
                 self.named_modules.get(self.source).get_out_type()))
