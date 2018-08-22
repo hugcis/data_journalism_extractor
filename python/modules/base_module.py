@@ -1,7 +1,7 @@
 """ The module containing the abstract base class for all operation modules
 used throughout the rest of the code.
 """
-from typing import Dict, Type
+from typing import Dict, Type, Tuple
 from abc import ABC, abstractmethod
 from jinja2 import Environment
 from graphviz import Digraph
@@ -18,7 +18,8 @@ class BaseModule(ABC):
 
     Args:
         module (dict): The ``dict`` containing the specification of
-            the module.
+            the module. Every module has this parameter that should
+            contain the fields from all its parent classes.
         env (jinja2.Environment): The jinja environment where the
             templates can be retrieved.
         named_modules (Dict[str, Type[BaseModule]]): A list of all the
@@ -32,7 +33,7 @@ class BaseModule(ABC):
     def __init__(self, module: dict, env: Environment,
                  named_modules: Dict[str, Type['BaseModule']]):
         self.env = env
-        self.module_type: str = module.get('moduleType')
+        self.module_type = module.get('moduleType')
         self.name = module.get('name')
         if self.name is None:
             raise ValueError('Name not provided in module {}'.format(module))
@@ -62,7 +63,7 @@ class BaseModule(ABC):
         graph.node(self.to_graph_repr())
 
     @abstractmethod
-    def rendered_result(self) -> (str, str):
+    def rendered_result(self) -> Tuple[str, str]:
         """ Returns a pair of strings containing the
         rendered lines of codes and external classes or objects
         definitions.

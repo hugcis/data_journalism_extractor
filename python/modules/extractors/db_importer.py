@@ -1,6 +1,7 @@
 """ The Database loader operation module
 """
 import os
+from typing import Tuple
 from jinja2 import Environment
 from modules.base_module import BaseModule
 from modules.utils import quote, format_types
@@ -58,7 +59,7 @@ class DbImporter(BaseModule):
         self.template = self.env.get_template(self.template_path)
         self.template_ext = self.env.get_template(self.template_ext_path)
 
-    def rendered_result(self) -> (str, str):
+    def rendered_result(self) -> Tuple[str, str]:
         return self.template.render(
             name=self.name,
             field_types=['createTypeInformation[{}]'.format(i) for

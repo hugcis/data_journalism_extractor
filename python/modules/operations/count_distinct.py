@@ -1,6 +1,7 @@
 """ The distinct count operation module
 """
 import os
+from typing import Tuple
 from jinja2 import Environment
 from modules.operations.unary_operation import UnaryOperation
 
@@ -27,7 +28,7 @@ class CountDistinct(UnaryOperation):
                                           'scala_count_distinct.template')
         self.template = self.env.get_template(self.template_path)
 
-    def rendered_result(self) -> (str, str):
+    def rendered_result(self) -> Tuple[str, str]:
         return self.template.render(
             name=self.name,
             source=self.source,

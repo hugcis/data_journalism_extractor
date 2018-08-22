@@ -1,6 +1,7 @@
 """ The string similarity operation module
 """
 import os
+from typing import Tuple
 from jinja2 import Environment
 from extractor_exceptions import IntegrityError
 from .binary_operation import BinaryOperation
@@ -84,7 +85,7 @@ The available algorithms are: {}'.format(self.algorithm,
 
         self.template = self.env.get_template(template_path)
 
-    def rendered_result(self) -> (str, str):
+    def rendered_result(self) -> Tuple[str, str]:
         return self.template.render(
             name=self.name,
             source1=self.source1,

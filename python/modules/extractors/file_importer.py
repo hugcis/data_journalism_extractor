@@ -1,6 +1,7 @@
 """ The file importer operation module base class
 """
 import os
+from typing import Tuple
 from abc import ABC, abstractmethod
 from extractor_exceptions import IntegrityError
 from modules.base_module import BaseModule
@@ -32,7 +33,7 @@ class FileImporter(BaseModule, ABC):
         self.template_path = 'importers'
 
     @abstractmethod
-    def rendered_result(self) -> (str, str):
+    def rendered_result(self) -> Tuple[str, str]:
         pass
 
     def check_integrity(self):

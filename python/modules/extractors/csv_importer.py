@@ -1,6 +1,7 @@
 """ The CSV loader operation module
 """
 import os
+from typing import Tuple
 from jinja2 import Environment
 from modules.utils import format_types
 from .file_importer import FileImporter
@@ -56,7 +57,7 @@ class CsvImporter(FileImporter):
                                           'scala_csv_loader.template')
         self.template = self.env.get_template(self.template_path)
 
-    def rendered_result(self) -> (str, str):
+    def rendered_result(self) -> Tuple[str, str]:
         return self.template.render(
             file_path=self.file_path,
             name=self.name,

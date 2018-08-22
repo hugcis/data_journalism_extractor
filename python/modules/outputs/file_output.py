@@ -1,6 +1,7 @@
 """ The base class for file output modules
 """
 import os
+from typing import Tuple
 from abc import ABC, abstractmethod
 from graphviz import Digraph
 from modules.utils import format_types
@@ -28,7 +29,7 @@ class FileOutput(BaseModule, ABC):
         self.template_path = 'outputs'
 
     @abstractmethod
-    def rendered_result(self) -> (str, str):
+    def rendered_result(self) -> Tuple[str, str]:
         pass
 
     def add_to_graph(self, graph: Digraph):

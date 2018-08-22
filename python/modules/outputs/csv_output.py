@@ -1,6 +1,7 @@
 """ The CSV output operation module
 """
 import os
+from typing import Tuple
 from jinja2 import Environment
 from modules.outputs.file_output import FileOutput
 
@@ -15,7 +16,7 @@ class CsvOutput(FileOutput):
                                           'scala_csv_output.template')
         self.template = self.env.get_template(self.template_path)
 
-    def rendered_result(self) -> (str, str):
+    def rendered_result(self) -> Tuple[str, str]:
         return self.template.render(
             file_path=self.file_path,
             name=self.name,

@@ -52,7 +52,7 @@ When implementing a new module, one should use the following template:
             self.template_path = # Path to template
             self.template = self.env.get_template(self.template_path)
 
-        def rendered_result(self) -> (str, str):
+        def rendered_result(self) -> Tuple[str, str]:
             return self.template.render(
                 name=self.name,
                 # Other arguments

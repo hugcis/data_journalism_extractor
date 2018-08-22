@@ -1,6 +1,7 @@
 """ The Mongo loader operation module
 """
 import os
+from typing import Tuple
 from jinja2 import Environment
 from modules.utils import format_types, quote
 from modules.base_module import BaseModule
@@ -38,7 +39,7 @@ class MongoImporter(BaseModule):
                                           'scala_mongo_loader.template')
         self.template = self.env.get_template(self.template_path)
 
-    def rendered_result(self) -> (str, str):
+    def rendered_result(self) -> Tuple[str, str]:
         return self.template.render(
             name=self.name,
             db_name=self.db_name,
