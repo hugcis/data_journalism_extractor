@@ -1,0 +1,6 @@
+// ===== Simple NER module {{name}} =====
+
+val {{name}} = {{source}}.map(t =>{
+  val d = new Sentence(t._{{field + 1}})
+  ({{below}}d.nerTags.asScala.toArray{{above}})
+})
