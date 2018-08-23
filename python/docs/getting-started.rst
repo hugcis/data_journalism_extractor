@@ -76,6 +76,20 @@ The JSON files defines a program, that can be compiled with a python script as f
 A more complete description of the available options and functioning of the script can 
 be obtained by running ``python/compile.py -h``.
 
+::
+
+    Usage: compile.py [-h] [-s filename] [-t dirname] [-o output] [-p]
+
+    Command line interface for compiling JSON spec file in Scala code.
+
+    Optional arguments are:
+        -h, --help                            show this help message and exit
+        -s filename, --spec filename          spec filename
+        -t dirname, --template-dir dirname    template directory
+        -o output, --output output            output filename
+        -p, --pdf-output                      output the rendered graph in a pdf file
+
+
 Once the DAG has been compiled, the generated Scala program can in turn be compiled 
 and packaged into a JAR to run on a Flink cluster (either locally or on a cluster).
 

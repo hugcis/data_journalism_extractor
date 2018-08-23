@@ -14,10 +14,24 @@ powerful and complex **database**, **information extraction** and **NLP** tools 
 Features
 --------
 
-* Extract data from **relational databases** (Postgres, MySQL, Oracle), **NoSQL** databases 
-  (MongoDB), CSV files, HDFS, etc.
-* Use complex processing tools such as **soft string-matching functions**, **link extractions**, etc.
-* Store outputs in multiple different data sinks (CSV files, databases, HDFS, etc.)
+This software is based on `Apache Flink <https://flink.apache.org/>`_, a stream processing
+framework similar to Spark written in Java and Scala.
+It executes dataflow programs, is highly scalable and integrates easily with other Big Data 
+frameworks and tools such as `Kafka <https://kafka.apache.org/>`_, `HDFS <https://hadoop.apache.org/>`_,
+`YARN <https://hadoop.apache.org/docs/current/hadoop-yarn/hadoop-yarn-site/YARN.html>`_,
+`Cassandra <https://cassandra.apache.org/>`_ or `ElasticSearch <https://www.elastic.co/>`_. 
+
+Although you can work with custom dataflow programs that suits your specific needs,
+one doesn't need to know programming, Flink or Scala to work with this tool and build complex
+dataflow programs to achieve some of the following operations:
+
+  * Extract data from **relational databases** (Postgres, MySQL, Oracle), **NoSQL** databases 
+    (MongoDB), CSV files, HDFS, etc.
+  * Use complex processing tools such as **soft string-matching functions**, **link extractions**, etc.
+  * Store outputs in multiple different data sinks (CSV files, databases, HDFS, etc.)
+
+Some examples are in :doc:`getting-started` and :doc:`example-walkthrough`. Description of the modules
+and how to use them is in :doc:`modules`.
 
 .. toctree::
    :maxdepth: 2
