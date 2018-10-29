@@ -7,7 +7,7 @@ powerful and complex **database**, **information extraction** and **NLP** tools 
 
 ## Features
 
-This software is based on `Apache Flink <https://flink.apache.org/>`_, a stream processing
+This software is based on [Apache Flink](https://flink.apache.org/), a stream processing
 framework similar to Spark written in Java and Scala.
 It executes dataflow programs, is highly scalable and integrates easily with other Big Data
 frameworks and tools such as [Kafka](https://kafka.apache.org/), [HDFS](https://hadoop.apache.org/),
